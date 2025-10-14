@@ -23,7 +23,7 @@ export function getDbPool(): mysql.Pool {
   return pool;
 }
 
-export async function query<T = any>(sql: string, params: any[] = []) {
+export async function query<T = unknown>(sql: string, params: Parameters<mysql.Pool["execute"]>[1] = []) {
   const [rows] = await getDbPool().execute(sql, params);
   return rows as T;
 }

@@ -1,4 +1,5 @@
 declare module "./LoginClient" {
-  const Component: any;
+  import type { ComponentType } from "react";
+  const Component: ComponentType<unknown>;
   export default Component;
 }

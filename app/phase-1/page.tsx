@@ -52,11 +52,12 @@ async function submitAction(formData: FormData) {
 export default async function Phase1Page({
   searchParams,
 }: {
-  searchParams?: { success?: string };
+  searchParams?: Promise<{ success?: string }>;
 }) {
   const session = await getSession();
   if (!session) redirect('/login');
-  const isSuccess = searchParams?.success === '1';
+  const sp = searchParams ? await searchParams : undefined;
+  const isSuccess = sp?.success === '1';
 
   return (
     <div className="relative min-h-dvh bg-gradient-to-b from-indigo-50/70 to-white dark:from-slate-950 dark:to-slate-900 overflow-hidden">

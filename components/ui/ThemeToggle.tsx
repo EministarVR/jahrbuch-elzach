@@ -17,8 +17,8 @@ export default function ThemeToggle() {
         {theme === 'dark' ? 'Light' : 'Dark'}
       </GlowButton>
       <GlowButton as="button" variant="ghost" className="px-3 py-2" onClick={()=>{
-        const sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        set(sys as any);
+        const sys = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' as const : 'light' as const;
+        set(sys);
       }} iconLeft={<MonitorSmartphone className="h-4 w-4" />} aria-label="System Theme">
         Sys
       </GlowButton>

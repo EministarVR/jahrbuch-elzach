@@ -2,12 +2,10 @@
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 import { forwardRef, PropsWithChildren, HTMLAttributes } from "react";
 
-interface MotionFadeProps
-  extends HTMLMotionProps<"div">,
-    PropsWithChildren<HTMLAttributes<HTMLDivElement>> {
+type MotionFadeProps = HTMLMotionProps<"div"> & {
   delay?: number;
   y?: number;
-}
+};
 
 const MotionFade = forwardRef<HTMLDivElement, MotionFadeProps>(
   function MotionFade({ delay = 0, y = 18, children, ...rest }, ref) {

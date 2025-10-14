@@ -3,13 +3,12 @@ import { Sparkles } from "lucide-react";
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
 
-interface FancyHeadingProps
-  extends PropsWithChildren<{
-    subtitle?: string;
-    icon?: boolean;
-    center?: boolean;
-    className?: string;
-  }> {}
+type FancyHeadingProps = PropsWithChildren<{
+  subtitle?: string;
+  icon?: boolean;
+  center?: boolean;
+  className?: string;
+}>;
 
 export default function FancyHeading({
   children,
