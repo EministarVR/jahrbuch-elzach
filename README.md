@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jahrbuch Elzach
 
-## Getting Started
+Interne Plattform zur Sammlung & Kuratierung von Inhalten für das Schuljahrbuch (Schulzentrum Oberes Elztal). Gebaut mit Next.js App Router, einfache MySQL Anbindung und Session Handling.
 
-First, run the development server:
+## UI / Frontend Upgrade (Oktober 2025)
+
+Highlights:
+
+- Neue Libraries: `framer-motion` (Elegante, performante Animationen) & `lucide-react` (Icons).
+- Überarbeitete globale Styles (`app/globals.css`): Gradients, Glas-Layer, weiche Noise-Textur, Utility Klassen (`text-gradient`, `backdrop-soft`, `animate-in`, `gradient-border`, `bg-shimmer`).
+- Neue Display-Font (DM Serif Display) kombiniert mit Geist Sans & Mono.
+- Neue Komponenten: `MotionFade`, `FancyHeading`.
+- Verbessert: `GlowButton` (Varianten, Icons, Loading), `GlassCard` (Hover-Layer, Fade-In, Delay), `ParallaxHero`, `Header` (Icons + Glas). 
+- Startseite komplett redesigned (Hero Eyebrow, Feature Grid, Phasen mit Icons, News-Karten, animierter Footer).
+- Login-Screen mit Icons, farbigem Gradient-Button & Motion.
+
+## Komponenten Kurzreferenz
+
+### GlowButton
+Props: `variant` (primary | secondary | ghost | gradient), `loading`, `iconLeft`, `iconRight`, `as="a"` für Link.
+
+### GlassCard
+Props: `hover` (default true), `fade` (default true), `delay`, optionale `header` / `footer`.
+
+### MotionFade
+Intersection Fade-In. Props: `delay`, `y` (Start Offset).
+
+### FancyHeading
+Props: `subtitle`, `icon` (bool), `center`.
+
+## Development
+
+Install & Start:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Läuft unter: http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Nächste mögliche Verbesserungen
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Dark Mode Toggle – Klasse `.dark` auf `<html>` setzen (Styles vorbereitet).
+2. Farb-Theming via CSS Vars (`--accent`, `--accent-rgb`).
+3. Prefers-Reduced-Motion respektieren (MotionFade optional deaktivieren).
+4. Toast / Notification System (Submission Erfolge, Fehler).
+5. Einheitliche Form Controls + Validierungsfeedback.
+6. SEO / OG-Bild Generierung (z. B. @vercel/og).
+7. Skeleton Loading States (`.bg-shimmer`).
+8. Upload-Unterstützung (Bilder) mit Progress.
+9. Rate Limiting / Spam Schutz.
+10. Admin Dashboard Visualisierungen (Charts für Anzahl Einreichungen je Tag).
 
-## Learn More
+## Qualität & Performance
 
-To learn more about Next.js, take a look at the following resources:
+- Animationen sind GPU-freundlich (Opacity + Translate / nur Transform).
+- Framer Motion wird tree-shaken -> kleine Bundle-Kosten.
+- Glas-/Blur-Einsatz moderat, sollte aber auf Mobile geprüft werden.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Lizenz
+Interne schulische Nutzung. Keine externe Verteilung ohne Freigabe.
