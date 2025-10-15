@@ -99,8 +99,7 @@ html {
   letter-spacing: -0.02em;
 }
 .text-gradient {
-  background: linear-gradient(90deg, #6366f1, #8b5cf6 40%, #0ea5e9 80%);
-  background: linear-gradient(to bottom, #f5f7fa, #ffffff 30%, #eef2ff 100%);
+  background-image: linear-gradient(90deg, #6366f1, #8b5cf6 40%, #0ea5e9 80%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -156,7 +155,7 @@ html {
 }
 @keyframes shimmer {
   0% {
-    background-position: 0% 50%;
+    background-position: 0 50%;
   }
   100% {
     background-position: 200% 50%;
@@ -326,25 +325,6 @@ html {
 }
 .glass:active {
   transform: translateY(-1px);
-}
-
-.gradient-border {
-  position: relative;
-  overflow: hidden;
-  border-radius: inherit;
-}
-.gradient-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  padding: 1px;
-  border-radius: inherit;
-  background: linear-gradient(120deg, #6366f1, #8b5cf6, #0ea5e9);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
 }
 
 /* Input base utility */

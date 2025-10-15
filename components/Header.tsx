@@ -4,10 +4,6 @@ import { query } from "@/lib/db";
 import { redirect } from "next/navigation";
 import GlowButton from "@/components/ui/GlowButton";
 import { LogOut, User2, Menu, Home, Send, Shield } from "lucide-react";
-import ThemeToggle from "@/components/ui/ThemeToggle";
-import { ThemeProvider } from "@/components/ThemeProvider";
-
-export const dynamic = "force-dynamic";
 
 async function logout() {
   "use server";
@@ -48,9 +44,6 @@ export default async function Header() {
               Logout
             </GlowButton>
           </form>
-          <ThemeProvider>
-            <ThemeToggle />
-          </ThemeProvider>
         </div>
       </div>
 
@@ -58,34 +51,29 @@ export default async function Header() {
       <div className="md:hidden">
         <details className="relative">
           <summary className="list-none cursor-pointer">
-            <div className="flex items-center justify-between rounded-2xl px-3 py-2 ring-1 ring-slate-200/90 dark:ring-slate-700/90 shadow-[0_4px_14px_-6px_rgba(15,23,42,0.25)] bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(245,247,255,0.9))] dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.95),rgba(28,36,52,0.85))]">
-              <span className="inline-flex items-center gap-2 text-sm text-base-muted">
-                <User2 className="h-4 w-4 text-indigo-600" />
-                <span className="font-medium text-base-strong">{username}</span>
+            <div className="flex items-center justify-between rounded-2xl px-3 py-2 ring-1 ring-slate-700/90 shadow-[0_4px_14px_-6px_rgba(0,0,0,0.45)] bg-[linear-gradient(145deg,rgba(28,36,52,0.95),rgba(20,27,39,0.9))]">
+              <span className="inline-flex items-center gap-2 text-sm text-slate-300">
+                <User2 className="h-4 w-4 text-indigo-300" />
+                <span className="font-medium text-white">{username}</span>
               </span>
-              <span className="inline-flex items-center justify-center h-8 w-8 rounded-xl bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-900 dark:text-indigo-300 dark:ring-indigo-800">
+              <span className="inline-flex items-center justify-center h-8 w-8 rounded-xl bg-indigo-900/60 text-indigo-300 ring-1 ring-indigo-800/80">
                 <Menu className="h-5 w-5" />
               </span>
             </div>
           </summary>
-          <div className="absolute left-0 right-0 mt-2 rounded-2xl ring-1 ring-slate-200/90 dark:ring-slate-700/90 shadow-xl p-3 bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(245,247,255,0.9))] dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.95),rgba(28,36,52,0.85))]">
+          <div className="absolute left-0 right-0 mt-2 rounded-2xl ring-1 ring-slate-700/90 shadow-xl p-3 bg-[linear-gradient(145deg,rgba(28,36,52,0.96),rgba(20,27,39,0.92))]">
             <div className="grid gap-2">
-              <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
-                <Home className="h-4 w-4 text-indigo-600" /> Startseite
+              <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-800 text-sm text-slate-200">
+                <Home className="h-4 w-4 text-indigo-300" /> Startseite
               </Link>
-              <Link href="/phase-1" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
-                <Send className="h-4 w-4 text-indigo-600" /> Einsenden
+              <Link href="/phase-1" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-800 text-sm text-slate-200">
+                <Send className="h-4 w-4 text-indigo-300" /> Einsenden
               </Link>
               {canModerate && (
-                <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
-                  <Shield className="h-4 w-4 text-indigo-600" /> Admin
+                <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-800 text-sm text-slate-200">
+                  <Shield className="h-4 w-4 text-indigo-300" /> Admin
                 </Link>
               )}
-              <div className="pt-1">
-                <ThemeProvider>
-                  <ThemeToggle />
-                </ThemeProvider>
-              </div>
               <form action={logout} className="pt-1">
                 <GlowButton variant="secondary" className="w-full justify-center" iconLeft={<LogOut className="h-4 w-4" />}>
                   Logout

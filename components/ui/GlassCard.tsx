@@ -38,7 +38,7 @@ export default function GlassCard({
           "border border-slate-200/90 dark:border-slate-700/90 md:border-white/40 md:dark:border-white/10",
           "shadow-[0_4px_16px_-4px_rgba(15,23,42,0.18),0_12px_30px_-6px_rgba(15,23,42,0.28)]",
           hover &&
-            "transition-transform transition-shadow duration-500 ease-[var(--ease-soft)] hover:-translate-y-1 hover:shadow-[0_10px_26px_-6px_rgba(15,23,42,0.28),0_20px_46px_-8px_rgba(15,23,42,0.35)]"
+            "transition-all duration-500 ease-[var(--ease-soft)] hover:-translate-y-1 hover:shadow-[0_10px_26px_-6px_rgba(15,23,42,0.28),0_20px_46px_-8px_rgba(15,23,42,0.35)]"
         )}
       >
         <div className="hidden md:block absolute inset-0 pointer-events-none opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.55),transparent_65%),radial-gradient(circle_at_75%_70%,rgba(255,255,255,0.2),transparent_60%)] dark:bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.08),transparent_65%),radial-gradient(circle_at_75%_70%,rgba(255,255,255,0.05),transparent_60%)] mix-blend-overlay" />

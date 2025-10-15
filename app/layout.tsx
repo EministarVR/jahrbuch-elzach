@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, DM_Serif_Display } from "next/font/google";
-import { cookies } from "next/headers";
 import "./globals.css";
 import Aurora from "@/components/Aurora";
 import Header from "@/components/Header";
@@ -32,24 +31,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const jar = await cookies();
-  const themeCookie = jar.get("jahrbuch-theme")?.value as
-    | "light"
-    | "dark"
-    | undefined;
-  const initialHtmlClass =
-    themeCookie === "dark" ? "scroll-smooth noise dark" : "scroll-smooth noise";
+  // Theme wird global auf dark erzwungen
+  const initialHtmlClass = "scroll-smooth noise dark";
   return (
     <html lang="de" className={initialHtmlClass} suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${display.variable} antialiased min-h-dvh text-black dark:text-slate-100`}
       >
-        {/* Pre-hydration theme bootstrap (also sync cookie if missing) */}
+        {/* Pre-hydration theme bootstrap: force dark globally */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(()=>{try{const K='jahrbuch-theme';const d=document.documentElement;let t=localStorage.getItem(K);if(!t){t=document.cookie.split('; ').find(r=>r.startsWith(K+'='))?.split('=')[1];}
-if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.cookie=K+'='+t+';path=/;max-age=31536000';}
-if(t==='dark')d.classList.add('dark');else d.classList.remove('dark');}catch(e){}})();`,
+            __html: `(()=>{try{const K='jahrbuch-theme';const d=document.documentElement;const t='dark';localStorage.setItem(K,t);document.cookie=K+'='+t+';path=/;max-age=31536000';d.classList.add('dark');}catch(e){}})();`,
           }}
         />
         <Aurora />
