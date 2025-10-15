@@ -58,7 +58,7 @@ export default async function Header() {
       <div className="md:hidden">
         <details className="relative">
           <summary className="list-none cursor-pointer">
-            <div className="flex items-center justify-between bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 ring-1 ring-slate-200 dark:ring-slate-700 shadow">
+            <div className="flex items-center justify-between rounded-2xl px-3 py-2 ring-1 ring-slate-200/90 dark:ring-slate-700/90 shadow-[0_4px_14px_-6px_rgba(15,23,42,0.25)] bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(245,247,255,0.9))] dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.95),rgba(28,36,52,0.85))]">
               <span className="inline-flex items-center gap-2 text-sm text-base-muted">
                 <User2 className="h-4 w-4 text-indigo-600" />
                 <span className="font-medium text-base-strong">{username}</span>
@@ -68,7 +68,7 @@ export default async function Header() {
               </span>
             </div>
           </summary>
-          <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-700 shadow-xl p-3">
+          <div className="absolute left-0 right-0 mt-2 rounded-2xl ring-1 ring-slate-200/90 dark:ring-slate-700/90 shadow-xl p-3 bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(245,247,255,0.9))] dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.95),rgba(28,36,52,0.85))]">
             <div className="grid gap-2">
               <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
                 <Home className="h-4 w-4 text-indigo-600" /> Startseite

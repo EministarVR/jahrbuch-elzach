@@ -42,20 +42,26 @@ export default function SubmissionForm({ action }: Props) {
           placeholder="Dein Text..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="w-full px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10 placeholder:text-base-muted"
+          className={clsx(
+            // Mobile: strukturierte Surface mit Verlauf, sichtbarer Rahmen/Schatten
+            "textarea-base",
+            // Desktop darf leicht transparenter wirken über Card
+            "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]"
+          )}
         />
         <div className="mt-2 flex items-center justify-between text-xs">
-          <span className={clsx("text-base-muted", nearLimit && "text-amber-600 dark:text-amber-400")}
-            aria-live="polite">
+          <span className={clsx("text-base-muted", nearLimit && "text-amber-600 dark:text-amber-400")} aria-live="polite">
             {used}/{max} Zeichen
           </span>
           <span className="text-base-muted">Bis zu {max} Zeichen</span>
         </div>
-        <div className="mt-2 h-1.5 rounded-full bg-black/5 dark:bg-white/10 overflow-hidden">
+        <div className="mt-2 h-1.5 rounded-full bg-slate-200/70 dark:bg-white/10 ring-1 ring-black/5 dark:ring-white/10 overflow-hidden">
           <div
             className={clsx(
               "h-full rounded-full transition-all duration-300",
-              nearLimit ? "bg-amber-500" : "bg-indigo-500"
+              nearLimit
+                ? "bg-[linear-gradient(90deg,rgba(245,158,11,0.9),rgba(251,191,36,0.9))]"
+                : "bg-[linear-gradient(90deg,rgba(99,102,241,0.9),rgba(59,130,246,0.9))]"
             )}
             style={{ width: `${ratio * 100}%` }}
           />
@@ -70,7 +76,12 @@ export default function SubmissionForm({ action }: Props) {
           id="category"
           name="category"
           required
-          className="w-full px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10"
+          className={clsx(
+            "input-base",
+            // Select braucht kein Icon-Padding links
+            "pl-4 pr-10",
+            "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]"
+          )}
           defaultValue=""
         >
           <option value="" disabled>
@@ -95,7 +106,11 @@ export default function SubmissionForm({ action }: Props) {
               id="name"
               name="name"
               placeholder="Vor- und Nachname"
-              className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10 placeholder:text-base-muted"
+              className={clsx(
+                "input-base pl-10",
+                "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]",
+                "placeholder:text-base-muted"
+              )}
             />
           </div>
         </div>
@@ -111,7 +126,11 @@ export default function SubmissionForm({ action }: Props) {
               type="tel"
               inputMode="tel"
               placeholder="z. B. 0176 12345678"
-              className="w-full pl-10 pr-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10 placeholder:text-base-muted"
+              className={clsx(
+                "input-base pl-10",
+                "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]",
+                "placeholder:text-base-muted"
+              )}
             />
           </div>
         </div>
@@ -123,4 +142,3 @@ export default function SubmissionForm({ action }: Props) {
     </form>
   );
 }
-

@@ -383,6 +383,46 @@ html {
   box-shadow: 0 0 0 3px rgba(var(--accent-rgb) / 0.35);
 }
 
+/* Textarea base utility */
+.textarea-base {
+  width: 100%;
+  min-height: 160px;
+  padding: 0.875rem 1rem 0.875rem 1rem;
+  font-size: 0.95rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.94),
+    rgba(248, 250, 255, 0.86)
+  );
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04),
+    0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  resize: vertical;
+  transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+}
+.textarea-base::placeholder {
+  color: var(--on-surface-muted);
+}
+.textarea-base:focus {
+  outline: none;
+  border-color: rgba(var(--accent-rgb) / 0.55);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb) / 0.25);
+}
+.dark .textarea-base {
+  background: linear-gradient(
+    145deg,
+    rgba(40, 50, 64, 0.92),
+    rgba(34, 43, 56, 0.8)
+  );
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--on-surface);
+}
+.dark .textarea-base:focus {
+  border-color: rgba(var(--accent-rgb) / 0.7);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb) / 0.35);
+}
+
 /* Shimmer background util */
 .bg-shimmer {
   background: linear-gradient(

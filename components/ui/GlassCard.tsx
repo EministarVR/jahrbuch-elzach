@@ -32,9 +32,10 @@ export default function GlassCard({
       <div
         className={clsx(
           "relative rounded-[var(--radius-xl)] overflow-hidden md:has-sheen",
-          // Mobile: fully opaque solid surfaces; Desktop (md+) keeps glass look
-          "bg-white dark:bg-slate-900 md:bg-[linear-gradient(145deg,rgba(255,255,255,0.87),rgba(255,255,255,0.62))] md:dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.85),rgba(28,36,52,0.72))]",
-          "border border-slate-200 dark:border-slate-700 md:border-white/40 md:dark:border-white/10",
+          // Mobile: deutliche, solide Surface mit Verlauf; Desktop (md+) behält das Glass-Look bei
+          "bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(245,247,255,0.9))] dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.95),rgba(28,36,52,0.85))]",
+          "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.87),rgba(255,255,255,0.62))] md:dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.85),rgba(28,36,52,0.72))]",
+          "border border-slate-200/90 dark:border-slate-700/90 md:border-white/40 md:dark:border-white/10",
           "shadow-[0_4px_16px_-4px_rgba(15,23,42,0.18),0_12px_30px_-6px_rgba(15,23,42,0.28)]",
           hover &&
             "transition-transform transition-shadow duration-500 ease-[var(--ease-soft)] hover:-translate-y-1 hover:shadow-[0_10px_26px_-6px_rgba(15,23,42,0.28),0_20px_46px_-8px_rgba(15,23,42,0.35)]"
