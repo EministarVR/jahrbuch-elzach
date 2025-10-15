@@ -58,7 +58,7 @@ export default async function Header() {
       <div className="md:hidden">
         <details className="relative">
           <summary className="list-none cursor-pointer">
-            <div className="flex items-center justify-between backdrop-blur-md bg-white/85 dark:bg-slate-900/75 rounded-2xl px-3 py-2 ring-1 ring-black/10 dark:ring-white/15 shadow">
+            <div className="flex items-center justify-between backdrop-blur-md bg-white/95 dark:bg-slate-900/85 rounded-2xl px-3 py-2 ring-1 ring-black/10 dark:ring-white/15 shadow">
               <span className="inline-flex items-center gap-2 text-sm text-base-muted">
                 <User2 className="h-4 w-4 text-indigo-600" />
                 <span className="font-medium text-base-strong">{username}</span>

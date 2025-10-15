@@ -54,6 +54,8 @@ if(t==='dark')d.classList.add('dark');else d.classList.remove('dark');}catch(e){
         />
         <Aurora />
           <Header />
+          {/* Mobile spacer so the fixed header doesn't cover content */}
+          <div className="h-16 md:hidden" aria-hidden />
           <div className="relative">{children}</div>
           <Footer />
       </body>
