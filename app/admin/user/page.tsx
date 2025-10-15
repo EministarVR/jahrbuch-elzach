@@ -18,7 +18,7 @@ type UserRow = { id: number; username: string; role: "user" | "moderator" | "adm
 export default async function AdminUserPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role !== "admin") redirect("/admin");
+  if (session.role !== "admin") redirect("/unauthorized");
 
   await ensureUserClassColumn();
 
@@ -27,7 +27,7 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
   const classFilter = typeof sp?.class === "string" ? sp.class.trim() : "";
 
   const where: string[] = [];
-  const params: any[] = [];
+  const params: string[] = [];
   if (q) { where.push("username LIKE ?"); params.push(`%${q}%`); }
   if (classFilter === "none") { where.push("class IS NULL"); }
   else if (classFilter) { where.push("class = ?"); params.push(classFilter); }

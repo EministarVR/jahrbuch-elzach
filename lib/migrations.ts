@@ -141,19 +141,7 @@ export async function ensureModerationSchema(): Promise<boolean> {
 export async function ensureUserClassColumn(): Promise<boolean> {
   const conn = await getDbPool().getConnection();
   try {
-    const hasClass = await (async () => {
-      // reuse internal helper
-      try {
-        // @ts-ignore accessing local helper
-        return await (columnExists as any)(conn, 'users', 'class');
-      } catch {
-        // Fallback: try querying information_schema directly
-        const [rows]: any = await conn.query(
-          `SELECT COUNT(*) AS c FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'class'`
-        );
-        return (rows?.[0]?.c ?? 0) > 0;
-      }
-    })();
+    const hasClass = await columnExists(conn, 'users', 'class');
 
     if (!hasClass) {
       await conn.query(

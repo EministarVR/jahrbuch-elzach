@@ -25,17 +25,20 @@ export async function createUser(username: string, password: string, role: 'user
       role,
       klass ?? null,
     ]);
-  } catch (e: any) {
+  } catch (e: unknown) {
     // Fallback if class column doesn't exist (older DBs)
-    if (e && (e.code === 'ER_BAD_FIELD_ERROR' || e.errno === 1054)) {
-      await query('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', [
-        username,
-        password_hash,
-        role,
-      ]);
-    } else {
-      throw e;
+    if (typeof e === 'object' && e !== null) {
+      const err = e as { code?: string; errno?: number };
+      if (err.code === 'ER_BAD_FIELD_ERROR' || err.errno === 1054) {
+        await query('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', [
+          username,
+          password_hash,
+          role,
+        ]);
+        return;
+      }
     }
+    throw e;
   }
 }
 

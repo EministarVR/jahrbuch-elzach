@@ -58,7 +58,8 @@ type UserRow = { id: number; username: string; role: "user" | "moderator" | "adm
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
-  if (!session || (session.role !== "moderator" && session.role !== "admin")) redirect("/login");
+  if (!session) redirect("/login");
+  if (session.role !== "moderator" && session.role !== "admin") redirect("/unauthorized");
   const isAdmin = session.role === "admin";
 
   // Ensure schema is ready (adds status columns + audit table if missing)
@@ -74,7 +75,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const q = typeof sp?.q === "string" ? sp.q.trim() : "";
   const category = typeof sp?.category === "string" ? sp.category.trim() : "";
   const wherePendingParts: string[] = ["s.status = 'pending'"];
-  const pendingParams: any[] = [];
+  const pendingParams: string[] = [];
   if (category) { wherePendingParts.push("s.category = ?"); pendingParams.push(category); }
   if (q) {
     wherePendingParts.push("(s.text LIKE ? OR au.username LIKE ? OR COALESCE(s.name,'') LIKE ? OR COALESCE(s.phone,'') LIKE ?)");
