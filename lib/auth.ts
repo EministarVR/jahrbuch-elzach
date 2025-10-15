@@ -16,13 +16,27 @@ export async function findUserByUsername(username: string): Promise<DbUser | nul
   return rows[0] ?? null;
 }
 
-export async function createUser(username: string, password: string, role: 'user' | 'moderator' | 'admin' = 'user') {
+export async function createUser(username: string, password: string, role: 'user' | 'moderator' | 'admin' = 'user', klass?: string | null) {
   const password_hash = await bcrypt.hash(password, 10);
-  await query('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', [
-    username,
-    password_hash,
-    role,
-  ]);
+  try {
+    await query('INSERT INTO users (username, password_hash, role, class) VALUES (?, ?, ?, ?)', [
+      username,
+      password_hash,
+      role,
+      klass ?? null,
+    ]);
+  } catch (e: any) {
+    // Fallback if class column doesn't exist (older DBs)
+    if (e && (e.code === 'ER_BAD_FIELD_ERROR' || e.errno === 1054)) {
+      await query('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', [
+        username,
+        password_hash,
+        role,
+      ]);
+    } else {
+      throw e;
+    }
+  }
 }
 
 export async function deleteUser(userId: number) {

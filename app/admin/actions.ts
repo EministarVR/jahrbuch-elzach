@@ -5,7 +5,8 @@ import { getSession } from '@/lib/session';
 import { createUser, deleteUser, updateUserPassword, updateUserRole } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
 import { getDbPool } from '@/lib/db';
-import { ensureModerationSchema } from '@/lib/migrations';
+import { ensureModerationSchema, ensureUserClassColumn } from '@/lib/migrations';
+import { CLASSES } from '@/lib/constants';
 
 export async function createUserAction(formData: FormData) {
   const session = await getSession();
@@ -13,13 +14,23 @@ export async function createUserAction(formData: FormData) {
   
   const username = String(formData.get('username') || '').trim();
   const password = String(formData.get('password') || '').trim();
+  const klass = String(formData.get('class') || '').trim();
   
   if (!username || !password) {
     throw new Error('Username and password are required');
   }
+
+  let classValue: string | null = null;
+  if (klass) {
+    if (!CLASSES.includes(klass)) {
+      throw new Error('Ungültige Klasse');
+    }
+    classValue = klass;
+  }
   
   try {
-    await createUser(username, password, 'user');
+    await ensureUserClassColumn();
+    await createUser(username, password, 'user', classValue);
     revalidatePath('/admin/user');
   } catch (error) {
     console.error('Error creating user:', error);
@@ -115,6 +126,65 @@ export async function restoreSubmissionAction(formData: FormData) {
     await conn.execute(
       "INSERT INTO submission_audit (submission_id, action, actor_user_id) VALUES (?, 'restore', ?)",
       [id, session.userId]
+    );
+    await conn.commit();
+  } catch (e) {
+    await conn.rollback();
+    throw e;
+  } finally {
+    conn.release();
+  }
+  revalidatePath('/admin');
+}
+
+// Bulk moderation actions
+export async function approveManySubmissionsAction(formData: FormData) {
+  const session = await getSession();
+  if (!session || (session.role !== 'admin' && session.role !== 'moderator')) redirect('/login');
+  await ensureModerationSchema();
+  const ids = formData.getAll('ids').map((v) => Number(v)).filter((n) => Number.isFinite(n));
+  if (!ids.length) throw new Error('No submission IDs provided');
+  const placeholders = ids.map(() => '?').join(',');
+  const conn = await getDbPool().getConnection();
+  try {
+    await conn.beginTransaction();
+    await conn.execute(
+      `UPDATE submissions SET status='approved', approved_by=?, approved_at=NOW(), deleted_by=NULL, deleted_at=NULL WHERE id IN (${placeholders})`,
+      [session.userId, ...ids]
+    );
+    const auditValuesPlaceholders = ids.map(() => '(?, \'approve\', ?)').join(',');
+    await conn.execute(
+      `INSERT INTO submission_audit (submission_id, action, actor_user_id) VALUES ${auditValuesPlaceholders}`,
+      ids.flatMap((id) => [id, session.userId])
+    );
+    await conn.commit();
+  } catch (e) {
+    await conn.rollback();
+    throw e;
+  } finally {
+    conn.release();
+  }
+  revalidatePath('/admin');
+}
+
+export async function deleteManySubmissionsAction(formData: FormData) {
+  const session = await getSession();
+  if (!session || (session.role !== 'admin' && session.role !== 'moderator')) redirect('/login');
+  await ensureModerationSchema();
+  const ids = formData.getAll('ids').map((v) => Number(v)).filter((n) => Number.isFinite(n));
+  if (!ids.length) throw new Error('No submission IDs provided');
+  const placeholders = ids.map(() => '?').join(',');
+  const conn = await getDbPool().getConnection();
+  try {
+    await conn.beginTransaction();
+    await conn.execute(
+      `UPDATE submissions SET status='deleted', deleted_by=?, deleted_at=NOW() WHERE id IN (${placeholders})`,
+      [session.userId, ...ids]
+    );
+    const auditValuesPlaceholders = ids.map(() => '(?, \'delete\', ?)').join(',');
+    await conn.execute(
+      `INSERT INTO submission_audit (submission_id, action, actor_user_id) VALUES ${auditValuesPlaceholders}`,
+      ids.flatMap((id) => [id, session.userId])
     );
     await conn.commit();
   } catch (e) {

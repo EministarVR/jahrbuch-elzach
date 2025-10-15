@@ -112,7 +112,7 @@ export default function DatenschutzPage() {
               >
                 <div className="space-y-4 text-sm text-base-muted leading-relaxed">
                   <p>Du hast nach geltendem Recht Auskunfts‑, Berichtigungs‑ und Löschrechte bezüglich deiner personenbezogenen Daten. Wende dich dafür an das Jahrbuch‑Team bzw. die Schulverwaltung.</p>
-                  <p>Wenn du Fragen zum Datenschutz hast, melde dich bitte bei der Schulleitung oder dem Jahrbuch‑Team.</p>
+                  <p>Wenn du Fragen zum Datenschutz hast, melde dich bitte bei den Schülersprechern (Nael-Emin, Kalina).</p>
                 </div>
               </GlassCard>
             </div>

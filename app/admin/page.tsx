@@ -10,6 +10,8 @@ import {
   approveSubmissionAction,
   deleteSubmissionAction,
   restoreSubmissionAction,
+  approveManySubmissionsAction,
+  deleteManySubmissionsAction,
 } from "./actions";
 import {
   CheckCircle2,
@@ -54,7 +56,7 @@ type AuditRow = {
 
 type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin" };
 
-export default async function AdminPage() {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
   if (!session || (session.role !== "moderator" && session.role !== "admin")) redirect("/login");
   const isAdmin = session.role === "admin";
@@ -68,6 +70,17 @@ export default async function AdminPage() {
     "SELECT SUM(status='pending') AS pending, SUM(status='approved') AS approved, SUM(status='deleted') AS deleted, COUNT(*) AS total FROM submissions"
   )) || [{ pending: 0, approved: 0, deleted: 0, total: 0 }];
 
+  const sp = await searchParams;
+  const q = typeof sp?.q === "string" ? sp.q.trim() : "";
+  const category = typeof sp?.category === "string" ? sp.category.trim() : "";
+  const wherePendingParts: string[] = ["s.status = 'pending'"];
+  const pendingParams: any[] = [];
+  if (category) { wherePendingParts.push("s.category = ?"); pendingParams.push(category); }
+  if (q) {
+    wherePendingParts.push("(s.text LIKE ? OR au.username LIKE ? OR COALESCE(s.name,'') LIKE ? OR COALESCE(s.phone,'') LIKE ?)");
+    const like = `%${q}%`;
+    pendingParams.push(like, like, like, like);
+  }
   const pending = await query<SubmissionRow[]>(
     `SELECT s.*, au.username AS author,
             ap.username AS approver, de.username AS deleter
@@ -75,8 +88,9 @@ export default async function AdminPage() {
      JOIN users au ON au.id = s.user_id
      LEFT JOIN users ap ON ap.id = s.approved_by
      LEFT JOIN users de ON de.id = s.deleted_by
-     WHERE s.status = 'pending'
-     ORDER BY s.created_at DESC`
+     WHERE ${wherePendingParts.join(" AND ")}
+     ORDER BY s.created_at DESC`,
+    pendingParams
   );
 
   const approved = await query<SubmissionRow[]>(
@@ -114,6 +128,10 @@ export default async function AdminPage() {
 
   const users = await query<UserRow[]>(
     "SELECT id, username, role FROM users ORDER BY id DESC"
+  );
+
+  const categories = await query<{ category: string }[]>(
+    "SELECT DISTINCT category FROM submissions ORDER BY category"
   );
 
   return (
@@ -169,45 +187,66 @@ export default async function AdminPage() {
                   </div>
                 }
               >
+                {/* Filter */}
+                <form method="GET" className="mb-4 flex flex-wrap items-center gap-2">
+                  <input type="text" name="q" defaultValue={q} placeholder="Suche Text/Autor/Name" className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                  <select name="category" defaultValue={category} className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm">
+                    <option value="">Alle Kategorien</option>
+                    {categories.map((c) => (
+                      <option key={c.category} value={c.category}>{c.category}</option>
+                    ))}
+                  </select>
+                  <GlowButton variant="primary" className="h-[38px] px-4">Filtern</GlowButton>
+                  <a href="/admin" className="text-sm text-indigo-600 hover:underline ml-1">Zurücksetzen</a>
+                </form>
                 {pending.length === 0 ? (
                   <p className="text-sm text-base-muted">Keine ausstehenden Einsendungen.</p>
                 ) : (
-                  <div className="space-y-4">
-                    {pending.map((p) => (
-                      <div key={p.id} className="rounded-2xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 md:ring-black/5 md:dark:ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 p-4">
-                        <div className="flex items-start justify-between gap-4">
-                          <div>
-                            <div className="text-sm text-base-muted flex items-center gap-2">
-                              <User2 className="h-4 w-4 text-indigo-600" />
-                              <span>{p.author}</span>
-                              <span className="opacity-60">•</span>
-                              <span>{new Date(p.created_at).toLocaleString("de-DE")}</span>
-                              <span className="opacity-60">•</span>
-                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20">
-                                {p.category}
-                              </span>
+                  <form>
+                    <div className="mb-3 flex items-center justify-end gap-2">
+                      <GlowButton formAction={approveManySubmissionsAction} variant="primary" className="px-3 py-2 text-sm" iconLeft={<CheckCircle2 className="h-4 w-4" />}>Auswahl genehmigen</GlowButton>
+                      <GlowButton formAction={deleteManySubmissionsAction} variant="secondary" className="px-3 py-2 text-sm" iconLeft={<XCircle className="h-4 w-4" />}>Auswahl löschen</GlowButton>
+                    </div>
+                    <div className="space-y-4">
+                      {pending.map((p) => (
+                        <div key={p.id} className="rounded-2xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 md:ring-black/5 md:dark:ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 p-4">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex items-start gap-3">
+                              <input type="checkbox" name="ids" value={p.id} className="mt-1 h-4 w-4" />
+                              <div>
+                                <div className="text-sm text-base-muted flex items-center gap-2">
+                                  <User2 className="h-4 w-4 text-indigo-600" />
+                                  <span>{p.author}</span>
+                                  <span className="opacity-60">•</span>
+                                  <span>{new Date(p.created_at).toLocaleString("de-DE")}</span>
+                                  <span className="opacity-60">•</span>
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20">
+                                    {p.category}
+                                  </span>
+                                </div>
+                                <div className="mt-2 text-sm text-base-strong whitespace-pre-wrap">
+                                  {p.text}
+                                </div>
+                                {(p.name || p.phone) && (
+                                  <div className="mt-2 text-xs text-base-muted">{[p.name, p.phone].filter(Boolean).join(" · ")}</div>
+                                )}
+                              </div>
                             </div>
-                            <div className="mt-2 text-sm text-base-strong whitespace-pre-wrap">
-                              {p.text}
+                            <div className="shrink-0 flex flex-col gap-2">
+                              <form action={approveSubmissionAction}>
+                                <input type="hidden" name="id" value={p.id} />
+                                <GlowButton variant="primary" className="px-3 py-2 text-sm" iconLeft={<CheckCircle2 className="h-4 w-4" />}>Genehmigen</GlowButton>
+                              </form>
+                              <form action={deleteSubmissionAction}>
+                                <input type="hidden" name="id" value={p.id} />
+                                <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<XCircle className="h-4 w-4" />}>Löschen</GlowButton>
+                              </form>
                             </div>
-                            {(p.name || p.phone) && (
-                              <div className="mt-2 text-xs text-base-muted">{[p.name, p.phone].filter(Boolean).join(" · ")}</div>
-                            )}
-                          </div>
-                          <div className="shrink-0 flex flex-col gap-2">
-                            <form action={approveSubmissionAction}>
-                              <input type="hidden" name="id" value={p.id} />
-                              <GlowButton variant="primary" className="px-3 py-2 text-sm" iconLeft={<CheckCircle2 className="h-4 w-4" />}>Genehmigen</GlowButton>
-                            </form>
-                            <form action={deleteSubmissionAction}>
-                              <input type="hidden" name="id" value={p.id} />
-                              <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<XCircle className="h-4 w-4" />}>Löschen</GlowButton>
-                            </form>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                    </form>
                 )}
               </GlassCard>
             </TiltCard>

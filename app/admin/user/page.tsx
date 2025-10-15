@@ -8,18 +8,34 @@ import GlowButton from "@/components/ui/GlowButton";
 import LoginLinkClient from "./LoginLinkClient";
 import { createUserAction, deleteUserAction, updateUserPasswordAction, updateUserRoleAction, banUserAction, unbanUserAction, banIpAction, unbanIpAction } from "../actions";
 import { Users, Shield, KeyRound, UserPlus, Trash2, QrCode, Ban } from "lucide-react";
+import { ensureUserClassColumn } from "@/lib/migrations";
+import { CLASSES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
-type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin" };
+type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin"; class: string | null };
 
-export default async function AdminUserPage() {
+export default async function AdminUserPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
   if (!session) redirect("/login");
   if (session.role !== "admin") redirect("/admin");
 
+  await ensureUserClassColumn();
+
+  const sp = await searchParams;
+  const q = typeof sp?.q === "string" ? sp.q.trim() : "";
+  const classFilter = typeof sp?.class === "string" ? sp.class.trim() : "";
+
+  const where: string[] = [];
+  const params: any[] = [];
+  if (q) { where.push("username LIKE ?"); params.push(`%${q}%`); }
+  if (classFilter === "none") { where.push("class IS NULL"); }
+  else if (classFilter) { where.push("class = ?"); params.push(classFilter); }
+  const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
+
   const users = await query<UserRow[]>(
-    "SELECT id, username, role FROM users ORDER BY id DESC"
+    `SELECT id, username, role, class FROM users ${whereSql} ORDER BY id DESC`,
+    params
   );
 
   const stats = {
@@ -28,6 +44,11 @@ export default async function AdminUserPage() {
     moderators: users.filter((u) => u.role === 'moderator').length,
     users: users.filter((u) => u.role === 'user').length,
   };
+
+  const groups = [
+    { label: 'Ohne Klasse', items: users.filter((u) => !u.class) },
+    ...CLASSES.map((c) => ({ label: c, items: users.filter((u) => u.class === c) })),
+  ];
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-indigo-50 to-white md:from-indigo-50/70 dark:from-slate-950 dark:to-slate-900">
@@ -75,6 +96,18 @@ export default async function AdminUserPage() {
                   </div>
                 }
               >
+                <form method="GET" className="mb-4 flex flex-wrap items-center gap-2">
+                  <input type="text" name="q" defaultValue={q} placeholder="Suche Username" className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                  <select name="class" defaultValue={classFilter} className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm">
+                    <option value="">Alle Klassen</option>
+                    <option value="none">Ohne Klasse</option>
+                    {CLASSES.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  <GlowButton variant="primary" className="h-[38px] px-4">Filtern</GlowButton>
+                  <a href="/admin/user" className="text-sm text-indigo-600 hover:underline ml-1">Zurücksetzen</a>
+                </form>
                 <div className="divide-y divide-black/5 dark:divide-white/10">
                   {users.map((u) => (
                     <div key={u.id} className="py-5">
@@ -83,6 +116,9 @@ export default async function AdminUserPage() {
                           <div className="text-sm text-base-strong flex items-center gap-2">
                             <span className="font-medium">{u.username}</span>
                             <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20 text-xs">{u.role}</span>
+                            {u.class && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-700 dark:text-sky-300 ring-1 ring-sky-500/20 text-xs">{u.class}</span>
+                            )}
                           </div>
                         </div>
                         <form action={deleteUserAction}>
@@ -124,6 +160,32 @@ export default async function AdminUserPage() {
           {/* Right: Create + Ban */}
           <div className="lg:col-span-1 space-y-8">
             <GlassCard
+              header={<div className="text-lg font-semibold text-base-strong">Nach Klassen</div>}
+            >
+              <div className="space-y-3">
+                {groups.map((g) => (
+                  <details key={g.label} className="rounded-xl ring-1 ring-black/5 dark:ring-white/10 bg-white/60 dark:bg-slate-800/60 p-3">
+                    <summary className="cursor-pointer select-none text-sm text-base-strong flex items-center justify-between">
+                      <span>{g.label}</span>
+                      <span className="text-xs text-base-muted">{g.items.length}</span>
+                    </summary>
+                    {g.items.length === 0 ? (
+                      <div className="mt-2 text-xs text-base-muted">Keine Nutzer</div>
+                    ) : (
+                      <ul className="mt-2 space-y-1 text-sm">
+                        {g.items.map((u) => (
+                          <li key={u.id} className="flex items-center justify-between">
+                            <span>{u.username}</span>
+                            <span className="text-xs opacity-60">{u.role}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </details>
+                ))}
+              </div>
+            </GlassCard>
+            <GlassCard
               header={
                 <div className="flex items-center gap-3">
                   <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><UserPlus className="h-5 w-5"/></span>
@@ -137,6 +199,12 @@ export default async function AdminUserPage() {
               <form action={createUserAction} className="grid grid-cols-1 gap-3">
                 <input name="username" placeholder="Username" className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10" />
                 <input name="password" placeholder="Passwort" type="password" className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10" />
+                <select name="class" defaultValue="" className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10">
+                  <option value="">Klasse (optional)</option>
+                  {CLASSES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
                 <GlowButton variant="primary" className="h-[42px]">Erstellen</GlowButton>
               </form>
             </GlassCard>

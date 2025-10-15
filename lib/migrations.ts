@@ -136,3 +136,35 @@ export async function ensureModerationSchema(): Promise<boolean> {
     conn.release();
   }
 }
+
+
+export async function ensureUserClassColumn(): Promise<boolean> {
+  const conn = await getDbPool().getConnection();
+  try {
+    const hasClass = await (async () => {
+      // reuse internal helper
+      try {
+        // @ts-ignore accessing local helper
+        return await (columnExists as any)(conn, 'users', 'class');
+      } catch {
+        // Fallback: try querying information_schema directly
+        const [rows]: any = await conn.query(
+          `SELECT COUNT(*) AS c FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'class'`
+        );
+        return (rows?.[0]?.c ?? 0) > 0;
+      }
+    })();
+
+    if (!hasClass) {
+      await conn.query(
+        `ALTER TABLE users ADD COLUMN class VARCHAR(50) NULL AFTER role`
+      );
+    }
+    return true;
+  } catch (e) {
+    console.error('Failed to ensure users.class column:', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
