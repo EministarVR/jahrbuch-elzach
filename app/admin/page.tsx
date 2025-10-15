@@ -12,6 +12,12 @@ import {
   restoreSubmissionAction,
   createUserAction,
   deleteUserAction,
+  updateUserPasswordAction,
+  updateUserRoleAction,
+  banUserAction,
+  unbanUserAction,
+  banIpAction,
+  unbanIpAction,
 } from "./actions";
 import {
   CheckCircle2,
@@ -30,6 +36,7 @@ type SubmissionRow = {
   id: number;
   user_id: number;
   text: string;
+  category: string;
   name: string | null;
   phone: string | null;
   created_at: string;
@@ -53,11 +60,12 @@ type AuditRow = {
   preview: string;
 };
 
-type UserRow = { id: number; username: string; role: "user" | "admin" };
+type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin" };
 
 export default async function AdminPage() {
   const session = await getSession();
-  if (!session || session.role !== "admin") redirect("/login");
+  if (!session || (session.role !== "moderator" && session.role !== "admin")) redirect("/login");
+  const isAdmin = session.role === "admin";
 
   // Ensure schema is ready (adds status columns + audit table if missing)
   await ensureModerationSchema();
@@ -182,6 +190,10 @@ export default async function AdminPage() {
                               <span>{p.author}</span>
                               <span className="opacity-60">•</span>
                               <span>{new Date(p.created_at).toLocaleString("de-DE")}</span>
+                              <span className="opacity-60">•</span>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20">
+                                {p.category}
+                              </span>
                             </div>
                             <div className="mt-2 text-sm text-base-strong whitespace-pre-wrap">
                               {p.text}
@@ -219,7 +231,7 @@ export default async function AdminPage() {
                     <div key={a.id} className="flex items-start justify-between gap-4 rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/60 dark:bg-slate-800/60 p-4">
                       <div>
                         <div className="text-xs text-base-muted">
-                          Von {a.author} • genehmigt von {a.approver || "—"} am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
+                          Von {a.author} • {a.category} • genehmigt von {a.approver || "—"} am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
                         </div>
                         <div className="mt-1 text-sm text-base-strong line-clamp-3 whitespace-pre-wrap">{a.text}</div>
                       </div>
@@ -244,7 +256,7 @@ export default async function AdminPage() {
                     <div key={d.id} className="flex items-start justify-between gap-4 rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/60 dark:bg-slate-800/60 p-4">
                       <div>
                         <div className="text-xs text-base-muted">
-                          Von {d.author} • gelöscht von {d.deleter || "—"} am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
+                          Von {d.author} • {d.category} • gelöscht von {d.deleter || "—"} am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
                         </div>
                         <div className="mt-1 text-sm text-base-strong line-clamp-3 whitespace-pre-wrap">{d.text}</div>
                       </div>
@@ -295,16 +307,71 @@ export default async function AdminPage() {
               </form>
               <div className="mt-5 divide-y divide-black/5 dark:divide-white/10">
                 {users.map((u) => (
-                  <div key={u.id} className="flex items-center justify-between py-3">
-                    <div className="text-sm"><span className="font-medium">{u.username}</span> <span className="text-base-muted">• {u.role}</span></div>
-                    <form action={deleteUserAction}>
-                      <input type="hidden" name="id" value={u.id} />
-                      <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<Trash2 className="h-4 w-4" />}>Löschen</GlowButton>
-                    </form>
+                  <div key={u.id} className="space-y-2 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm"><span className="font-medium">{u.username}</span> <span className="text-base-muted">• {u.role}</span></div>
+                      {isAdmin && (
+                        <form action={deleteUserAction}>
+                          <input type="hidden" name="id" value={u.id} />
+                          <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<Trash2 className="h-4 w-4" />}>Löschen</GlowButton>
+                        </form>
+                      )}
+                    </div>
+                    {isAdmin && (
+                      <div className="flex flex-wrap gap-3">
+                        <form action={updateUserRoleAction} className="flex items-center gap-2">
+                          <input type="hidden" name="id" value={u.id} />
+                          <select name="role" defaultValue={u.role} className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm">
+                            <option value="user">user</option>
+                            <option value="moderator">moderator</option>
+                            <option value="admin">admin</option>
+                          </select>
+                          <GlowButton variant="primary" className="px-3 py-2 text-sm">Rolle</GlowButton>
+                        </form>
+                        <form action={updateUserPasswordAction} className="flex items-center gap-2">
+                          <input type="hidden" name="id" value={u.id} />
+                          <input name="password" type="password" placeholder="Neues Passwort" className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                          <GlowButton variant="secondary" className="px-3 py-2 text-sm">Passwort</GlowButton>
+                        </form>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
             </GlassCard>
+
+            {isAdmin && (
+              <GlassCard header={<div className="text-lg font-semibold text-base-strong">Sperren</div>}>
+                <div className="space-y-4">
+                  <div>
+                    <div className="text-sm font-medium mb-2 text-base-strong">Benutzer sperren</div>
+                    <form action={banUserAction} className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      <input name="user_id" placeholder="User ID" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <input name="reason" placeholder="Grund (optional)" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <input name="expires_at" type="datetime-local" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <GlowButton variant="primary" className="h-[38px]">Sperren</GlowButton>
+                    </form>
+                    <form action={unbanUserAction} className="flex items-center gap-3 mt-3">
+                      <input name="user_id" placeholder="User ID" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <GlowButton variant="secondary" className="h-[38px]">Entsperren</GlowButton>
+                    </form>
+                  </div>
+                  <div className="pt-2">
+                    <div className="text-sm font-medium mb-2 text-base-strong">IP sperren</div>
+                    <form action={banIpAction} className="grid grid-cols-1 sm:grid-cols-4 gap-3">
+                      <input name="ip" placeholder="IP-Adresse" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <input name="reason" placeholder="Grund (optional)" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <input name="expires_at" type="datetime-local" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <GlowButton variant="primary" className="h-[38px]">Sperren</GlowButton>
+                    </form>
+                    <form action={unbanIpAction} className="flex items-center gap-3 mt-3">
+                      <input name="ip" placeholder="IP-Adresse" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
+                      <GlowButton variant="secondary" className="h-[38px]">Entsperren</GlowButton>
+                    </form>
+                  </div>
+                </div>
+              </GlassCard>
+            )}
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ const ONE_DAY_MS = 1000 * 60 * 60 * 24;
 
 export type SessionPayload = {
   userId: number;
-  role: 'user' | 'admin';
+  role: 'user' | 'moderator' | 'admin';
   exp: number; // epoch ms
 };
 
@@ -53,7 +53,7 @@ export async function getSession(): Promise<SessionPayload | null> {
   return verifySignedCookie(raw);
 }
 
-export async function setSession(userId: number, role: 'user' | 'admin') {
+export async function setSession(userId: number, role: 'user' | 'moderator' | 'admin') {
   const store = await cookies();
   const payload: SessionPayload = { userId, role, exp: Date.now() + ONE_DAY_MS * 7 };
   const value = createSignedCookie(payload);

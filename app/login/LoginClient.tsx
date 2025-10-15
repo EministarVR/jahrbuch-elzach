@@ -35,8 +35,8 @@ export default function LoginClient() {
               : json.error || "Fehler"
           );
         } else {
-          // Hard redirect to ensure fresh session fetch on server components
-          window.location.href = "/phase-1";
+          // Redirect back to /login to allow server-side role-based redirect
+          window.location.href = "/login";
         }
       } catch {
         triggerError("Netzwerkfehler.");

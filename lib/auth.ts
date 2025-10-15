@@ -5,7 +5,7 @@ export type DbUser = {
   id: number;
   username: string;
   password_hash: string;
-  role: 'user' | 'admin';
+  role: 'user' | 'moderator' | 'admin';
 };
 
 export async function findUserByUsername(username: string): Promise<DbUser | null> {
@@ -16,7 +16,7 @@ export async function findUserByUsername(username: string): Promise<DbUser | nul
   return rows[0] ?? null;
 }
 
-export async function createUser(username: string, password: string, role: 'user' | 'admin' = 'user') {
+export async function createUser(username: string, password: string, role: 'user' | 'moderator' | 'admin' = 'user') {
   const password_hash = await bcrypt.hash(password, 10);
   await query('INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)', [
     username,
@@ -31,6 +31,15 @@ export async function deleteUser(userId: number) {
 
 export async function verifyPassword(password: string, hash: string) {
   return bcrypt.compare(password, hash);
+}
+
+export async function updateUserPassword(userId: number, newPassword: string) {
+  const password_hash = await bcrypt.hash(newPassword, 10);
+  await query('UPDATE users SET password_hash = ? WHERE id = ?', [password_hash, userId]);
+}
+
+export async function updateUserRole(userId: number, role: 'user' | 'moderator' | 'admin') {
+  await query('UPDATE users SET role = ? WHERE id = ?', [role, userId]);
 }
 
 

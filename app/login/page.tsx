@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export default async function LoginPage() {
   const session = await getSession();
-  if (session) redirect(session.role === "admin" ? "/admin" : "/phase-1");
+  if (session) redirect(session.role === "user" ? "/phase-1" : "/admin");
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-indigo-50/70 to-white dark:from-slate-950 dark:to-slate-900">

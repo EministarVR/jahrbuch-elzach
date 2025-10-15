@@ -5,6 +5,7 @@ import GlowButton from "@/components/ui/GlowButton";
 import { User, Phone } from "lucide-react";
 import clsx from "clsx";
 import { useFormStatus } from "react-dom";
+import { CATEGORIES } from "@/lib/constants";
 
 type Props = {
   action: (formData: FormData) => Promise<void>;
@@ -59,6 +60,28 @@ export default function SubmissionForm({ action }: Props) {
             style={{ width: `${ratio * 100}%` }}
           />
         </div>
+      </div>
+
+      <div>
+        <label htmlFor="category" className="block text-sm font-medium mb-2 text-base-strong">
+          Kategorie
+        </label>
+        <select
+          id="category"
+          name="category"
+          required
+          className="w-full px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10"
+          defaultValue=""
+        >
+          <option value="" disabled>
+            Bitte auswählen...
+          </option>
+          {CATEGORIES.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">

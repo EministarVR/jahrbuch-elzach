@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/session';
 import { getDbPool } from '@/lib/db';
 import { ensureModerationSchema } from '@/lib/migrations';
+import { CATEGORIES } from '@/lib/constants';
 import FancyHeading from '@/components/ui/FancyHeading';
 import GlassCard from '@/components/ui/GlassCard';
 import GlowButton from '@/components/ui/GlowButton';
@@ -20,6 +21,10 @@ async function submitAction(formData: FormData) {
   const text = String(formData.get('text') || '').slice(0, 2000);
   const name = String(formData.get('name') || '') || null;
   const phone = String(formData.get('phone') || '') || null;
+  let category = String(formData.get('category') || 'Allgemein');
+  if (!CATEGORIES.includes(category as (typeof CATEGORIES)[number])) {
+    category = 'Allgemein';
+  }
   if (!text.trim()) return;
 
   // Ensure schema exists (status columns + submission_audit)
@@ -29,8 +34,8 @@ async function submitAction(formData: FormData) {
   try {
     await conn.beginTransaction();
     const [res] = await conn.execute<ResultSetHeader>(
-      'INSERT INTO submissions (user_id, text, name, phone) VALUES (?, ?, ?, ?)',
-      [session.userId, text, name, phone]
+      'INSERT INTO submissions (user_id, text, category, name, phone) VALUES (?, ?, ?, ?, ?)',
+      [session.userId, text, category, name, phone]
     );
     const submissionId = res.insertId;
     if (submissionId) {
