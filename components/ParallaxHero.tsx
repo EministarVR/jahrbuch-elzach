@@ -37,11 +37,11 @@ export default function ParallaxHero({
   return (
     <section
       className={clsx(
-        "relative h-[60svh] sm:h-[70svh] flex items-center justify-center overflow-hidden",
+        "relative h-[60svh] sm:h-[70svh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-900",
         className
       )}
     >
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div className="hidden md:block absolute inset-0 -z-10 overflow-hidden">
         <div ref={layerRef} className="parallax-layer h-full w-full">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(99,102,241,0.18),transparent_65%)] dark:bg-[radial-gradient(circle_at_50%_40%,rgba(90,104,255,0.14),transparent_65%)]" />
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-indigo-100/50 via-transparent to-transparent dark:from-indigo-900/25" />
@@ -51,9 +51,9 @@ export default function ParallaxHero({
         initial={{ opacity: 0, y: 36 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.85, ease: [0.16, 0.84, 0.44, 1] }}
-        className="backdrop-blur-2xl bg-[rgba(255,255,255,0.72)] dark:bg-[rgba(25,32,46,0.72)] border border-white/50 dark:border-white/10 rounded-[2rem] shadow-[0_6px_22px_-8px_rgba(15,23,42,0.35),0_18px_48px_-10px_rgba(15,23,42,0.25)] px-7 sm:px-14 py-10 sm:py-16 text-center max-w-4xl mx-auto relative overflow-hidden"
+        className="rounded-[2rem] shadow-[0_6px_22px_-8px_rgba(15,23,42,0.35),0_18px_48px_-10px_rgba(15,23,42,0.25)] px-7 sm:px-14 py-10 sm:py-16 text-center max-w-4xl mx-auto relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 md:backdrop-blur-2xl md:bg-[rgba(255,255,255,0.72)] md:dark:bg-[rgba(25,32,46,0.72)] md:border md:border-white/50 md:dark:border-white/10"
       >
-        <div className="pointer-events-none absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.65),transparent_65%)] dark:bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.09),transparent_65%)] mix-blend-overlay" />
+        <div className="hidden md:block pointer-events-none absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.65),transparent_65%)] dark:bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.09),transparent_65%)] mix-blend-overlay" />
         {eyebrow && (
           <div className="relative z-10 text-xs font-medium tracking-wider uppercase text-indigo-600/80 mb-4">
             {eyebrow}

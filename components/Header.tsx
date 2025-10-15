@@ -58,26 +58,26 @@ export default async function Header() {
       <div className="md:hidden">
         <details className="relative">
           <summary className="list-none cursor-pointer">
-            <div className="flex items-center justify-between backdrop-blur-md bg-white/95 dark:bg-slate-900/85 rounded-2xl px-3 py-2 ring-1 ring-black/10 dark:ring-white/15 shadow">
+            <div className="flex items-center justify-between bg-white dark:bg-slate-900 rounded-2xl px-3 py-2 ring-1 ring-slate-200 dark:ring-slate-700 shadow">
               <span className="inline-flex items-center gap-2 text-sm text-base-muted">
                 <User2 className="h-4 w-4 text-indigo-600" />
                 <span className="font-medium text-base-strong">{username}</span>
               </span>
-              <span className="inline-flex items-center justify-center h-8 w-8 rounded-xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
+              <span className="inline-flex items-center justify-center h-8 w-8 rounded-xl bg-indigo-100 text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-900 dark:text-indigo-300 dark:ring-indigo-800">
                 <Menu className="h-5 w-5" />
               </span>
             </div>
           </summary>
-          <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-white/95 dark:bg-slate-900/85 ring-1 ring-black/10 dark:ring-white/15 shadow-xl p-3">
+          <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-white dark:bg-slate-900 ring-1 ring-slate-200 dark:ring-slate-700 shadow-xl p-3">
             <div className="grid gap-2">
-              <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-500/10 text-sm">
+              <Link href="/" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
                 <Home className="h-4 w-4 text-indigo-600" /> Startseite
               </Link>
-              <Link href="/phase-1" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-500/10 text-sm">
+              <Link href="/phase-1" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
                 <Send className="h-4 w-4 text-indigo-600" /> Einsenden
               </Link>
               {canModerate && (
-                <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-500/10 text-sm">
+                <Link href="/admin" className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-indigo-50 dark:hover:bg-slate-800 text-sm">
                   <Shield className="h-4 w-4 text-indigo-600" /> Admin
                 </Link>
               )}

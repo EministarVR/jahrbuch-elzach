@@ -31,7 +31,7 @@ export default function Aurora({ className }: Props) {
     <div
       ref={ref}
       className={clsx(
-        'pointer-events-none absolute inset-0 -z-20 opacity-60 sm:opacity-80',
+        'hidden md:block pointer-events-none absolute inset-0 -z-20 md:opacity-80',
         'bg-[radial-gradient(1200px_600px_at_10%_10%,rgba(99,102,241,0.45),transparent_60%),_radial-gradient(800px_500px_at_90%_20%,rgba(168,85,247,0.35),transparent_60%),_radial-gradient(900px_600px_at_30%_90%,rgba(56,189,248,0.30),transparent_60%)]',
         className,
       )}

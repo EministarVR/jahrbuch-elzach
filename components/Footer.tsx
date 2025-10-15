@@ -9,10 +9,10 @@ export default function Footer() {
   return (
     <footer className="relative mt-12">
       {/* Top gradient divider */}
-      <div className="pointer-events-none absolute -top-10 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-black/5 dark:to-white/5" />
+      <div className="hidden md:block pointer-events-none absolute -top-10 left-0 right-0 h-20 bg-gradient-to-b from-transparent to-black/5 dark:to-white/5" />
 
       <div className="mx-auto max-w-6xl px-4 pb-10">
-        <div className="rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/60 dark:bg-slate-900/50 backdrop-blur-sm overflow-hidden">
+        <div className="rounded-3xl ring-1 ring-slate-200 dark:ring-slate-700 md:ring-black/5 md:dark:ring-white/10 bg-white dark:bg-slate-900 md:bg-white/60 md:dark:bg-slate-900/50 md:backdrop-blur-sm overflow-hidden">
           {/* Decorative strip */}
           <div className="h-1 bg-gradient-to-r from-indigo-500 via-sky-400 to-fuchsia-500" />
 
