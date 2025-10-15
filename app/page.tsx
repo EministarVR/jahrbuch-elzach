@@ -164,11 +164,6 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="text-center text-base-muted text-sm py-14">
-        <MotionFade>
-          &copy; {new Date().getFullYear()} Jahrbuch-Team der SMV
-        </MotionFade>
-      </footer>
     </main>
   );
 }

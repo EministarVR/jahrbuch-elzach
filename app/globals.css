@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Small global fix: hide default marker on <summary> for iOS/Safari */
+details > summary::-webkit-details-marker { display: none; }
+
 /* CSS Variables & Theming (clean) */
 :root {
   --background: #ffffff;

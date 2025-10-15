@@ -168,6 +168,10 @@ export default async function Phase1Page({
                     <span className="mt-0.5 text-indigo-600">•</span>
                     Kein Stress: Kurze Beiträge sind genauso willkommen!
                   </li>
+                  <li className="flex gap-3">
+                    <span className="mt-0.5 text-indigo-600">•</span>
+                    Fragen oder Probleme? Wende dich an die Schulsprecher:innen (SMV).
+                  </li>
                 </ul>
 
                 <MotionFade delay={0.08} className="mt-6">

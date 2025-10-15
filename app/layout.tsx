@@ -4,8 +4,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import Aurora from "@/components/Aurora";
 import Header from "@/components/Header";
-import { ThemeProvider } from "@/components/ThemeProvider";
-import { ensureDatabase } from "@/lib/init-db";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +32,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Initialize database schema on server/app start (idempotent)
-  await ensureDatabase();
   const jar = await cookies();
   const themeCookie = jar.get("jahrbuch-theme")?.value as
     | "light"
@@ -55,11 +52,10 @@ if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light
 if(t==='dark')d.classList.add('dark');else d.classList.remove('dark');}catch(e){}})();`,
           }}
         />
-        <ThemeProvider>
-          <Aurora />
+        <Aurora />
           <Header />
           <div className="relative">{children}</div>
-        </ThemeProvider>
+          <Footer />
       </body>
     </html>
   );

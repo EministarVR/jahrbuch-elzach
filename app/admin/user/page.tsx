@@ -15,7 +15,8 @@ type UserRow = { id: number; username: string; role: "user" | "moderator" | "adm
 
 export default async function AdminUserPage() {
   const session = await getSession();
-  if (!session || session.role !== "admin") redirect("/login");
+  if (!session) redirect("/login");
+  if (session.role !== "admin") redirect("/admin");
 
   const users = await query<UserRow[]>(
     "SELECT id, username, role FROM users ORDER BY id DESC"

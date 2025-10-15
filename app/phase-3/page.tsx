@@ -1,11 +1,18 @@
+import FancyHeading from "@/components/ui/FancyHeading";
+import GlassCard from "@/components/ui/GlassCard";
+
+export const dynamic = "force-dynamic";
+
 export default function Phase3Page() {
   return (
-    <div className="min-h-dvh flex items-center justify-center bg-gradient-to-b from-indigo-50 to-white">
-      <div className="text-center backdrop-blur-xl bg-white/50 shadow-xl rounded-3xl p-10 border border-white/40">
-        <h1 className="text-3xl font-semibold text-base-strong mb-2">
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-indigo-50/70 to-white dark:from-slate-950 dark:to-slate-900">
+      <div className="max-w-5xl mx-auto px-4 py-16">
+        <FancyHeading center subtitle="Bekanntgaben folgen.">
           Phase 3
-        </h1>
-        <p className="text-base-muted">Bekanntgabe bald verfügbar.</p>
+        </FancyHeading>
+        <GlassCard>
+          <p className="text-sm text-base-muted">Diese Phase ist in Vorbereitung. Schau später nochmal vorbei.</p>
+        </GlassCard>
       </div>
     </div>
   );
