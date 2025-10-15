@@ -22,69 +22,100 @@ export default function DatenschutzPage() {
           Datenschutz
         </FancyHeading>
 
+        {/* Mobile: schnelles Inhaltsverzeichnis */}
+        <nav aria-label="Inhaltsverzeichnis" className="md:hidden sticky top-16 z-10 -mt-2">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-1 pr-1">
+            {[
+              { href: "#kurzfassung", label: "Kurzfassung" },
+              { href: "#daten", label: "Daten" },
+              { href: "#cookies", label: "Cookies" },
+              { href: "#sicherheit", label: "Sicherheit" },
+              { href: "#rechte", label: "Rechte" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="inline-flex items-center px-3 py-2 rounded-xl bg-slate-900/60 text-slate-200 ring-1 ring-white/10 whitespace-nowrap text-sm shadow-[0_2px_10px_-4px_rgba(0,0,0,0.5)]"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </nav>
+
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
-            <TiltCard>
-              <GlassCard
-                className="bg-[linear-gradient(180deg,rgba(99,102,241,0.08),rgba(99,102,241,0.02))]"
-                header={
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
-                      <Shield className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h3 className="text-lg font-semibold text-base-strong">Kurzfassung</h3>
-                      <p className="text-sm text-base-muted">Keine Werbung, kein Tracking, nur das Nötigste fürs Jahrbuch.</p>
+            <div id="kurzfassung" className="scroll-mt-20">
+              <TiltCard>
+                <GlassCard
+                  className="bg-[linear-gradient(180deg,rgba(99,102,241,0.08),rgba(99,102,241,0.02))]"
+                  header={
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
+                        <Shield className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <h3 className="text-lg font-semibold text-base-strong">Kurzfassung</h3>
+                        <p className="text-sm text-base-muted">Keine Werbung, kein Tracking, nur das Nötigste fürs Jahrbuch.</p>
+                      </div>
                     </div>
-                  </div>
-                }
+                  }
+                >
+                  <ul className="space-y-3 text-sm text-base-muted">
+                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Wir speichern deinen <span className="font-medium text-base-strong">Username</span> und ein <span className="font-medium text-base-strong">gehashtes Passwort</span> (kein Klartext).</li>
+                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Deine <span className="font-medium text-base-strong">Einsendungen</span> (Text, Kategorie, optional Name/Telefon) werden in unserer internen MySQL‑Datenbank gespeichert.</li>
+                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Es gibt <span className="font-medium text-base-strong">kein Analytics/Tracking</span>, keine Werbe‑Cookies.</li>
+                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Wir verwenden ein <span className="font-medium text-base-strong">Session‑Cookie</span> zur Anmeldung (technisch erforderlich).</li>
+                  </ul>
+                </GlassCard>
+              </TiltCard>
+            </div>
+
+            <div id="daten" className="scroll-mt-20">
+              <GlassCard
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Database className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Welche Daten wir verarbeiten</h3></div>}
               >
-                <ul className="space-y-3 text-sm text-base-muted">
-                  <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Wir speichern deinen <span className="font-medium text-base-strong">Username</span> und ein <span className="font-medium text-base-strong">gehashtes Passwort</span> (kein Klartext).</li>
-                  <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Deine <span className="font-medium text-base-strong">Einsendungen</span> (Text, Kategorie, optional Name/Telefon) werden in unserer internen MySQL‑Datenbank gespeichert.</li>
-                  <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Es gibt <span className="font-medium text-base-strong">kein Analytics/Tracking</span>, keine Werbe‑Cookies.</li>
-                  <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Wir verwenden ein <span className="font-medium text-base-strong">Session‑Cookie</span> zur Anmeldung (technisch erforderlich).</li>
-                </ul>
+                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
+                  <p><span className="font-medium text-base-strong">Accountdaten:</span> Username, Passwort-Hash, Rolle (user/moderator/admin), Erstellungsdatum.</p>
+                  <p><span className="font-medium text-base-strong">Einsendungen:</span> Text (max. 2000 Zeichen), Kategorie, optional Name/Telefon, Zeitstempel, sowie Moderationsstatus (pending/approved/deleted).</p>
+                  <p><span className="font-medium text-base-strong">Moderationsprotokoll:</span> Für Transparenz speichern wir im Audit‑Log, wer Beiträge erstellt, genehmigt, gelöscht oder wiederhergestellt hat.</p>
+                  <p><span className="font-medium text-base-strong">Sperren (nur falls genutzt):</span> Gesperrte User‑IDs bzw. IPs mit Grund und optionalem Ablaufdatum. Wir führen <span className="font-medium text-base-strong">keine allgemeinen IP‑Protokolle</span>.</p>
+                </div>
               </GlassCard>
-            </TiltCard>
+            </div>
 
-            <GlassCard
-              header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Database className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Welche Daten wir verarbeiten</h3></div>}
-            >
-              <div className="space-y-4 text-sm text-base-muted">
-                <p><span className="font-medium text-base-strong">Accountdaten:</span> Username, Passwort-Hash, Rolle (user/moderator/admin), Erstellungsdatum.</p>
-                <p><span className="font-medium text-base-strong">Einsendungen:</span> Text (max. 2000 Zeichen), Kategorie, optional Name/Telefon, Zeitstempel, sowie Moderationsstatus (pending/approved/deleted).</p>
-                <p><span className="font-medium text-base-strong">Moderationsprotokoll:</span> Für Transparenz speichern wir im Audit‑Log, wer Beiträge erstellt, genehmigt, gelöscht oder wiederhergestellt hat.</p>
-                <p><span className="font-medium text-base-strong">Sperren (nur falls genutzt):</span> Gesperrte User‑IDs bzw. IPs mit Grund und optionalem Ablaufdatum. Wir führen <span className="font-medium text-base-strong">keine allgemeinen IP‑Protokolle</span>.</p>
-              </div>
-            </GlassCard>
+            <div id="cookies" className="scroll-mt-20">
+              <GlassCard
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Cookie className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Cookies & Sitzungen</h3></div>}
+              >
+                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
+                  <p>Wir setzen ein <span className="font-medium text-base-strong">technisch notwendiges Cookie</span> (jb_session), um dich nach dem Login wiederzuerkennen. Es enthält eine signierte Sitzungskennung, aber <span className="font-medium text-base-strong">keine sensiblen Klartextdaten</span>.</p>
+                  <p>Das Cookie wird nicht für Tracking oder Werbung verwendet.</p>
+                </div>
+              </GlassCard>
+            </div>
 
-            <GlassCard
-              header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Cookie className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Cookies & Sitzungen</h3></div>}
-            >
-              <div className="space-y-4 text-sm text-base-muted">
-                <p>Wir setzen ein <span className="font-medium text-base-strong">technisch notwendiges Cookie</span> (jb_session), um dich nach dem Login wiederzuerkennen. Es enthält eine signierte Sitzungskennung, aber <span className="font-medium text-base-strong">keine sensiblen Klartextdaten</span>.</p>
-                <p>Das Cookie wird nicht für Tracking oder Werbung verwendet.</p>
-              </div>
-            </GlassCard>
+            <div id="sicherheit" className="scroll-mt-20">
+              <GlassCard
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Lock className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Sicherheit</h3></div>}
+              >
+                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
+                  <p>Passwörter werden mit einem <span className="font-medium text-base-strong">starken Hash‑Verfahren</span> gespeichert (kein Klartext). Verbindungen werden nach Möglichkeit über HTTPS bereitgestellt.</p>
+                  <p>Admins/Moderatoren prüfen Beiträge nur zur Qualitätssicherung (Rechtsverstöße, Sprache). Keine Weitergabe deiner Daten an Dritte.</p>
+                </div>
+              </GlassCard>
+            </div>
 
-            <GlassCard
-              header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Lock className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Sicherheit</h3></div>}
-            >
-              <div className="space-y-4 text-sm text-base-muted">
-                <p>Passwörter werden mit einem <span className="font-medium text-base-strong">starken Hash‑Verfahren</span> gespeichert (kein Klartext). Verbindungen werden nach Möglichkeit über HTTPS bereitgestellt.</p>
-                <p>Admins/Moderatoren prüfen Beiträge nur zur Qualitätssicherung (Rechtsverstöße, Sprache). Keine Weitergabe deiner Daten an Dritte.</p>
-              </div>
-            </GlassCard>
-
-            <GlassCard
-              header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Info className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Deine Rechte</h3></div>}
-            >
-              <div className="space-y-4 text-sm text-base-muted">
-                <p>Du hast nach geltendem Recht Auskunfts‑, Berichtigungs‑ und Löschrechte bezüglich deiner personenbezogenen Daten. Wende dich dafür an das Jahrbuch‑Team bzw. die Schulverwaltung.</p>
-                <p>Wenn du Fragen zum Datenschutz hast, melde dich bitte bei der Schulleitung oder dem Jahrbuch‑Team.</p>
-              </div>
-            </GlassCard>
+            <div id="rechte" className="scroll-mt-20">
+              <GlassCard
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Info className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Deine Rechte</h3></div>}
+              >
+                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
+                  <p>Du hast nach geltendem Recht Auskunfts‑, Berichtigungs‑ und Löschrechte bezüglich deiner personenbezogenen Daten. Wende dich dafür an das Jahrbuch‑Team bzw. die Schulverwaltung.</p>
+                  <p>Wenn du Fragen zum Datenschutz hast, melde dich bitte bei der Schulleitung oder dem Jahrbuch‑Team.</p>
+                </div>
+              </GlassCard>
+            </div>
           </div>
 
           <div className="lg:col-span-1">

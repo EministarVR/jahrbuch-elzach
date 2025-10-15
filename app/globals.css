@@ -136,6 +136,14 @@ html {
     transparent
   );
 }
+/* Hide scrollbars for chip nav (mobile) */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
 
 /* Animations */
 @keyframes fade-in {
