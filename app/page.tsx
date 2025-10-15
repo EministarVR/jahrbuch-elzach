@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <main className="min-h-dvh">
       <ParallaxHero
-        eyebrow="Jahrbuch 20XX"
+        eyebrow="Jahrbuch 2025/2026"
         title="Schulzentrum Oberes Elztal"
         subtitle="Ein hochwertiger Rückblick auf unser Schuljahr – gestaltet vom Jahrbuch‑Team der SMV. Reiche jetzt deine Erinnerungen ein und werde Teil davon."
         cta={
