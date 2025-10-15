@@ -10,14 +10,6 @@ import {
   approveSubmissionAction,
   deleteSubmissionAction,
   restoreSubmissionAction,
-  createUserAction,
-  deleteUserAction,
-  updateUserPasswordAction,
-  updateUserRoleAction,
-  banUserAction,
-  unbanUserAction,
-  banIpAction,
-  unbanIpAction,
 } from "./actions";
 import {
   CheckCircle2,
@@ -297,81 +289,7 @@ export default async function AdminPage() {
               </GlassCard>
             </TiltCard>
 
-            <GlassCard
-              header={<div className="text-lg font-semibold text-base-strong">Benutzer verwalten</div>}
-            >
-              <form action={createUserAction} className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                <input name="username" placeholder="Username" className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10" />
-                <input name="password" placeholder="Passwort" type="password" className="px-4 py-3 rounded-2xl bg-white/70 dark:bg-slate-800/60 shadow-inner outline-none focus:ring-2 focus:ring-indigo-300 dark:focus:ring-indigo-500 ring-1 ring-black/5 dark:ring-white/10" />
-                <GlowButton variant="primary" className="h-[42px]">Erstellen</GlowButton>
-              </form>
-              <div className="mt-5 divide-y divide-black/5 dark:divide-white/10">
-                {users.map((u) => (
-                  <div key={u.id} className="space-y-2 py-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm"><span className="font-medium">{u.username}</span> <span className="text-base-muted">• {u.role}</span></div>
-                      {isAdmin && (
-                        <form action={deleteUserAction}>
-                          <input type="hidden" name="id" value={u.id} />
-                          <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<Trash2 className="h-4 w-4" />}>Löschen</GlowButton>
-                        </form>
-                      )}
-                    </div>
-                    {isAdmin && (
-                      <div className="flex flex-wrap gap-3">
-                        <form action={updateUserRoleAction} className="flex items-center gap-2">
-                          <input type="hidden" name="id" value={u.id} />
-                          <select name="role" defaultValue={u.role} className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm">
-                            <option value="user">user</option>
-                            <option value="moderator">moderator</option>
-                            <option value="admin">admin</option>
-                          </select>
-                          <GlowButton variant="primary" className="px-3 py-2 text-sm">Rolle</GlowButton>
-                        </form>
-                        <form action={updateUserPasswordAction} className="flex items-center gap-2">
-                          <input type="hidden" name="id" value={u.id} />
-                          <input name="password" type="password" placeholder="Neues Passwort" className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                          <GlowButton variant="secondary" className="px-3 py-2 text-sm">Passwort</GlowButton>
-                        </form>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </GlassCard>
 
-            {isAdmin && (
-              <GlassCard header={<div className="text-lg font-semibold text-base-strong">Sperren</div>}>
-                <div className="space-y-4">
-                  <div>
-                    <div className="text-sm font-medium mb-2 text-base-strong">Benutzer sperren</div>
-                    <form action={banUserAction} className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                      <input name="user_id" placeholder="User ID" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <input name="reason" placeholder="Grund (optional)" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <input name="expires_at" type="datetime-local" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <GlowButton variant="primary" className="h-[38px]">Sperren</GlowButton>
-                    </form>
-                    <form action={unbanUserAction} className="flex items-center gap-3 mt-3">
-                      <input name="user_id" placeholder="User ID" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <GlowButton variant="secondary" className="h-[38px]">Entsperren</GlowButton>
-                    </form>
-                  </div>
-                  <div className="pt-2">
-                    <div className="text-sm font-medium mb-2 text-base-strong">IP sperren</div>
-                    <form action={banIpAction} className="grid grid-cols-1 sm:grid-cols-4 gap-3">
-                      <input name="ip" placeholder="IP-Adresse" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <input name="reason" placeholder="Grund (optional)" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <input name="expires_at" type="datetime-local" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <GlowButton variant="primary" className="h-[38px]">Sperren</GlowButton>
-                    </form>
-                    <form action={unbanIpAction} className="flex items-center gap-3 mt-3">
-                      <input name="ip" placeholder="IP-Adresse" className="px-4 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                      <GlowButton variant="secondary" className="h-[38px]">Entsperren</GlowButton>
-                    </form>
-                  </div>
-                </div>
-              </GlassCard>
-            )}
           </div>
         </div>
       </div>

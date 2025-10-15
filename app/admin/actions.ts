@@ -20,7 +20,7 @@ export async function createUserAction(formData: FormData) {
   
   try {
     await createUser(username, password, 'user');
-    revalidatePath('/admin');
+    revalidatePath('/admin/user');
   } catch (error) {
     console.error('Error creating user:', error);
     throw error;
@@ -38,7 +38,7 @@ export async function deleteUserAction(formData: FormData) {
   
   try {
     await deleteUser(id);
-    revalidatePath('/admin');
+    revalidatePath('/admin/user');
   } catch (error) {
     console.error('Error deleting user:', error);
     throw error;
@@ -135,7 +135,7 @@ export async function updateUserPasswordAction(formData: FormData) {
   const password = String(formData.get('password') || '').trim();
   if (!id || !password) throw new Error('User ID and new password are required');
   await updateUserPassword(id, password);
-  revalidatePath('/admin');
+  revalidatePath('/admin/user');
 }
 
 // Admin-only: update user role
@@ -146,7 +146,7 @@ export async function updateUserRoleAction(formData: FormData) {
   const role = String(formData.get('role') || '').trim();
   if (!id || !['user','moderator','admin'].includes(role)) throw new Error('Invalid role update');
   await updateUserRole(id, role as 'user' | 'moderator' | 'admin');
-  revalidatePath('/admin');
+  revalidatePath('/admin/user');
 }
 
 // Admin-only: ban user
@@ -168,7 +168,7 @@ export async function banUserAction(formData: FormData) {
     'INSERT INTO banned_users (user_id, reason, expires_at, created_by) VALUES (?, ?, ?, ?)',
     [userId, reason, expires_at, session.userId]
   );
-  revalidatePath('/admin');
+  revalidatePath('/admin/user');
 }
 
 export async function unbanUserAction(formData: FormData) {
@@ -177,7 +177,7 @@ export async function unbanUserAction(formData: FormData) {
   const userId = Number(formData.get('user_id'));
   const conn = getDbPool();
   await conn.execute('DELETE FROM banned_users WHERE user_id = ?', [userId]);
-  revalidatePath('/admin');
+  revalidatePath('/admin/user');
 }
 
 // Admin-only: ban IP
@@ -201,7 +201,7 @@ export async function banIpAction(formData: FormData) {
      ON DUPLICATE KEY UPDATE reason=VALUES(reason), expires_at=VALUES(expires_at), created_by=VALUES(created_by), created_at=CURRENT_TIMESTAMP`,
     [ip, reason, expires_at, session.userId]
   );
-  revalidatePath('/admin');
+  revalidatePath('/admin/user');
 }
 
 export async function unbanIpAction(formData: FormData) {

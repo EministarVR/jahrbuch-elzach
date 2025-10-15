@@ -1,18 +1,56 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getSession } from "@/lib/session";
+import { getSession, setSession } from "@/lib/session";
 import GlassCard from "@/components/ui/GlassCard";
 import FancyHeading from "@/components/ui/FancyHeading";
 import MotionFade from "@/components/ui/MotionFade";
 import TiltCard from "@/components/ui/TiltCard";
 import { Sparkles, Lock, Info, Shield } from "lucide-react";
 import LoginClient from "./LoginClient";
+import { findUserByUsername, verifyPassword } from "@/lib/auth";
+import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams?: Promise<Record<string, string | string[]>>;
+}) {
   const session = await getSession();
   if (session) redirect(session.role === "user" ? "/phase-1" : "/admin");
+
+  // Login via link: /login?user=NAME&pass=PASSWORD or user=NAME,pass=PASSWORD
+  const sp = searchParams ? await searchParams : undefined;
+  let userParam = sp?.user as string | undefined;
+  let passParam = (sp?.pass as string | undefined) || (sp?.password as string | undefined);
+
+  if (userParam && !passParam && userParam.includes(",pass=")) {
+    const [u, p] = userParam.split(",pass=");
+    userParam = u;
+    passParam = p;
+  }
+
+  if (userParam && passParam) {
+    try {
+      const user = await findUserByUsername(userParam);
+      if (user) {
+        const userBanRows = await query<{ c: number }[]>(
+          "SELECT COUNT(*) AS c FROM banned_users WHERE user_id = ? AND (expires_at IS NULL OR expires_at > NOW())",
+          [user.id]
+        );
+        if ((userBanRows[0]?.c ?? 0) === 0) {
+          const ok = await verifyPassword(passParam, user.password_hash);
+          if (ok) {
+            await setSession(user.id, user.role);
+            redirect(user.role === "user" ? "/phase-1" : "/admin");
+          }
+        }
+      }
+    } catch {
+      // ignore and show normal login UI
+    }
+  }
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-indigo-50/70 to-white dark:from-slate-950 dark:to-slate-900">
