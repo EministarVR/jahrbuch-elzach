@@ -77,17 +77,15 @@ export async function ensureModerationSchema(): Promise<boolean> {
       }
     }
 
-    // 4) Extend roles: add 'moderator' and keep 'admin' for extended admin. Migrate old 'admin' -> 'moderator'.
+    // 4) Ensure roles enum includes 'moderator' and 'admin' (no automatic demotion of admins)
     try {
       await conn.query(
         `ALTER TABLE users MODIFY COLUMN role ENUM('user','moderator','admin') NOT NULL DEFAULT 'user'`
       );
-      // migrate existing entries labelled 'admin' (old admin) to 'moderator'
-      await conn.query(`UPDATE users SET role='moderator' WHERE role='admin'`);
     } catch (e) {
       // if fails, we still continue but log
       ok = false;
-      console.error('Failed to update users.role enum or migrate roles:', e);
+      console.error('Failed to update users.role enum:', e);
     }
 
     // 5) Bans tables
