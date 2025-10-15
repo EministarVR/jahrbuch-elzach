@@ -49,6 +49,20 @@ details > summary::-webkit-details-marker { display: none; }
   --ease-soft: cubic-bezier(0.33, 0.66, 0.45, 1);
 }
 
+/* Force dark variables whenever .dark is present (independent of system pref) */
+.dark {
+  --background: #0b111b;
+  --foreground: #f2f6fa;
+  --muted: #8b97a4;
+  --surface: rgba(24, 31, 45, 0.85);
+  --surface-alt: rgba(20, 27, 39, 0.65);
+  --on-surface: #f2f6fa;
+  --on-surface-muted: #a2afbb;
+  --accent: #5d68ff;
+  --accent-alt: #3fb2ff;
+  --accent-rgb: 93 104 255;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0b111b;

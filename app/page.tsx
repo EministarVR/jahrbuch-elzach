@@ -1,10 +1,8 @@
-import Link from "next/link";
 import ParallaxHero from "@/components/ParallaxHero";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import TiltCard from "@/components/ui/TiltCard";
 import FancyHeading from "@/components/ui/FancyHeading";
-import MotionFade from "@/components/ui/MotionFade";
 import {
   Newspaper,
   Rocket,
@@ -163,7 +161,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
     </main>
   );
 }

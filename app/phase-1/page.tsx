@@ -175,7 +175,7 @@ export default async function Phase1Page({
                 </ul>
 
                 <MotionFade delay={0.08} className="mt-6">
-                  <div className="rounded-2xl p-4 bg-white/60 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10">
+                  <div className="rounded-2xl p-4 bg-slate-900/60 ring-1 ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 md:ring-black/5 md:dark:ring-white/10">
                     <p className="text-sm text-base-strong mb-1">Transparenz</p>
                     <p className="text-sm text-base-muted">
                       Beiträge werden vor der Veröffentlichung kurz gesichtet –

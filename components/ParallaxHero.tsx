@@ -51,11 +51,17 @@ export default function ParallaxHero({
         initial={{ opacity: 0, y: 36 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.85, ease: [0.16, 0.84, 0.44, 1] }}
-        className="rounded-[2rem] shadow-[0_6px_22px_-8px_rgba(15,23,42,0.35),0_18px_48px_-10px_rgba(15,23,42,0.25)] px-7 sm:px-14 py-10 sm:py-16 text-center max-w-4xl mx-auto relative overflow-hidden border border-slate-200/90 dark:border-slate-700/90 bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(245,247,255,0.92))] dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.95),rgba(28,36,52,0.85))] md:backdrop-blur-2xl md:bg-[rgba(255,255,255,0.72)] md:dark:bg-[rgba(25,32,46,0.72)] md:border md:border-white/50 md:dark:border-white/10"
+        className={clsx(
+          "rounded-[2rem] px-7 sm:px-14 py-10 sm:py-16 text-center max-w-4xl mx-auto relative overflow-hidden",
+          // Mobile: dunkle Karte
+          "border border-slate-700/90 bg-[linear-gradient(145deg,rgba(28,36,52,0.96),rgba(20,27,39,0.9))] shadow-[0_6px_22px_-8px_rgba(0,0,0,0.6),0_18px_48px_-10px_rgba(0,0,0,0.55)]",
+          // Desktop: bestehendes Glass/Blur behalten
+          "md:shadow-[0_6px_22px_-8px_rgba(15,23,42,0.35),0_18px_48px_-10px_rgba(15,23,42,0.25)] md:backdrop-blur-2xl md:bg-[rgba(255,255,255,0.72)] md:dark:bg-[rgba(25,32,46,0.72)] md:border md:border-white/50 md:dark:border-white/10"
+        )}
       >
         <div className="hidden md:block pointer-events-none absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.65),transparent_65%)] dark:bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.09),transparent_65%)] mix-blend-overlay" />
         {eyebrow && (
-          <div className="relative z-10 text-xs font-medium tracking-wider uppercase text-indigo-600/80 mb-4">
+          <div className="relative z-10 text-xs font-medium tracking-wider uppercase text-indigo-300/90 md:text-indigo-600/80 mb-4">
             {eyebrow}
           </div>
         )}
@@ -63,7 +69,7 @@ export default function ParallaxHero({
           {title}
         </h1>
         {subtitle ? (
-          <p className="relative z-10 text-base-muted dark:text-slate-200 mt-5 max-w-2xl mx-auto text-sm sm:text-base tracking-[0.01em]">
+          <p className="relative z-10 text-slate-300 md:text-base-muted mt-5 max-w-2xl mx-auto text-sm sm:text-base tracking-[0.01em]">
             {subtitle}
           </p>
         ) : null}
