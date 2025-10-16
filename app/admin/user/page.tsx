@@ -18,7 +18,7 @@ type UserRow = { id: number; username: string; role: "user" | "moderator" | "adm
 export default async function AdminUserPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role !== "admin") redirect("/unauthorized");
+  if (session.role !== "admin") redirect("/zugriff-verweigert");
 
   await ensureUserClassColumn();
 

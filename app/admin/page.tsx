@@ -59,7 +59,7 @@ type UserRow = { id: number; username: string; role: "user" | "moderator" | "adm
 export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
   if (!session) redirect("/login");
-  if (session.role !== "moderator" && session.role !== "admin") redirect("/unauthorized");
+  if (session.role !== "moderator" && session.role !== "admin") redirect("/zugriff-verweigert");
   const isAdmin = session.role === "admin";
 
   // Ensure schema is ready (adds status columns + audit table if missing)

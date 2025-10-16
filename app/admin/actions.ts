@@ -11,8 +11,8 @@ import { CLASSES } from '@/lib/constants';
 export async function createUserAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/unauthorized');
-  
+  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
+
   const username = String(formData.get('username') || '').trim();
   const password = String(formData.get('password') || '').trim();
   const klass = String(formData.get('class') || '').trim();
@@ -42,8 +42,8 @@ export async function createUserAction(formData: FormData) {
 export async function deleteUserAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
-  
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
+
   const id = Number(formData.get('id'));
   if (!id) {
     throw new Error('User ID is required');
@@ -61,7 +61,7 @@ export async function deleteUserAction(formData: FormData) {
 export async function approveSubmissionAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/unauthorized');
+  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
   await ensureModerationSchema();
   const id = Number(formData.get('id'));
   if (!id) throw new Error('Submission ID is required');
@@ -89,7 +89,7 @@ export async function approveSubmissionAction(formData: FormData) {
 export async function deleteSubmissionAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/unauthorized');
+  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
   await ensureModerationSchema();
   const id = Number(formData.get('id'));
   if (!id) throw new Error('Submission ID is required');
@@ -117,7 +117,7 @@ export async function deleteSubmissionAction(formData: FormData) {
 export async function restoreSubmissionAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/unauthorized');
+  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
   await ensureModerationSchema();
   const id = Number(formData.get('id'));
   if (!id) throw new Error('Submission ID is required');
@@ -146,7 +146,7 @@ export async function restoreSubmissionAction(formData: FormData) {
 export async function approveManySubmissionsAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/unauthorized');
+  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
   await ensureModerationSchema();
   const ids = formData.getAll('ids').map((v) => Number(v)).filter((n) => Number.isFinite(n));
   if (!ids.length) throw new Error('No submission IDs provided');
@@ -176,7 +176,7 @@ export async function approveManySubmissionsAction(formData: FormData) {
 export async function deleteManySubmissionsAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/unauthorized');
+  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
   await ensureModerationSchema();
   const ids = formData.getAll('ids').map((v) => Number(v)).filter((n) => Number.isFinite(n));
   if (!ids.length) throw new Error('No submission IDs provided');
@@ -208,7 +208,7 @@ export async function deleteManySubmissionsAction(formData: FormData) {
 export async function updateUserPasswordAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
   const id = Number(formData.get('id'));
   const password = String(formData.get('password') || '').trim();
   if (!id || !password) throw new Error('User ID and new password are required');
@@ -220,7 +220,7 @@ export async function updateUserPasswordAction(formData: FormData) {
 export async function updateUserRoleAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
   const id = Number(formData.get('id'));
   const role = String(formData.get('role') || '').trim();
   if (!id || !['user','moderator','admin'].includes(role)) throw new Error('Invalid role update');
@@ -232,7 +232,7 @@ export async function updateUserRoleAction(formData: FormData) {
 export async function banUserAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
   const userId = Number(formData.get('user_id'));
   const reason = String(formData.get('reason') || '').trim() || null;
   const expiresRaw = String(formData.get('expires_at') || '').trim();
@@ -254,7 +254,7 @@ export async function banUserAction(formData: FormData) {
 export async function unbanUserAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
   const userId = Number(formData.get('user_id'));
   const conn = getDbPool();
   await conn.execute('DELETE FROM banned_users WHERE user_id = ?', [userId]);
@@ -265,7 +265,7 @@ export async function unbanUserAction(formData: FormData) {
 export async function banIpAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
   const ip = String(formData.get('ip') || '').trim();
   if (!ip) throw new Error('IP is required');
   const reason = String(formData.get('reason') || '').trim() || null;
@@ -289,7 +289,7 @@ export async function banIpAction(formData: FormData) {
 export async function unbanIpAction(formData: FormData) {
   const session = await getSession();
   if (!session) redirect('/login');
-  if (session.role !== 'admin') redirect('/unauthorized');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
   const ip = String(formData.get('ip') || '').trim();
   const conn = getDbPool();
   await conn.execute('DELETE FROM banned_ips WHERE ip = ?', [ip]);
