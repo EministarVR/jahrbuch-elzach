@@ -27,7 +27,9 @@ export default function GlassCard({
       <div
         className={clsx(
           "relative rounded-[var(--radius-xl)] overflow-hidden md:has-sheen",
-          // Mobile: konsequent dunkle Surface als Basis
+          // Fallback-Hintergrundfarben (solide), falls Gradient kurz nicht rendert
+          "bg-slate-900 md:bg-white md:dark:bg-slate-900",
+          // Mobile: konsequent dunkle Surface als Basis (Gradient/Image-Layer)
           "bg-[linear-gradient(145deg,rgba(28,36,52,0.96),rgba(20,27,39,0.9))] border border-slate-700/90",
           // md+: behält das Glass/Light-Design (mit Dark-Variante) für Desktop bei
           "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.87),rgba(255,255,255,0.62))] md:dark:bg-[linear-gradient(145deg,rgba(36,45,63,0.85),rgba(28,36,52,0.72))] md:border-white/40 md:dark:border-white/10",

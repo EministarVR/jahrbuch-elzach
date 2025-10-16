@@ -37,7 +37,8 @@ export default function ParallaxHero({
   return (
     <section
       className={clsx(
-        "relative h-[60svh] sm:h-[70svh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-900",
+        // Fallback-Farbe + Gradient-Layer
+        "relative h-[60svh] sm:h-[70svh] flex items-center justify-center overflow-hidden bg-white dark:bg-slate-900 bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-900",
         className
       )}
     >
@@ -53,7 +54,9 @@ export default function ParallaxHero({
         transition={{ duration: 0.85, ease: [0.16, 0.84, 0.44, 1] }}
         className={clsx(
           "rounded-[2rem] px-7 sm:px-14 py-10 sm:py-16 text-center max-w-4xl mx-auto relative overflow-hidden",
-          // Mobile: dunkle Karte
+          // Fallback-Hintergrundfarben (solide)
+          "bg-slate-900 md:bg-white md:dark:bg-slate-900",
+          // Mobile: dunkle Karte mit Gradient
           "border border-slate-700/90 bg-[linear-gradient(145deg,rgba(28,36,52,0.96),rgba(20,27,39,0.9))] shadow-[0_6px_22px_-8px_rgba(0,0,0,0.6),0_18px_48px_-10px_rgba(0,0,0,0.55)]",
           // Desktop: bestehendes Glass/Blur behalten
           "md:shadow-[0_6px_22px_-8px_rgba(15,23,42,0.35),0_18px_48px_-10px_rgba(15,23,42,0.25)] md:backdrop-blur-2xl md:bg-[rgba(255,255,255,0.72)] md:dark:bg-[rgba(25,32,46,0.72)] md:border md:border-white/50 md:dark:border-white/10"
