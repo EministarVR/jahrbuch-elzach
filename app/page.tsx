@@ -1,7 +1,9 @@
 import ParallaxHero from "@/components/ParallaxHero";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
-import TiltCard from "@/components/ui/TiltCard";
+import { getPhaseSettings } from "@/lib/phases";
+import { ensurePhaseSettings } from "@/lib/migrations";
+import Link from "next/link";
 import {
   Lock,
   Send,
@@ -10,9 +12,21 @@ import {
   ImageIcon,
   CheckCircle,
   ArrowRight,
+  BarChart3,
+  Wrench,
 } from "lucide-react";
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  await ensurePhaseSettings();
+  const phaseSettings = await getPhaseSettings();
+
+  // Dynamische Status für die Phasen
+  const phase1 = phaseSettings.find(p => p.phase_key === 'phase-1');
+  const phase2 = phaseSettings.find(p => p.phase_key === 'phase-2');
+  const phase3 = phaseSettings.find(p => p.phase_key === 'phase-3');
+
   return (
     <main className="min-h-dvh">
       <ParallaxHero
@@ -104,11 +118,11 @@ export default function Home() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-3">
-          <TiltCard>
-            <GlassCard delay={0}>
+          <Link href="/phase-1" className="block group">
+            <GlassCard delay={0} hover>
               <div className="space-y-5">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#d97757] to-[#c96846] flex items-center justify-center text-white shadow-lg">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#d97757] to-[#c96846] flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                     <Send className="h-7 w-7" />
                   </div>
                   <div>
@@ -124,50 +138,80 @@ export default function Home() {
                   Teile deine schönsten Fotos, Geschichten und Erinnerungen aus
                   diesem Schuljahr mit uns.
                 </p>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#7a9b88]/15 dark:bg-[#8faf9d]/15 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
-                  <div className="w-2 h-2 bg-[#7a9b88] dark:bg-[#8faf9d] rounded-full animate-pulse" />
-                  <span className="text-xs font-medium text-[#7a9b88] dark:text-[#8faf9d]">
-                    Jetzt aktiv
-                  </span>
-                </div>
+                {phase1?.status === 'development' ? (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 border border-[#ff9800]/20 dark:border-[#ffb74d]/20">
+                    <Wrench className="h-3 w-3 text-[#ff9800] dark:text-[#ffb74d]" />
+                    <span className="text-xs font-medium text-[#ff9800] dark:text-[#ffb74d]">
+                      In Entwicklung
+                    </span>
+                  </div>
+                ) : phase1?.enabled ? (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#7a9b88]/15 dark:bg-[#8faf9d]/15 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+                    <div className="w-2 h-2 bg-[#7a9b88] dark:bg-[#8faf9d] rounded-full animate-pulse" />
+                    <span className="text-xs font-medium text-[#7a9b88] dark:text-[#8faf9d]">
+                      Jetzt aktiv
+                    </span>
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#6b635a]/10 dark:bg-[#b8aea5]/10 border border-[#6b635a]/15 dark:border-[#b8aea5]/15">
+                    <span className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5]">
+                      Noch nicht verfügbar
+                    </span>
+                  </div>
+                )}
               </div>
             </GlassCard>
-          </TiltCard>
+          </Link>
 
-          <TiltCard>
-            <GlassCard delay={0.1}>
+          <Link href="/phase-2" className="block group">
+            <GlassCard delay={0.1} hover>
               <div className="space-y-5">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#b8957a] to-[#a88568] flex items-center justify-center text-white shadow-lg">
-                    <Users className="h-7 w-7" />
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#b8957a] to-[#a88568] flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
+                    <BarChart3 className="h-7 w-7" />
                   </div>
                   <div>
                     <div className="text-xs font-semibold text-[#b8957a] dark:text-[#c9a68a] uppercase tracking-wider mb-1">
                       Phase 2
                     </div>
                     <h3 className="text-xl font-bold text-[#2a2520] dark:text-[#f5f1ed]">
-                      Auswählen
+                      Abstimmen
                     </h3>
                   </div>
                 </div>
                 <p className="text-[#6b635a] dark:text-[#b8aea5] leading-relaxed">
-                  Gemeinsam entscheiden wir demokratisch, welche Beiträge ins
-                  Jahrbuch kommen.
+                  Stimme über verschiedene Jahrbuch-Themen ab und hilf bei wichtigen Entscheidungen.
                 </p>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#6b635a]/10 dark:bg-[#b8aea5]/10 border border-[#6b635a]/15 dark:border-[#b8aea5]/15">
-                  <span className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5]">
-                    Bald verfügbar
-                  </span>
-                </div>
+                {phase2?.status === 'development' ? (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 border border-[#ff9800]/20 dark:border-[#ffb74d]/20">
+                    <Wrench className="h-3 w-3 text-[#ff9800] dark:text-[#ffb74d]" />
+                    <span className="text-xs font-medium text-[#ff9800] dark:text-[#ffb74d]">
+                      In Entwicklung
+                    </span>
+                  </div>
+                ) : phase2?.enabled ? (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#7a9b88]/15 dark:bg-[#8faf9d]/15 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+                    <div className="w-2 h-2 bg-[#7a9b88] dark:bg-[#8faf9d] rounded-full animate-pulse" />
+                    <span className="text-xs font-medium text-[#7a9b88] dark:text-[#8faf9d]">
+                      Jetzt aktiv
+                    </span>
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#6b635a]/10 dark:bg-[#b8aea5]/10 border border-[#6b635a]/15 dark:border-[#6b635a]/15">
+                    <span className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5]">
+                      Bald verfügbar
+                    </span>
+                  </div>
+                )}
               </div>
             </GlassCard>
-          </TiltCard>
+          </Link>
 
-          <TiltCard>
-            <GlassCard delay={0.2}>
+          <Link href="/phase-3" className="block group">
+            <GlassCard delay={0.2} hover>
               <div className="space-y-5">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7a9b88] to-[#6a8b78] flex items-center justify-center text-white shadow-lg">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7a9b88] to-[#6a8b78] flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform">
                     <CheckCircle className="h-7 w-7" />
                   </div>
                   <div>
@@ -183,14 +227,30 @@ export default function Home() {
                   Das Jahrbuch-Team gestaltet alles liebevoll und bringt eure
                   Erinnerungen zu Papier.
                 </p>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#6b635a]/10 dark:bg-[#b8aea5]/10 border border-[#6b635a]/15 dark:border-[#b8aea5]/15">
-                  <span className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5]">
-                    In Planung
-                  </span>
-                </div>
+                {phase3?.status === 'development' ? (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 border border-[#ff9800]/20 dark:border-[#ffb74d]/20">
+                    <Wrench className="h-3 w-3 text-[#ff9800] dark:text-[#ffb74d]" />
+                    <span className="text-xs font-medium text-[#ff9800] dark:text-[#ffb74d]">
+                      In Entwicklung
+                    </span>
+                  </div>
+                ) : phase3?.enabled ? (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#7a9b88]/15 dark:bg-[#8faf9d]/15 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+                    <div className="w-2 h-2 bg-[#7a9b88] dark:bg-[#8faf9d] rounded-full animate-pulse" />
+                    <span className="text-xs font-medium text-[#7a9b88] dark:text-[#8faf9d]">
+                      Jetzt aktiv
+                    </span>
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#6b635a]/10 dark:bg-[#b8aea5]/10 border border-[#6b635a]/15 dark:border-[#b8aea5]/15">
+                    <span className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5]">
+                      In Planung
+                    </span>
+                  </div>
+                )}
               </div>
             </GlassCard>
-          </TiltCard>
+          </Link>
         </div>
 
         <div className="text-center mt-16">

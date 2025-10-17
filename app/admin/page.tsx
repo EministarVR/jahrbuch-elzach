@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { query } from "@/lib/db";
-import { ensureModerationSchema } from "@/lib/migrations";
+import { ensureModerationSchema, ensurePhaseSettings } from "@/lib/migrations";
+import { getPhaseSettings } from "@/lib/phases";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import {
@@ -10,6 +11,7 @@ import {
   restoreSubmissionAction,
   approveManySubmissionsAction,
   deleteManySubmissionsAction,
+  togglePhaseAction,
 } from "./actions";
 import {
   CheckCircle2,
@@ -22,6 +24,9 @@ import {
   Clock,
   Shield,
   Activity,
+  Layers,
+  ToggleLeft,
+  Wrench,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -54,9 +59,7 @@ type AuditRow = {
   preview: string;
 };
 
-type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin" };
-
-export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [_key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
   if (!session) redirect("/login");
   if (session.role !== "moderator" && session.role !== "admin") redirect("/zugriff-verweigert");
@@ -64,6 +67,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   // Ensure schema is ready (adds status columns + audit table if missing)
   await ensureModerationSchema();
+  await ensurePhaseSettings();
 
   const [stats] = (await query<
     { pending: number; approved: number; deleted: number; total: number }[]
@@ -127,13 +131,11 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
      LIMIT 60`
   );
 
-  const users = await query<UserRow[]>(
-    "SELECT id, username, role FROM users ORDER BY id DESC"
-  );
-
   const categories = await query<{ category: string }[]>(
     "SELECT DISTINCT category FROM submissions ORDER BY category"
   );
+
+  const phaseSettings = await getPhaseSettings();
 
   return (
     <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]">
@@ -458,13 +460,95 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     <div className="mt-1 text-[#6b635a] dark:text-[#b8aea5] line-clamp-2 pl-4">
                       {log.preview}...
                     </div>
-                    <div className="text-[#6b635a] dark:text-[#b8aea5] opacity-60 pl-4 mt-0.5">
+                    <div className="text-[#6b635a] dark:text-[#b8aea7] opacity-60 pl-4 mt-0.5">
                       {new Date(log.created_at).toLocaleString("de-DE")}
                     </div>
                   </div>
                 ))}
               </div>
             </GlassCard>
+
+            {/* Phase Control Panel (only for admins) */}
+            {isAdmin && (
+              <GlassCard
+                header={
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#4caf50]/10 dark:bg-[#66bb6a]/10 text-[#4caf50] dark:text-[#66bb6a]">
+                      <Layers className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Phasensteuerung</h3>
+                      <p className="text-xs text-[#6b635a] dark:text-[#b8aea5]">Aktiviere/Deaktiviere Phasen für User</p>
+                    </div>
+                  </div>
+                }
+              >
+                <div className="space-y-3">
+                  {phaseSettings.map((phase) => {
+                    const isDevelopment = phase.status === 'development';
+
+                    return (
+                      <div key={phase.id} className={`rounded-xl border ${
+                        phase.enabled 
+                          ? 'border-[#4caf50]/20 dark:border-[#66bb6a]/20 bg-[#4caf50]/5 dark:bg-[#66bb6a]/5' 
+                          : isDevelopment
+                          ? 'border-[#ff9800]/20 dark:border-[#ffb74d]/20 bg-[#ff9800]/5 dark:bg-[#ffb74d]/5'
+                          : 'border-[#6b635a]/20 dark:border-[#b8aea5]/20 bg-[#6b635a]/5 dark:bg-[#b8aea5]/5'
+                      } p-4 transition-all`}>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <div className="text-sm font-semibold text-[#2a2520] dark:text-[#f5f1ed]">
+                                {phase.title}
+                              </div>
+                              {isDevelopment && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 text-[#ff9800] dark:text-[#ffb74d] text-xs font-medium border border-[#ff9800]/20 dark:border-[#ffb74d]/20">
+                                  <Wrench className="h-3 w-3" />
+                                  In Entwicklung
+                                </span>
+                              )}
+                              {!isDevelopment && (
+                                <span className={`inline-flex h-2 w-2 rounded-full ${
+                                  phase.enabled ? 'bg-[#4caf50] animate-pulse' : 'bg-[#f44336]'
+                                }`} />
+                              )}
+                            </div>
+                            <p className="text-xs text-[#6b635a] dark:text-[#b8aea5]">
+                              {phase.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        {isDevelopment ? (
+                          <div className="rounded-lg bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 border border-[#ff9800]/20 dark:border-[#ffb74d]/20 px-4 py-3 text-center">
+                            <span className="text-xs font-medium text-[#ff9800] dark:text-[#ffb74d]">
+                              Diese Phase ist noch nicht fertig und kann nicht aktiviert werden
+                            </span>
+                          </div>
+                        ) : (
+                          <form action={togglePhaseAction}>
+                            <input type="hidden" name="phaseKey" value={phase.phase_key} />
+                            <input type="hidden" name="enabled" value={phase.enabled ? 'false' : 'true'} />
+                            <GlowButton
+                              variant={phase.enabled ? "secondary" : "primary"}
+                              className="w-full text-sm"
+                              iconLeft={phase.enabled ? <ToggleLeft className="h-4 w-4" /> : <CheckCircle2 className="h-4 w-4" />}
+                            >
+                              {phase.enabled ? 'Deaktivieren' : 'Aktivieren'}
+                            </GlowButton>
+                          </form>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-4 p-3 rounded-xl bg-[#2196f3]/5 dark:bg-[#64b5f6]/5 border border-[#2196f3]/20 dark:border-[#64b5f6]/20">
+                  <div className="text-xs text-[#6b635a] dark:text-[#b8aea5]">
+                    <strong className="text-[#2a2520] dark:text-[#f5f1ed]">💡 Info:</strong> Admins können deaktivierte Phasen trotzdem betreten (Testzwecke).
+                  </div>
+                </div>
+              </GlassCard>
+            )}
           </div>
         </div>
       </div>

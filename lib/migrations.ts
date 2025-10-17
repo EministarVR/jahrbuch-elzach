@@ -156,3 +156,39 @@ export async function ensureUserClassColumn(): Promise<boolean> {
     conn.release();
   }
 }
+
+export async function ensurePhaseSettings(): Promise<boolean> {
+  // Phase settings werden jetzt über schema.sql verwaltet
+  // Diese Funktion prüft nur noch, ob die Tabelle existiert
+  const conn = await getDbPool().getConnection();
+  try {
+    const hasTable = await tableExists(conn, 'phase_settings');
+    if (!hasTable) {
+      console.warn('phase_settings table does not exist. Please run schema.sql');
+    }
+    return hasTable;
+  } catch (e) {
+    console.error('Failed to check phase_settings table:', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
+
+export async function ensurePollsTable(): Promise<boolean> {
+  // Poll responses werden jetzt über schema.sql verwaltet
+  // Diese Funktion prüft nur noch, ob die Tabelle existiert
+  const conn = await getDbPool().getConnection();
+  try {
+    const hasTable = await tableExists(conn, 'poll_responses');
+    if (!hasTable) {
+      console.warn('poll_responses table does not exist. Please run schema.sql');
+    }
+    return hasTable;
+  } catch (e) {
+    console.error('Failed to check poll_responses table:', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}

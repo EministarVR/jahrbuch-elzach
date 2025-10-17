@@ -1,0 +1,181 @@
+{
+  "polls": [
+    {
+      "id": "jahrbuch-2025",
+      "title": "Jahrbuch 2025/2026 - Gestaltungsabstimmung",
+      "description": "Hilf uns, das beste Jahrbuch aller Zeiten zu gestalten! Deine Meinung zählt.",
+      "questions": [
+        {
+          "id": "cover-color",
+          "type": "multiple-choice",
+          "question": "Welche Farbe soll unser Jahrbuch-Cover haben?",
+          "required": true,
+          "options": [
+            { "value": "blau", "label": "Königsblau - Klassisch und elegant" },
+            { "value": "rot", "label": "Feuerrot - Mutig und energisch" },
+            { "value": "gruen", "label": "Waldgrün - Natürlich und beruhigend" },
+            { "value": "schwarz", "label": "Tiefschwarz - Modern und zeitlos" },
+            { "value": "gold", "label": "Gold - Luxuriös und festlich" },
+            { "value": "silber", "label": "Silber - Elegant und futuristisch" }
+          ]
+        },
+        {
+          "id": "design-style",
+          "type": "multiple-choice",
+          "question": "Welcher Design-Stil gefällt dir am besten?",
+          "required": true,
+          "options": [
+            { "value": "modern", "label": "🎨 Modern & Minimalistisch" },
+            { "value": "vintage", "label": "📷 Vintage & Retro" },
+            { "value": "bunt", "label": "🌈 Bunt & Kreativ" },
+            { "value": "elegant", "label": "✨ Elegant & Zeitlos" },
+            { "value": "verspielt", "label": "🎪 Verspielt & Fun" }
+          ]
+        },
+        {
+          "id": "yearbook-sections",
+          "type": "multiple-select",
+          "question": "Welche Bereiche sollen unbedingt ins Jahrbuch? (Mindestens 2 auswählen)",
+          "required": true,
+          "minSelections": 2,
+          "options": [
+            { "value": "klassenfotos", "label": "📸 Klassenfotos & Gruppenbilder" },
+            { "value": "lehrer-zitate", "label": "💬 Lustige Lehrer-Zitate" },
+            { "value": "schulausflug", "label": "🚌 Schulausflug-Highlights" },
+            { "value": "abistreich", "label": "🎭 Abistreich-Momente" },
+            { "value": "sportfest", "label": "⚽ Sportfest-Impressionen" },
+            { "value": "kursfahrten", "label": "🌍 Kursfahrten-Berichte" },
+            { "value": "interviews", "label": "🎤 Schüler-Interviews" },
+            { "value": "statistiken", "label": "📊 Fun Facts & Statistiken" },
+            { "value": "theater", "label": "🎬 Theater & Aufführungen" },
+            { "value": "projekte", "label": "🔬 Schulprojekte" }
+          ]
+        },
+        {
+          "id": "superlative-categories",
+          "type": "multiple-select",
+          "question": "Welche Superlativ-Kategorien sollen wir haben? (Mindestens 3 auswählen)",
+          "required": true,
+          "minSelections": 3,
+          "options": [
+            { "value": "klassenclown", "label": "🤡 Klassen-Clown" },
+            { "value": "organisationstalent", "label": "📋 Organisations-Talent" },
+            { "value": "sportass", "label": "🏆 Sport-Ass" },
+            { "value": "kuenstler", "label": "🎨 Künstler/in" },
+            { "value": "musikgenie", "label": "🎵 Musik-Genie" },
+            { "value": "mathegenie", "label": "🧮 Mathe-Genie" },
+            { "value": "modebewusst", "label": "👗 Modebewusst" },
+            { "value": "immerverspaetet", "label": "⏰ Immer verspätet" },
+            { "value": "partyloewe", "label": "🎉 Party-Löwe" },
+            { "value": "zuverlaessig", "label": "⭐ Zuverlässig" },
+            { "value": "technikfreak", "label": "💻 Technik-Freak" },
+            { "value": "besserwisser", "label": "🤓 Besserwisser/in" }
+          ]
+        },
+        {
+          "id": "special-features",
+          "type": "multiple-select",
+          "question": "Welche besonderen Features wünschst du dir?",
+          "required": false,
+          "options": [
+            { "value": "qr-codes", "label": "📱 QR-Codes zu Videos & Online-Galerien" },
+            { "value": "timeline", "label": "📅 Jahres-Timeline mit allen Events" },
+            { "value": "autogramme", "label": "✍️ Autogramm-Seiten" },
+            { "value": "steckbriefe", "label": "📝 Schüler-Steckbriefe" },
+            { "value": "comics", "label": "🎭 Comics & Illustrationen" },
+            { "value": "gedichte", "label": "📜 Gedichte & kreative Texte" },
+            { "value": "collage", "label": "🖼️ Foto-Collagen" },
+            { "value": "ranglisten", "label": "🏅 Top-10 Ranglisten" }
+          ]
+        },
+        {
+          "id": "event-rating",
+          "type": "slider",
+          "question": "Wie würdest du unsere Schulveranstaltungen insgesamt bewerten?",
+          "required": true,
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "labels": {
+            "min": "Langweilig 😴",
+            "max": "Fantastisch 🎉"
+          }
+        },
+        {
+          "id": "quote-rating",
+          "type": "slider",
+          "question": "Wie wichtig sind dir persönliche Zitate & Sprüche im Jahrbuch?",
+          "required": true,
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "labels": {
+            "min": "Unwichtig",
+            "max": "Sehr wichtig"
+          }
+        },
+        {
+          "id": "additional-pages",
+          "type": "slider",
+          "question": "Wie viele Seiten sollte das Jahrbuch idealerweise haben?",
+          "required": true,
+          "min": 50,
+          "max": 200,
+          "step": 10,
+          "labels": {
+            "min": "Kompakt 📖",
+            "max": "Umfangreich 📚"
+          }
+        },
+        {
+          "id": "favorite-memory",
+          "type": "text",
+          "question": "Was war dein schönstes Erlebnis in diesem Schuljahr?",
+          "required": true,
+          "placeholder": "Erzähl uns von deinem Lieblings-Moment...",
+          "maxLength": 500
+        },
+        {
+          "id": "motto-suggestion",
+          "type": "text",
+          "question": "Hast du eine Idee für unser Jahrbuch-Motto?",
+          "required": false,
+          "placeholder": "z.B. 'Unvergessliche Momente', 'Gemeinsam stark', 'Mehr als Schule'...",
+          "maxLength": 100
+        },
+        {
+          "id": "teacher-spotlight",
+          "type": "multiple-choice",
+          "question": "Sollen wir eine 'Lehrer-Spotlight' Sektion haben?",
+          "required": true,
+          "options": [
+            { "value": "ja-interview", "label": "✅ Ja, mit Interviews" },
+            { "value": "ja-zitate", "label": "✅ Ja, mit lustigen Zitaten" },
+            { "value": "ja-fotos", "label": "✅ Ja, mit Fotos & Fun Facts" },
+            { "value": "nein", "label": "❌ Nein, lieber nicht" }
+          ]
+        },
+        {
+          "id": "photo-style",
+          "type": "multiple-choice",
+          "question": "Welcher Foto-Stil soll im Jahrbuch vorherrschen?",
+          "required": true,
+          "options": [
+            { "value": "schwarz-weiss", "label": "⬛ Schwarz-Weiß (klassisch)" },
+            { "value": "farbe", "label": "🌈 Vollfarbe (lebendig)" },
+            { "value": "mix", "label": "🎨 Mix aus beidem" },
+            { "value": "filter", "label": "📸 Mit coolen Filtern" }
+          ]
+        },
+        {
+          "id": "feedback",
+          "type": "text",
+          "question": "Weitere Anregungen, Wünsche oder Ideen für unser Jahrbuch?",
+          "required": false,
+          "placeholder": "Teile uns hier alles mit, was dir noch am Herzen liegt...",
+          "maxLength": 1000
+        }
+      ]
+    }
+  ]
+}

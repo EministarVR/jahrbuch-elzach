@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS submission_audit (
   FOREIGN KEY (actor_user_id) REFERENCES users(id)
 );
 
-
 -- Banned users (by user id)
 CREATE TABLE IF NOT EXISTS banned_users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,4 +61,38 @@ CREATE TABLE IF NOT EXISTS banned_ips (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uniq_ip (ip),
   FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+-- Phase Settings (Phasensteuerung)
+CREATE TABLE IF NOT EXISTS phase_settings (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  phase_key VARCHAR(50) NOT NULL UNIQUE,
+  enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NULL,
+  status VARCHAR(50) DEFAULT 'active',
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  updated_by INT NULL,
+  FOREIGN KEY (updated_by) REFERENCES users(id)
+);
+
+-- Default phase settings
+INSERT INTO phase_settings (phase_key, enabled, title, description, status) VALUES
+  ('phase-1', TRUE, 'Phase 1: Einsendungen', 'Reiche deine Inhalte für das Jahrbuch ein', 'active'),
+  ('phase-2', FALSE, 'Phase 2: Abstimmungen', 'Stimme über verschiedene Jahrbuch-Themen ab', 'active'),
+  ('phase-3', FALSE, 'Phase 3: Finalisierung', 'Letzte Anpassungen und Vorschau', 'development');
+
+-- Poll Responses (Umfrage-Antworten)
+CREATE TABLE IF NOT EXISTS poll_responses (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  poll_id VARCHAR(100) NOT NULL,
+  question_id VARCHAR(100) NOT NULL,
+  answer_value TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_user_question (user_id, question_id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  INDEX idx_poll (poll_id),
+  INDEX idx_question (question_id)
 );

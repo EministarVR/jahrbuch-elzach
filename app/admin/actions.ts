@@ -295,3 +295,45 @@ export async function unbanIpAction(formData: FormData) {
   await conn.execute('DELETE FROM banned_ips WHERE ip = ?', [ip]);
   revalidatePath('/admin');
 }
+
+// Admin-only: toggle phase
+export async function togglePhaseAction(formData: FormData) {
+  const session = await getSession();
+  if (!session) redirect('/login');
+  if (session.role !== 'admin') redirect('/zugriff-verweigert');
+
+  const phaseKey = String(formData.get('phaseKey') || '').trim();
+  const enabled = formData.get('enabled') === 'true';
+
+  if (!phaseKey) {
+    throw new Error('Phase key is required');
+  }
+
+  const conn = await getDbPool().getConnection();
+  try {
+    await conn.execute(
+      'UPDATE phase_settings SET enabled = ?, updated_by = ?, updated_at = NOW() WHERE phase_key = ?',
+      [enabled, session.userId, phaseKey]
+    );
+
+    console.log(`Phase ${phaseKey} wurde ${enabled ? 'aktiviert' : 'deaktiviert'}`);
+  } catch (error) {
+    console.error('Error toggling phase:', error);
+    throw error;
+  } finally {
+    conn.release();
+  }
+
+  // Revalidate alle relevanten Pfade - mit kleiner Verzögerung für DB-Replikation
+  await new Promise(resolve => setTimeout(resolve, 100));
+
+  revalidatePath('/admin', 'page');
+  revalidatePath('/', 'page');
+  revalidatePath('/phase-1', 'page');
+  revalidatePath('/phase-2', 'page');
+  revalidatePath('/phase-3', 'page');
+  revalidatePath('/admin', 'layout');
+  revalidatePath('/', 'layout');
+
+  redirect('/admin');
+}

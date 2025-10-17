@@ -3,13 +3,14 @@ import { getSession } from '@/lib/session';
 import { getDbPool } from '@/lib/db';
 import { ensureModerationSchema } from '@/lib/migrations';
 import { CATEGORIES } from '@/lib/constants';
+import { canAccessPhase } from '@/lib/phases';
 import GlassCard from '@/components/ui/GlassCard';
 import GlowButton from '@/components/ui/GlowButton';
 import MotionFade from '@/components/ui/MotionFade';
 import TiltCard from '@/components/ui/TiltCard';
 import SubmissionForm from './SubmissionForm';
 import type { ResultSetHeader } from 'mysql2';
-import { Info, Shield, Send, FileText, CheckCircle2, Lightbulb } from 'lucide-react';
+import { Shield, Send, FileText, CheckCircle2, Lightbulb } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,6 +60,13 @@ export default async function Phase1Page({
 }) {
   const session = await getSession();
   if (!session) redirect('/login');
+
+  // Prüfe ob der Benutzer auf diese Phase zugreifen darf
+  const canAccess = await canAccessPhase('phase-1', session.role);
+  if (!canAccess) {
+    redirect('/unauthorized');
+  }
+
   const sp = searchParams ? await searchParams : undefined;
   const isSuccess = sp?.success === '1';
 
