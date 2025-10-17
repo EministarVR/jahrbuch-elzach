@@ -1,6 +1,6 @@
 "use client";
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import { forwardRef, PropsWithChildren, HTMLAttributes } from "react";
+import { forwardRef } from "react";
 
 type MotionFadeProps = HTMLMotionProps<"div"> & {
   delay?: number;

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getSession } from "@/lib/session";
 import { canAccessPhase } from "@/lib/phases";
 import GlassCard from "@/components/ui/GlassCard";
@@ -33,12 +34,12 @@ export default async function Phase3Page() {
                 Die Gestaltungsphase wurde noch nicht freigeschaltet. Bitte warte
                 auf weitere Informationen.
               </p>
-              <a
+              <Link
                 href="/"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-br from-[#d97757] to-[#c96846] text-white font-medium hover:from-[#e89a7a] hover:to-[#d97757] transition-all"
               >
                 Zurück zur Startseite
-              </a>
+              </Link>
             </div>
           </GlassCard>
         </div>

@@ -1,4 +1,3 @@
-import FancyHeading from "@/components/ui/FancyHeading";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import { ShieldAlert, Home, ArrowLeft } from "lucide-react";
