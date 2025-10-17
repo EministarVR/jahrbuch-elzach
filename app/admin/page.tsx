@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { query } from "@/lib/db";
 import { ensureModerationSchema } from "@/lib/migrations";
-import FancyHeading from "@/components/ui/FancyHeading";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import {

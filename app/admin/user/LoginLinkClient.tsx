@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition } from "react";
 import GlowButton from "@/components/ui/GlowButton";
 import { Copy, Download, ExternalLink, QrCode, CheckCircle2, RefreshCw, Share2, Mail, MessageCircle, Printer } from "lucide-react";
 
@@ -179,7 +179,7 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
           </div>
           
           <div class="footer">
-            <strong>💡 So funktioniert's:</strong>
+            <strong>💡 So funktioniert&apos;s:</strong>
             <ul>
               <li>Scanne den QR-Code mit deinem Smartphone</li>
               <li>Oder öffne den Login-Link im Browser</li>
@@ -399,7 +399,7 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
                   <div>• QR-Code scannen für sofortigen Login</div>
                   <div>• Link funktioniert auf allen Geräten</div>
                   <div>• Login-Daten können mehrfach genutzt werden</div>
-                  <div>• Über "Teilen" Button versenden oder drucken</div>
+                  <div>• Über &quot;Teilen&quot; Button versenden oder drucken</div>
                 </div>
               </div>
             </div>
