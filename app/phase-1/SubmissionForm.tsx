@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import GlowButton from "@/components/ui/GlowButton";
-import { User, Phone } from "lucide-react";
+import { User, Phone, Send } from "lucide-react";
 import clsx from "clsx";
 import { useFormStatus } from "react-dom";
 import { CATEGORIES } from "@/lib/constants";
@@ -14,8 +14,14 @@ type Props = {
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
-    <GlowButton type="submit" variant="gradient" className="w-full sm:w-auto" loading={pending}>
-      Absenden
+    <GlowButton
+      type="submit"
+      variant="gradient"
+      className="w-full sm:w-auto px-8"
+      loading={pending}
+      iconLeft={<Send className="h-4 w-4" />}
+    >
+      {pending ? "Wird gesendet..." : "Absenden"}
     </GlowButton>
   );
 }
@@ -28,40 +34,48 @@ export default function SubmissionForm({ action }: Props) {
   const nearLimit = used > max * 0.9;
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-6">
       <div>
-        <label htmlFor="text" className="block text-sm font-medium mb-2 text-base-strong">
-          Text
+        <label
+          htmlFor="text"
+          className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+        >
+          Dein Text *
         </label>
         <textarea
           id="text"
           name="text"
           required
           maxLength={max}
-          rows={8}
-          placeholder="Dein Text..."
+          rows={10}
+          placeholder="Schreib hier deine Geschichte, Erinnerung oder was auch immer du teilen möchtest..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className={clsx(
-            // Mobile: strukturierte Surface mit Verlauf, sichtbarer Rahmen/Schatten
-            "textarea-base",
-            // Desktop darf leicht transparenter wirken über Card
-            "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]"
-          )}
+          className="textarea-base"
         />
-        <div className="mt-2 flex items-center justify-between text-xs">
-          <span className={clsx("text-base-muted", nearLimit && "text-amber-600 dark:text-amber-400")} aria-live="polite">
-            {used}/{max} Zeichen
+        <div className="mt-3 flex items-center justify-between text-xs">
+          <span
+            className={clsx(
+              "font-medium transition-colors",
+              nearLimit
+                ? "text-[#c96846] dark:text-[#d97757]"
+                : "text-[#7a9b88] dark:text-[#8faf9d]"
+            )}
+            aria-live="polite"
+          >
+            {used} / {max} Zeichen
           </span>
-          <span className="text-base-muted">Bis zu {max} Zeichen</span>
+          <span className="text-[#6b635a] dark:text-[#b8aea5]">
+            {max - used} verbleibend
+          </span>
         </div>
-        <div className="mt-2 h-1.5 rounded-full bg-slate-200/70 dark:bg-white/10 ring-1 ring-black/5 dark:ring-white/10 overflow-hidden">
+        <div className="mt-2 h-2 rounded-full bg-[#d97757]/10 dark:bg-[#e89a7a]/10 overflow-hidden shadow-inner">
           <div
             className={clsx(
-              "h-full rounded-full transition-all duration-300",
+              "h-full rounded-full transition-all duration-500 ease-out",
               nearLimit
-                ? "bg-[linear-gradient(90deg,rgba(245,158,11,0.9),rgba(251,191,36,0.9))]"
-                : "bg-[linear-gradient(90deg,rgba(99,102,241,0.9),rgba(59,130,246,0.9))]"
+                ? "bg-gradient-to-r from-[#c96846] to-[#d97757] shadow-lg shadow-[#c96846]/30"
+                : "bg-gradient-to-r from-[#7a9b88] to-[#8faf9b] shadow-lg shadow-[#7a9b88]/20"
             )}
             style={{ width: `${ratio * 100}%` }}
           />
@@ -69,23 +83,21 @@ export default function SubmissionForm({ action }: Props) {
       </div>
 
       <div>
-        <label htmlFor="category" className="block text-sm font-medium mb-2 text-base-strong">
-          Kategorie
+        <label
+          htmlFor="category"
+          className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+        >
+          Kategorie *
         </label>
         <select
           id="category"
           name="category"
           required
-          className={clsx(
-            "input-base",
-            // Select braucht kein Icon-Padding links
-            "pl-4 pr-10",
-            "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]"
-          )}
+          className="input-base"
           defaultValue=""
         >
           <option value="" disabled>
-            Bitte auswählen...
+            Wähle eine Kategorie aus...
           </option>
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
@@ -93,50 +105,57 @@ export default function SubmissionForm({ action }: Props) {
             </option>
           ))}
         </select>
+        <p className="mt-2 text-xs text-[#6b635a] dark:text-[#b8aea5]">
+          Hilft uns, deinen Beitrag richtig einzuordnen
+        </p>
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid sm:grid-cols-2 gap-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium mb-2 text-base-strong">
-            Name (optional)
+          <label
+            htmlFor="name"
+            className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+          >
+            Name{" "}
+            <span className="text-[#6b635a] dark:text-[#b8aea5] font-normal">
+              (optional)
+            </span>
           </label>
           <div className="relative">
-            <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-600/70" />
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#7a9b88] dark:text-[#8faf9d] pointer-events-none" />
             <input
               id="name"
               name="name"
-              placeholder="Vor- und Nachname"
-              className={clsx(
-                "input-base pl-10",
-                "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]",
-                "placeholder:text-base-muted"
-              )}
+              type="text"
+              placeholder="Max Mustermann"
+              className="input-base pl-12"
             />
           </div>
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-medium mb-2 text-base-strong">
-            Telefon (optional)
+          <label
+            htmlFor="phone"
+            className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+          >
+            Telefon{" "}
+            <span className="text-[#6b635a] dark:text-[#b8aea5] font-normal">
+              (optional)
+            </span>
           </label>
           <div className="relative">
-            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-indigo-600/70" />
+            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#7a9b88] dark:text-[#8faf9d] pointer-events-none" />
             <input
               id="phone"
               name="phone"
               type="tel"
-              inputMode="tel"
-              placeholder="z. B. 0176 12345678"
-              className={clsx(
-                "input-base pl-10",
-                "md:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8))] md:dark:bg-[linear-gradient(145deg,rgba(34,43,56,0.92),rgba(28,36,52,0.8))]",
-                "placeholder:text-base-muted"
-              )}
+              placeholder="+49 123 456789"
+              className="input-base pl-12"
             />
           </div>
         </div>
       </div>
 
-      <div className="pt-2 flex items-center gap-3">
+      <div className="pt-4 border-t border-[#d97757]/10 dark:border-[#e89a7a]/10">
         <SubmitButton />
       </div>
     </form>

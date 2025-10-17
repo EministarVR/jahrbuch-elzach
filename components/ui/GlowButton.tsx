@@ -37,38 +37,60 @@ export default function GlowButton({
 }: Props) {
   const styles: Record<string, string> = {
     primary: [
-      "bg-gradient-to-b from-indigo-600 to-indigo-700",
-      "hover:from-indigo-500 hover:to-indigo-600",
-      "text-white shadow-md shadow-indigo-700/30 dark:shadow-indigo-500/30",
+      "bg-gradient-to-br from-[#d97757] to-[#c96846]",
+      "hover:from-[#e89a7a] hover:to-[#d97757]",
+      "text-white shadow-md shadow-[#d97757]/20 hover:shadow-lg hover:shadow-[#d97757]/30",
+      "border border-[#e89a7a]/30 hover:border-[#e89a7a]/50",
+      "relative overflow-hidden",
+      "before:absolute before:inset-0 before:bg-gradient-to-t before:from-transparent before:via-white/10 before:to-white/20",
+      "after:absolute after:inset-0 after:rounded-2xl after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300",
+      "after:bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.3),transparent_50%)]",
     ].join(" "),
     secondary: [
-      "bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(255,255,255,0.82))]",
-      "hover:bg-[linear-gradient(145deg,rgba(255,255,255,0.98),rgba(255,255,255,0.9))]",
-      "text-slate-900 ring-1 ring-slate-200 dark:bg-[linear-gradient(145deg,rgba(46,56,74,.9),rgba(40,49,66,.85))] dark:text-slate-100 dark:ring-slate-700 dark:hover:bg-[linear-gradient(145deg,rgba(52,63,82,.95),rgba(46,56,74,.9))]",
+      "bg-white/70 dark:bg-[#2a2520]/70 backdrop-blur-sm",
+      "hover:bg-white/90 dark:hover:bg-[#2a2520]/90",
+      "text-[#2a2520] dark:text-[#f5f1ed]",
+      "border border-[#d97757]/20 dark:border-[#e89a7a]/20",
+      "hover:border-[#d97757]/40 dark:hover:border-[#e89a7a]/40",
+      "shadow-sm shadow-[#2a2520]/5 hover:shadow-md hover:shadow-[#d97757]/10",
+      "relative overflow-hidden",
+      "before:absolute before:inset-0 before:bg-gradient-to-br before:from-[#d97757]/0 before:to-[#7a9b88]/0",
+      "hover:before:from-[#d97757]/5 hover:before:to-[#7a9b88]/5 before:transition-all before:duration-300",
     ].join(" "),
-    ghost:
-      "bg-transparent hover:bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 dark:hover:bg-indigo-400/15",
+    ghost: [
+      "bg-transparent hover:bg-[#d97757]/8 active:bg-[#d97757]/12",
+      "text-[#d97757] dark:text-[#e89a7a]",
+      "hover:text-[#c96846] dark:hover:text-[#d97757]",
+      "border border-transparent hover:border-[#d97757]/20 dark:hover:border-[#e89a7a]/20",
+      "relative overflow-hidden",
+      "after:absolute after:inset-0 after:rounded-2xl after:border after:border-[#d97757]/0",
+      "hover:after:border-[#d97757]/30 after:transition-all after:duration-300",
+    ].join(" "),
     gradient: [
-      "relative text-white",
-      "bg-[linear-gradient(135deg,#6366f1_0%,#6d5ff5_22%,#7c60f4_45%,#5b8ef5_70%,#3aa6ff_100%)]",
-      "shadow-[0_4px_14px_-4px_rgba(79,70,229,0.45),0_10px_28px_-6px_rgba(56,189,248,0.35)]",
-      "hover:shadow-[0_6px_18px_-4px_rgba(79,70,229,0.55),0_16px_36px_-8px_rgba(56,189,248,0.45)]",
-      "before:absolute before:inset-0 before:rounded-[inherit] before:pointer-events-none before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500",
-      "before:bg-[radial-gradient(circle_at_25%_15%,rgba(255,255,255,0.55),rgba(255,255,255,0)_55%),radial-gradient(circle_at_75%_85%,rgba(255,255,255,0.35),rgba(255,255,255,0)_65%)]",
-      "after:absolute after:inset-0 after:rounded-[inherit] after:border after:border-white/30 after:dark:border-white/10",
+      "relative text-white overflow-hidden",
+      "bg-gradient-to-br from-[#d97757] via-[#7a9b88] to-[#b8957a]",
+      "hover:from-[#e89a7a] hover:via-[#8faf9d] hover:to-[#c9a68a]",
+      "shadow-lg shadow-[#d97757]/20 hover:shadow-xl hover:shadow-[#d97757]/30",
+      "border border-white/20 hover:border-white/40",
+      "before:absolute before:inset-0 before:bg-gradient-to-br before:from-white/20 before:via-transparent before:to-transparent",
+      "after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/10 after:to-transparent",
+      "before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-500",
+      "[&>*]:relative [&>*]:z-10",
     ].join(" "),
   };
+
   const base = clsx(
-    "group inline-flex items-center justify-center gap-2 rounded-[var(--radius)] px-5 py-3 font-medium select-none",
-    "transition-all duration-400 ease-[var(--ease-emphasized)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70",
-    "active:scale-[.97]",
+    "group inline-flex items-center justify-center gap-2.5 rounded-xl px-5 py-2.5 font-semibold text-sm select-none",
+    "transition-all duration-300 ease-out",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d97757] focus-visible:ring-offset-2",
+    "focus-visible:ring-offset-[#faf8f5] dark:focus-visible:ring-offset-[#1a1714]",
+    "active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60",
+    "hover:scale-[1.02] active:translate-y-[1px]",
     styles[variant],
-    variant === "primary" && "hover:translate-y-[-2px] active:translate-y-0",
-    variant === "gradient" &&
-      "hover:translate-y-[-3px] active:translate-y-0 has-sheen",
     className,
-    loading && "cursor-not-allowed opacity-80"
+    loading && "cursor-not-allowed opacity-70"
   );
+
   if (as === "a") {
     const anchorProps = rest as AnchorHTMLAttributes<HTMLAnchorElement>;
     return (
@@ -76,12 +98,13 @@ export default function GlowButton({
         {iconLeft}
         <span className="relative flex items-center gap-2">
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-          <span>{children}</span>
+          <span className="relative z-10">{children}</span>
         </span>
         {iconRight}
       </a>
     );
   }
+
   const buttonProps = rest as ButtonHTMLAttributes<HTMLButtonElement>;
   return (
     <button
@@ -92,7 +115,7 @@ export default function GlowButton({
       {iconLeft}
       <span className="relative flex items-center gap-2">
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-        <span>{children}</span>
+        <span className="relative z-10">{children}</span>
       </span>
       {iconRight}
     </button>

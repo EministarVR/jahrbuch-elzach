@@ -31,15 +31,15 @@ export default function LoginClient() {
         if (!json.success) {
           triggerError(
             json.error === "Invalid credentials"
-              ? "Login fehlgeschlagen."
-              : json.error || "Fehler"
+              ? "Login fehlgeschlagen. Bitte überprüfe deine Daten."
+              : json.error || "Ein Fehler ist aufgetreten"
           );
         } else {
           // Redirect back to /login to allow server-side role-based redirect
           window.location.href = "/login";
         }
       } catch {
-        triggerError("Netzwerkfehler.");
+        triggerError("Netzwerkfehler. Bitte versuche es erneut.");
       }
     });
   };
@@ -60,53 +60,77 @@ export default function LoginClient() {
   return (
     <form
       onSubmit={handleSubmit}
-      className={
-        "relative z-10 px-8 pt-8 pb-6 space-y-5 " +
-        (shake ? "animate-shake" : "")
-      }
+      className={shake ? "animate-shake" : ""}
       noValidate
     >
-      <div className="relative">
-        <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-indigo-500/70 dark:text-indigo-300/70" />
-        <input
-          name="username"
-          placeholder="Username"
-          autoComplete="username"
-          aria-label="Username"
-          className="input-base pl-12 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-          required
-        />
-      </div>
-      <div className="relative">
-        <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-indigo-500/70 dark:text-indigo-300/70" />
-        <input
-          name="password"
-          placeholder="Passwort"
-          type="password"
-          autoComplete="current-password"
-          aria-label="Passwort"
-          className="input-base pl-12 placeholder:text-slate-400 dark:placeholder:text-slate-500"
-          required
-        />
-      </div>
-      {error && (
-        <div
-          className="flex items-start gap-2 rounded-lg border border-red-300/60 dark:border-red-500/30 bg-red-50/90 dark:bg-red-900/20 px-3 py-2 text-xs text-red-700 dark:text-red-300 shadow-sm"
-          role="alert"
-          aria-live="assertive"
-        >
-          <AlertCircle className="h-4 w-4 mt-0.5" />
-          <span>{error}</span>
+      <div className="space-y-5">
+        <div>
+          <label
+            htmlFor="username"
+            className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+          >
+            Username
+          </label>
+          <div className="relative">
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#d97757]/60 dark:text-[#e89a7a]/60 pointer-events-none transition-colors" />
+            <input
+              id="username"
+              name="username"
+              type="text"
+              placeholder="vorname.nachname"
+              autoComplete="username"
+              aria-label="Username"
+              className="input-base pl-12"
+              required
+            />
+          </div>
         </div>
-      )}
-      <GlowButton
-        className="w-full h-12 text-[0.95rem] font-medium tracking-tight"
-        variant="gradient"
-        loading={isPending}
-        iconRight={<ArrowRight className="h-4 w-4" />}
-      >
-        Einloggen
-      </GlowButton>
+
+        <div>
+          <label
+            htmlFor="password"
+            className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+          >
+            Passwort
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#d97757]/60 dark:text-[#e89a7a]/60 pointer-events-none transition-colors" />
+            <input
+              id="password"
+              name="password"
+              type="password"
+              placeholder="••••••••"
+              autoComplete="current-password"
+              aria-label="Passwort"
+              className="input-base pl-12"
+              required
+            />
+          </div>
+        </div>
+
+        {error && (
+          <div
+            className="flex items-start gap-3 rounded-xl border border-[#c96846]/40 dark:border-[#d97757]/40 bg-[#c96846]/10 dark:bg-[#d97757]/10 px-4 py-3 text-sm text-[#c96846] dark:text-[#e89a7a] shadow-lg animate-[fade-in_0.3s_ease-out]"
+            role="alert"
+            aria-live="assertive"
+          >
+            <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+            <span className="leading-relaxed">{error}</span>
+          </div>
+        )}
+
+        <div className="pt-2">
+          <GlowButton
+            type="submit"
+            variant="gradient"
+            className="w-full justify-center"
+            loading={isPending}
+            iconRight={<ArrowRight className="h-5 w-5" />}
+          >
+            {isPending ? "Anmeldung läuft..." : "Jetzt anmelden"}
+          </GlowButton>
+        </div>
+      </div>
     </form>
   );
 }

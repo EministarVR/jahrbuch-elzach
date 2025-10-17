@@ -1,7 +1,7 @@
 "use client";
 import { createContext, useContext, PropsWithChildren } from "react";
 
-type Theme = "dark";
+type Theme = "dark" | "light";
 interface ThemeContextValue {
   theme: Theme;
   toggle: () => void;

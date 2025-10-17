@@ -3,14 +3,13 @@ import { getSession } from '@/lib/session';
 import { getDbPool } from '@/lib/db';
 import { ensureModerationSchema } from '@/lib/migrations';
 import { CATEGORIES } from '@/lib/constants';
-import FancyHeading from '@/components/ui/FancyHeading';
 import GlassCard from '@/components/ui/GlassCard';
 import GlowButton from '@/components/ui/GlowButton';
 import MotionFade from '@/components/ui/MotionFade';
 import TiltCard from '@/components/ui/TiltCard';
 import SubmissionForm from './SubmissionForm';
 import type { ResultSetHeader } from 'mysql2';
-import { Info, Shield, Sparkles, FileText, CheckCircle2 } from 'lucide-react';
+import { Info, Shield, Send, FileText, CheckCircle2, Lightbulb } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,7 +26,6 @@ async function submitAction(formData: FormData) {
   }
   if (!text.trim()) return;
 
-  // Ensure schema exists (status columns + submission_audit)
   await ensureModerationSchema();
 
   const conn = await getDbPool().getConnection();
@@ -65,44 +63,49 @@ export default async function Phase1Page({
   const isSuccess = sp?.success === '1';
 
   return (
-    <div className="relative min-h-dvh bg-gradient-to-b from-indigo-50 to-white md:from-indigo-50/70 dark:from-slate-950 dark:to-slate-900 overflow-hidden">
-      {/* Ambient background gradients */}
+    <div className="relative min-h-dvh bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714] overflow-hidden">
+      {/* Subtile Hintergrundeffekte */}
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-gradient-to-br from-indigo-400/25 via-indigo-500/15 to-sky-400/25 blur-3xl opacity-70 dark:opacity-40" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-gradient-to-tr from-sky-400/30 via-indigo-400/20 to-fuchsia-400/25 blur-3xl opacity-75 dark:opacity-40" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-64 w-[80%] bg-gradient-to-t from-indigo-100/70 via-transparent to-transparent dark:from-indigo-900/30" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-12">
-        <FancyHeading
-          center
-          subtitle="Schick uns deinen Beitrag fürs Jahrbuch – persönlich, kreativ oder ganz sachlich. Wir kümmern uns um den Rest."
-        >
-          Phase 1 – Einsenden
-        </FancyHeading>
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+            <Send className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
+            <span className="text-xs font-medium tracking-wide uppercase text-[#7a9b88] dark:text-[#8faf9d]">
+              Jetzt aktiv
+            </span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+            Phase 1 – Einsenden
+          </h1>
+          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+            Schick uns deinen Beitrag fürs Jahrbuch – persönlich, kreativ oder ganz sachlich. Wir kümmern uns um den Rest.
+          </p>
+        </div>
 
         {isSuccess && (
           <MotionFade>
             <GlassCard
               fade={false}
-              className="mb-8 bg-[linear-gradient(180deg,rgba(22,163,74,0.08),rgba(22,163,74,0.02))]"
+              className="mb-8"
               header={
-                <div className="flex items-center gap-3 text-emerald-700 dark:text-emerald-300">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-emerald-500/10 ring-1 ring-emerald-500/20">
+                <div className="flex items-center gap-3 text-[#7a9b88] dark:text-[#8faf9d]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10">
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold">Danke für deinen Beitrag!</h3>
+                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Danke für deinen Beitrag!</h3>
                 </div>
               }
             >
-              <p className="text-sm text-base-muted">
+              <p className="text-sm text-[#6b635a] dark:text-[#b8aea5] mb-4">
                 Dein Text wurde gespeichert. Du kannst gerne noch einen weiteren Beitrag einsenden.
               </p>
-              <div className="pt-4">
-                <GlowButton as="a" href="/" variant="secondary">
-                  Zur Startseite
-                </GlowButton>
-              </div>
+              <GlowButton as="a" href="/" variant="secondary">
+                Zur Startseite
+              </GlowButton>
             </GlassCard>
           </MotionFade>
         )}
@@ -113,29 +116,28 @@ export default async function Phase1Page({
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
                     <FileText className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-base-strong">Dein Beitrag</h3>
-                    <p className="text-sm text-base-muted">Max. 2000 Zeichen. Du kannst optional Name und Telefon hinterlassen.</p>
+                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Dein Beitrag</h3>
+                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Max. 2000 Zeichen. Du kannst optional Name und Telefon hinterlassen.</p>
                   </div>
                 </div>
               }
               footer={
-                <div className="flex items-center justify-between flex-wrap gap-3 text-sm text-base-muted">
+                <div className="flex items-center justify-between flex-wrap gap-3 text-sm text-[#6b635a] dark:text-[#b8aea5]">
                   <div className="inline-flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-indigo-600" />
+                    <Shield className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
                     <span>Wir behandeln deine Angaben vertraulich.</span>
                   </div>
                   <div className="inline-flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-indigo-600" />
-                    <span>Danke fürs Mitmachen! 💙</span>
+                    <Send className="h-4 w-4 text-[#d97757] dark:text-[#e89a7a]" />
+                    <span>Danke fürs Mitmachen!</span>
                   </div>
                 </div>
               }
             >
-              {/* Client-Form mit Zeichenzähler & Loading */}
               <SubmissionForm action={submitAction} />
             </GlassCard>
           </div>
@@ -144,42 +146,40 @@ export default async function Phase1Page({
           <div className="lg:col-span-1">
             <TiltCard>
               <GlassCard
-                className="bg-[linear-gradient(180deg,rgba(99,102,241,0.08),rgba(99,102,241,0.02))]"
                 header={
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
-                      <Info className="h-5 w-5" />
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                      <Lightbulb className="h-5 w-5" />
                     </span>
-                    <h3 className="text-lg font-semibold text-base-strong">Tipps</h3>
+                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Tipps</h3>
                   </div>
                 }
                 hover
               >
-                <ul className="space-y-3 text-sm text-base-muted">
+                <ul className="space-y-3 text-sm text-[#6b635a] dark:text-[#b8aea5]">
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-indigo-600">•</span>
+                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
                     Schreib so, wie du es deinen Freund:innen erzählen würdest.
                   </li>
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-indigo-600">•</span>
+                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
                     Nenne Namen nur, wenn alle damit einverstanden sind.
                   </li>
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-indigo-600">•</span>
+                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
                     Kein Stress: Kurze Beiträge sind genauso willkommen!
                   </li>
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-indigo-600">•</span>
+                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
                     Fragen oder Probleme? Wende dich an die Schulsprecher:innen (SMV).
                   </li>
                 </ul>
 
                 <MotionFade delay={0.08} className="mt-6">
-                  <div className="rounded-2xl p-4 bg-slate-900/60 ring-1 ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 md:ring-black/5 md:dark:ring-white/10">
-                    <p className="text-sm text-base-strong mb-1">Transparenz</p>
-                    <p className="text-sm text-base-muted">
-                      Beiträge werden vor der Veröffentlichung kurz gesichtet –
-                      nur für Rechtschreibung und Inhalt.
+                  <div className="rounded-xl p-4 bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+                    <p className="text-sm font-semibold text-[#2a2520] dark:text-[#f5f1ed] mb-1">Transparenz</p>
+                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                      Beiträge werden vor der Veröffentlichung kurz gesichtet – nur für Rechtschreibung und Inhalt.
                     </p>
                   </div>
                 </MotionFade>

@@ -1,26 +1,35 @@
-import FancyHeading from "@/components/ui/FancyHeading";
 import GlassCard from "@/components/ui/GlassCard";
 import TiltCard from "@/components/ui/TiltCard";
 import MotionFade from "@/components/ui/MotionFade";
 import GlowButton from "@/components/ui/GlowButton";
-import { Shield, Cookie, Database, Lock, Info } from "lucide-react";
+import { Shield, Cookie, Database, Lock, Info, Home } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default function DatenschutzPage() {
   const lastUpdate = new Date().toLocaleDateString("de-DE", { year: "numeric", month: "2-digit", day: "2-digit" });
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-indigo-50 to-white md:from-indigo-50/70 dark:from-slate-950 dark:to-slate-900">
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]">
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-gradient-to-br from-indigo-400/25 via-indigo-500/15 to-sky-400/25 blur-3xl opacity-70 dark:opacity-40" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-gradient-to-tr from-sky-400/30 via-indigo-400/20 to-fuchsia-400/25 blur-3xl opacity-75 dark:opacity-40" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-64 w-[80%] bg-gradient-to-t from-indigo-100/70 via-transparent to-transparent dark:from-indigo-900/30" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-12 space-y-8">
-        <FancyHeading center subtitle="Wie wir mit deinen Daten umgehen – klar, knapp und transparent.">
-          Datenschutz
-        </FancyHeading>
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+            <Shield className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
+            <span className="text-xs font-medium tracking-wide uppercase text-[#7a9b88] dark:text-[#8faf9d]">
+              DSGVO-konform
+            </span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+            Datenschutz
+          </h1>
+          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+            Wie wir mit deinen Daten umgehen – klar, knapp und transparent.
+          </p>
+        </div>
 
         {/* Mobile: schnelles Inhaltsverzeichnis */}
         <nav aria-label="Inhaltsverzeichnis" className="md:hidden sticky top-16 z-10 -mt-2">
@@ -35,7 +44,7 @@ export default function DatenschutzPage() {
               <a
                 key={item.href}
                 href={item.href}
-                className="inline-flex items-center px-3 py-2 rounded-xl bg-slate-900/60 text-slate-200 ring-1 ring-white/10 whitespace-nowrap text-sm shadow-[0_2px_10px_-4px_rgba(0,0,0,0.5)]"
+                className="inline-flex items-center px-3 py-2 rounded-xl bg-[#2a2520]/60 dark:bg-[#2a2520]/80 text-[#f5f1ed] border border-[#d97757]/10 whitespace-nowrap text-sm shadow-lg"
               >
                 {item.label}
               </a>
@@ -48,24 +57,23 @@ export default function DatenschutzPage() {
             <div id="kurzfassung" className="scroll-mt-20">
               <TiltCard>
                 <GlassCard
-                  className="bg-[linear-gradient(180deg,rgba(99,102,241,0.08),rgba(99,102,241,0.02))]"
                   header={
                     <div className="flex items-center gap-3">
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
                         <Shield className="h-5 w-5" />
                       </span>
                       <div>
-                        <h3 className="text-lg font-semibold text-base-strong">Kurzfassung</h3>
-                        <p className="text-sm text-base-muted">Keine Werbung, kein Tracking, nur das Nötigste fürs Jahrbuch.</p>
+                        <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Kurzfassung</h3>
+                        <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Keine Werbung, kein Tracking, nur das Nötigste fürs Jahrbuch.</p>
                       </div>
                     </div>
                   }
                 >
-                  <ul className="space-y-3 text-sm text-base-muted">
-                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Wir speichern deinen <span className="font-medium text-base-strong">Username</span> und ein <span className="font-medium text-base-strong">gehashtes Passwort</span> (kein Klartext).</li>
-                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Deine <span className="font-medium text-base-strong">Einsendungen</span> (Text, Kategorie, optional Name/Telefon) werden in unserer internen MySQL‑Datenbank gespeichert.</li>
-                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Es gibt <span className="font-medium text-base-strong">kein Analytics/Tracking</span>, keine Werbe‑Cookies.</li>
-                    <li className="flex gap-3"><span className="mt-0.5 text-indigo-600">•</span>Wir verwenden ein <span className="font-medium text-base-strong">Session‑Cookie</span> zur Anmeldung (technisch erforderlich).</li>
+                  <ul className="space-y-3 text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                    <li className="flex gap-3"><span className="mt-0.5 text-[#7a9b88] dark:text-[#8faf9d]">•</span>Wir speichern deinen <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Username</span> und ein <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">gehashtes Passwort</span> (kein Klartext).</li>
+                    <li className="flex gap-3"><span className="mt-0.5 text-[#7a9b88] dark:text-[#8faf9d]">•</span>Deine <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Einsendungen</span> (Text, Kategorie, optional Name/Telefon) werden in unserer internen MySQL‑Datenbank gespeichert.</li>
+                    <li className="flex gap-3"><span className="mt-0.5 text-[#7a9b88] dark:text-[#8faf9d]">•</span>Es gibt <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">kein Analytics/Tracking</span>, keine Werbe‑Cookies.</li>
+                    <li className="flex gap-3"><span className="mt-0.5 text-[#7a9b88] dark:text-[#8faf9d]">•</span>Wir verwenden ein <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Session‑Cookie</span> zur Anmeldung (technisch erforderlich).</li>
                   </ul>
                 </GlassCard>
               </TiltCard>
@@ -73,23 +81,23 @@ export default function DatenschutzPage() {
 
             <div id="daten" className="scroll-mt-20">
               <GlassCard
-                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Database className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Welche Daten wir verarbeiten</h3></div>}
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]"><Database className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Welche Daten wir verarbeiten</h3></div>}
               >
-                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
-                  <p><span className="font-medium text-base-strong">Accountdaten:</span> Username, Passwort-Hash, Rolle (user/moderator/admin), Erstellungsdatum.</p>
-                  <p><span className="font-medium text-base-strong">Einsendungen:</span> Text (max. 2000 Zeichen), Kategorie, optional Name/Telefon, Zeitstempel, sowie Moderationsstatus (pending/approved/deleted).</p>
-                  <p><span className="font-medium text-base-strong">Moderationsprotokoll:</span> Für Transparenz speichern wir im Audit‑Log, wer Beiträge erstellt, genehmigt, gelöscht oder wiederhergestellt hat.</p>
-                  <p><span className="font-medium text-base-strong">Sperren (nur falls genutzt):</span> Gesperrte User‑IDs bzw. IPs mit Grund und optionalem Ablaufdatum. Wir führen <span className="font-medium text-base-strong">keine allgemeinen IP‑Protokolle</span>.</p>
+                <div className="space-y-4 text-sm text-[#6b635a] dark:text-[#b8aea5] leading-relaxed">
+                  <p><span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Accountdaten:</span> Username, Passwort-Hash, Rolle (user/moderator/admin), Erstellungsdatum.</p>
+                  <p><span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Einsendungen:</span> Text (max. 2000 Zeichen), Kategorie, optional Name/Telefon, Zeitstempel, sowie Moderationsstatus (pending/approved/deleted).</p>
+                  <p><span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Moderationsprotokoll:</span> Für Transparenz speichern wir im Audit‑Log, wer Beiträge erstellt, genehmigt, gelöscht oder wiederhergestellt hat.</p>
+                  <p><span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">Sperren (nur falls genutzt):</span> Gesperrte User‑IDs bzw. IPs mit Grund und optionalem Ablaufdatum. Wir führen <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">keine allgemeinen IP‑Protokolle</span>.</p>
                 </div>
               </GlassCard>
             </div>
 
             <div id="cookies" className="scroll-mt-20">
               <GlassCard
-                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Cookie className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Cookies & Sitzungen</h3></div>}
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#c96846]/10 dark:bg-[#d97757]/10 text-[#c96846] dark:text-[#d97757]"><Cookie className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Cookies & Sitzungen</h3></div>}
               >
-                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
-                  <p>Wir setzen ein <span className="font-medium text-base-strong">technisch notwendiges Cookie</span> (jb_session), um dich nach dem Login wiederzuerkennen. Es enthält eine signierte Sitzungskennung, aber <span className="font-medium text-base-strong">keine sensiblen Klartextdaten</span>.</p>
+                <div className="space-y-4 text-sm text-[#6b635a] dark:text-[#b8aea5] leading-relaxed">
+                  <p>Wir setzen ein <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">technisch notwendiges Cookie</span> (jb_session), um dich nach dem Login wiederzuerkennen. Es enthält eine signierte Sitzungskennung, aber <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">keine sensiblen Klartextdaten</span>.</p>
                   <p>Das Cookie wird nicht für Tracking oder Werbung verwendet.</p>
                 </div>
               </GlassCard>
@@ -97,10 +105,10 @@ export default function DatenschutzPage() {
 
             <div id="sicherheit" className="scroll-mt-20">
               <GlassCard
-                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Lock className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Sicherheit</h3></div>}
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]"><Lock className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Sicherheit</h3></div>}
               >
-                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
-                  <p>Passwörter werden mit einem <span className="font-medium text-base-strong">starken Hash‑Verfahren</span> gespeichert (kein Klartext). Verbindungen werden nach Möglichkeit über HTTPS bereitgestellt.</p>
+                <div className="space-y-4 text-sm text-[#6b635a] dark:text-[#b8aea5] leading-relaxed">
+                  <p>Passwörter werden mit einem <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">starken Hash‑Verfahren</span> gespeichert (kein Klartext). Verbindungen werden nach Möglichkeit über HTTPS bereitgestellt.</p>
                   <p>Admins/Moderatoren prüfen Beiträge nur zur Qualitätssicherung (Rechtsverstöße, Sprache). Keine Weitergabe deiner Daten an Dritte.</p>
                 </div>
               </GlassCard>
@@ -108,9 +116,9 @@ export default function DatenschutzPage() {
 
             <div id="rechte" className="scroll-mt-20">
               <GlassCard
-                header={<div className="flex items-center gap-3"><span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20"><Info className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-base-strong">Deine Rechte</h3></div>}
+                header={<div className="flex items-center gap-3"><span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]"><Info className="h-5 w-5" /></span><h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Deine Rechte</h3></div>}
               >
-                <div className="space-y-4 text-sm text-base-muted leading-relaxed">
+                <div className="space-y-4 text-sm text-[#6b635a] dark:text-[#b8aea5] leading-relaxed">
                   <p>Du hast nach geltendem Recht Auskunfts‑, Berichtigungs‑ und Löschrechte bezüglich deiner personenbezogenen Daten. Wende dich dafür an das Jahrbuch‑Team bzw. die Schulverwaltung.</p>
                   <p>Wenn du Fragen zum Datenschutz hast, melde dich bitte bei den Schülersprechern (Nael-Emin, Kalina).</p>
                 </div>
@@ -121,19 +129,26 @@ export default function DatenschutzPage() {
           <div className="lg:col-span-1">
             <MotionFade>
               <GlassCard
-                className="bg-[linear-gradient(180deg,rgba(99,102,241,0.08),rgba(99,102,241,0.02))]"
-                header={<div className="text-lg font-semibold text-base-strong">Kurzinfo</div>}
+                header={<div className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Kurzinfo</div>}
                 hover
               >
-                <ul className="space-y-2 text-sm text-base-muted">
+                <ul className="space-y-2 text-sm text-[#6b635a] dark:text-[#b8aea5]">
                   <li>Keine Analytics, keine Werbe‑Cookies.</li>
                   <li>Session‑Cookie für Login (7 Tage Gültigkeit).</li>
                   <li>MySQL‑Datenbank in der Schule/Hosting‑Umgebung.</li>
                   <li>Nur Admin/Moderator sehen Einsendungen zur Prüfung.</li>
                 </ul>
-                <div className="mt-4 text-xs text-base-muted">Letzte Aktualisierung: {lastUpdate}</div>
+                <div className="mt-4 text-xs text-[#6b635a] dark:text-[#b8aea5]">Letzte Aktualisierung: {lastUpdate}</div>
                 <div className="mt-4">
-                  <GlowButton as="a" href="/" variant="secondary" className="w-full h-10">Zur Startseite</GlowButton>
+                  <GlowButton
+                    as="a"
+                    href="/"
+                    variant="gradient"
+                    className="w-full"
+                    iconLeft={<Home className="h-4 w-4" />}
+                  >
+                    Zur Startseite
+                  </GlowButton>
                 </div>
               </GlassCard>
             </MotionFade>

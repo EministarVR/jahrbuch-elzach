@@ -1,10 +1,11 @@
+import FancyHeading from "@/components/ui/FancyHeading";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import { ShieldAlert, Home, ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default function AccessDeniedPage() {
+export default function UnauthorizedPage() {
   return (
     <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714] flex items-center justify-center">
       {/* Subtile Hintergrundeffekte */}

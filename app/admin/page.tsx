@@ -5,7 +5,6 @@ import { ensureModerationSchema } from "@/lib/migrations";
 import FancyHeading from "@/components/ui/FancyHeading";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
-import TiltCard from "@/components/ui/TiltCard";
 import {
   approveSubmissionAction,
   deleteSubmissionAction,
@@ -22,6 +21,8 @@ import {
   Users,
   Trash2,
   Clock,
+  Shield,
+  Activity,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -136,35 +137,45 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   );
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-b from-indigo-50 to-white md:from-indigo-50/70 dark:from-slate-950 dark:to-slate-900">
-      {/* Ambient background gradients */}
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]">
+      {/* Subtile Hintergrundeffekte */}
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-gradient-to-br from-indigo-400/25 via-indigo-500/15 to-sky-400/25 blur-3xl opacity-70 dark:opacity-40" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-gradient-to-tr from-sky-400/30 via-indigo-400/20 to-fuchsia-400/25 blur-3xl opacity-75 dark:opacity-40" />
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-64 w-[80%] bg-gradient-to-t from-indigo-100/70 via-transparent to-transparent dark:from-indigo-900/30" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-10">
-        <FancyHeading center subtitle="Moderiere Einsendungen, verwalte Accounts und behalte den Überblick.">
-          Admin-Dashboard
-        </FancyHeading>
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
+            <Shield className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
+            <span className="text-xs font-medium tracking-wide uppercase text-[#7a9b88] dark:text-[#8faf9d]">
+              Admin-Bereich
+            </span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+            Dashboard
+          </h1>
+          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+            Moderiere Einsendungen, verwalte Accounts und behalte den Überblick.
+          </p>
+        </div>
 
         {/* Statistiken */}
         <div className="grid gap-6 md:grid-cols-4">
           {[
-            { label: "Gesamt", value: stats?.total || 0, icon: <Users className="h-5 w-5" /> },
-            { label: "Ausstehend", value: stats?.pending || 0, icon: <Clock className="h-5 w-5" /> },
-            { label: "Genehmigt", value: stats?.approved || 0, icon: <CheckCircle2 className="h-5 w-5" /> },
-            { label: "Gelöscht", value: stats?.deleted || 0, icon: <Trash2 className="h-5 w-5" /> },
+            { label: "Gesamt", value: stats?.total || 0, icon: <Users className="h-5 w-5" />, color: "from-[#d97757] to-[#c96846]" },
+            { label: "Ausstehend", value: stats?.pending || 0, icon: <Clock className="h-5 w-5" />, color: "from-[#b8957a] to-[#a88568]" },
+            { label: "Genehmigt", value: stats?.approved || 0, icon: <CheckCircle2 className="h-5 w-5" />, color: "from-[#7a9b88] to-[#6a8b78]" },
+            { label: "Gelöscht", value: stats?.deleted || 0, icon: <Trash2 className="h-5 w-5" />, color: "from-[#c96846] to-[#b85836]" },
           ].map((s, i) => (
             <GlassCard key={s.label} delay={i * 0.06}>
               <div className="flex items-center gap-4">
-                <div className="h-11 w-11 rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/30 flex items-center justify-center">
+                <div className={`h-12 w-12 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center text-white shadow-lg`}>
                   {s.icon}
                 </div>
                 <div>
-                  <div className="text-sm text-base-muted">{s.label}</div>
-                  <div className="text-xl font-semibold text-base-strong">{s.value}</div>
+                  <div className="text-sm text-[#6b635a] dark:text-[#b8aea5]">{s.label}</div>
+                  <div className="text-2xl font-bold text-[#2a2520] dark:text-[#f5f1ed]">{s.value}</div>
                 </div>
               </div>
             </GlassCard>
@@ -174,102 +185,164 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Moderationsliste */}
           <div className="lg:col-span-2 space-y-8">
-            <TiltCard>
-              <GlassCard
-                header={
-                  <div className="flex items-center gap-3">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-600 ring-1 ring-indigo-500/20">
-                      <FileText className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <h3 className="text-lg font-semibold text-base-strong">Ausstehende Einsendungen</h3>
-                      <p className="text-sm text-base-muted">Prüfen, genehmigen oder löschen.</p>
-                    </div>
+            <GlassCard
+              header={
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                    <FileText className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Ausstehende Einsendungen</h3>
+                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Prüfen, genehmigen oder löschen.</p>
                   </div>
-                }
-              >
-                {/* Filter */}
-                <form method="GET" className="mb-4 flex flex-wrap items-center gap-2">
-                  <input type="text" name="q" defaultValue={q} placeholder="Suche Text/Autor/Name" className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm" />
-                  <select name="category" defaultValue={category} className="px-3 py-2 rounded-xl bg-white/70 dark:bg-slate-800/60 ring-1 ring-black/5 dark:ring-white/10 text-sm">
-                    <option value="">Alle Kategorien</option>
-                    {categories.map((c) => (
-                      <option key={c.category} value={c.category}>{c.category}</option>
-                    ))}
-                  </select>
-                  <GlowButton variant="primary" className="h-[38px] px-4">Filtern</GlowButton>
-                  <a href="/admin" className="text-sm text-indigo-600 hover:underline ml-1">Zurücksetzen</a>
-                </form>
-                {pending.length === 0 ? (
-                  <p className="text-sm text-base-muted">Keine ausstehenden Einsendungen.</p>
-                ) : (
-                  <form>
-                    <div className="mb-3 flex items-center justify-end gap-2">
-                      <GlowButton formAction={approveManySubmissionsAction} variant="primary" className="px-3 py-2 text-sm" iconLeft={<CheckCircle2 className="h-4 w-4" />}>Auswahl genehmigen</GlowButton>
-                      <GlowButton formAction={deleteManySubmissionsAction} variant="secondary" className="px-3 py-2 text-sm" iconLeft={<XCircle className="h-4 w-4" />}>Auswahl löschen</GlowButton>
-                    </div>
-                    <div className="space-y-4">
-                      {pending.map((p) => (
-                        <div key={p.id} className="rounded-2xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 md:ring-black/5 md:dark:ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 p-4">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex items-start gap-3">
-                              <input type="checkbox" name="ids" value={p.id} className="mt-1 h-4 w-4" />
-                              <div>
-                                <div className="text-sm text-base-muted flex items-center gap-2">
-                                  <User2 className="h-4 w-4 text-indigo-600" />
-                                  <span>{p.author}</span>
-                                  <span className="opacity-60">•</span>
-                                  <span>{new Date(p.created_at).toLocaleString("de-DE")}</span>
-                                  <span className="opacity-60">•</span>
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 ring-1 ring-indigo-500/20">
-                                    {p.category}
-                                  </span>
-                                </div>
-                                <div className="mt-2 text-sm text-base-strong whitespace-pre-wrap">
-                                  {p.text}
-                                </div>
-                                {(p.name || p.phone) && (
-                                  <div className="mt-2 text-xs text-base-muted">{[p.name, p.phone].filter(Boolean).join(" · ")}</div>
-                                )}
+                </div>
+              }
+            >
+              {/* Filter */}
+              <form method="GET" className="mb-6 flex flex-wrap items-center gap-3">
+                <input
+                  type="text"
+                  name="q"
+                  defaultValue={q}
+                  placeholder="Suche Text/Autor/Name"
+                  className="input-base flex-1 min-w-[200px]"
+                />
+                <select
+                  name="category"
+                  defaultValue={category}
+                  className="input-base min-w-[160px]"
+                >
+                  <option value="">Alle Kategorien</option>
+                  {categories.map((c) => (
+                    <option key={c.category} value={c.category}>{c.category}</option>
+                  ))}
+                </select>
+                <GlowButton variant="primary" className="px-5">Filtern</GlowButton>
+                <a href="/admin" className="text-sm text-[#d97757] dark:text-[#e89a7a] hover:underline">Zurücksetzen</a>
+              </form>
+
+              {pending.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d] mb-4">
+                    <CheckCircle2 className="h-8 w-8" />
+                  </div>
+                  <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Keine ausstehenden Einsendungen. Alles erledigt! ✨</p>
+                </div>
+              ) : (
+                <form>
+                  <div className="mb-4 flex items-center justify-end gap-3">
+                    <GlowButton
+                      formAction={approveManySubmissionsAction}
+                      variant="primary"
+                      className="px-4 py-2 text-sm"
+                      iconLeft={<CheckCircle2 className="h-4 w-4" />}
+                    >
+                      Auswahl genehmigen
+                    </GlowButton>
+                    <GlowButton
+                      formAction={deleteManySubmissionsAction}
+                      variant="secondary"
+                      className="px-4 py-2 text-sm"
+                      iconLeft={<XCircle className="h-4 w-4" />}
+                    >
+                      Auswahl löschen
+                    </GlowButton>
+                  </div>
+                  <div className="space-y-4">
+                    {pending.map((p) => (
+                      <div key={p.id} className="rounded-2xl border border-[#d97757]/15 dark:border-[#e89a7a]/15 bg-white/80 dark:bg-[#2a2520]/80 p-5 hover:border-[#d97757]/25 dark:hover:border-[#e89a7a]/25 transition-all">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-start gap-4 flex-1">
+                            <input
+                              type="checkbox"
+                              name="ids"
+                              value={p.id}
+                              className="mt-1.5 h-5 w-5 rounded border-[#d97757]/30 dark:border-[#e89a7a]/30 text-[#d97757] dark:text-[#e89a7a] focus:ring-[#d97757]/50"
+                            />
+                            <div className="flex-1">
+                              <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] flex flex-wrap items-center gap-2 mb-3">
+                                <span className="inline-flex items-center gap-1.5">
+                                  <User2 className="h-3.5 w-3.5 text-[#7a9b88] dark:text-[#8faf9d]" />
+                                  <strong className="text-[#2a2520] dark:text-[#f5f1ed]">{p.author}</strong>
+                                </span>
+                                <span>•</span>
+                                <span>{new Date(p.created_at).toLocaleString("de-DE")}</span>
+                                <span>•</span>
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a] text-xs font-medium border border-[#d97757]/20 dark:border-[#e89a7a]/20">
+                                  {p.category}
+                                </span>
                               </div>
-                            </div>
-                            <div className="shrink-0 flex flex-col gap-2">
-                              <form action={approveSubmissionAction}>
-                                <input type="hidden" name="id" value={p.id} />
-                                <GlowButton variant="primary" className="px-3 py-2 text-sm" iconLeft={<CheckCircle2 className="h-4 w-4" />}>Genehmigen</GlowButton>
-                              </form>
-                              <form action={deleteSubmissionAction}>
-                                <input type="hidden" name="id" value={p.id} />
-                                <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<XCircle className="h-4 w-4" />}>Löschen</GlowButton>
-                              </form>
+                              <div className="text-sm text-[#2a2520] dark:text-[#f5f1ed] leading-relaxed whitespace-pre-wrap">
+                                {p.text}
+                              </div>
+                              {(p.name || p.phone) && (
+                                <div className="mt-3 pt-3 border-t border-[#d97757]/10 dark:border-[#e89a7a]/10 text-xs text-[#6b635a] dark:text-[#b8aea5]">
+                                  {[p.name, p.phone].filter(Boolean).join(" · ")}
+                                </div>
+                              )}
                             </div>
                           </div>
+                          <div className="shrink-0 flex flex-col gap-2">
+                            <form action={approveSubmissionAction}>
+                              <input type="hidden" name="id" value={p.id} />
+                              <GlowButton
+                                variant="primary"
+                                className="px-4 py-2 text-sm whitespace-nowrap"
+                                iconLeft={<CheckCircle2 className="h-4 w-4" />}
+                              >
+                                Genehmigen
+                              </GlowButton>
+                            </form>
+                            <form action={deleteSubmissionAction}>
+                              <input type="hidden" name="id" value={p.id} />
+                              <GlowButton
+                                variant="secondary"
+                                className="px-4 py-2 text-sm whitespace-nowrap"
+                                iconLeft={<XCircle className="h-4 w-4" />}
+                              >
+                                Löschen
+                              </GlowButton>
+                            </form>
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                    </form>
-                )}
-              </GlassCard>
-            </TiltCard>
+                      </div>
+                    ))}
+                  </div>
+                </form>
+              )}
+            </GlassCard>
 
             <GlassCard
-              header={<div className="text-lg font-semibold text-base-strong">Genehmigt (zuletzt)</div>}
+              header={
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                    <CheckCircle2 className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Genehmigt (zuletzt 50)</h3>
+                </div>
+              }
             >
               {approved.length === 0 ? (
-                <p className="text-sm text-base-muted">Noch nichts genehmigt.</p>
+                <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Noch nichts genehmigt.</p>
               ) : (
                 <div className="space-y-3">
                   {approved.map((a) => (
-                    <div key={a.id} className="flex items-start justify-between gap-4 rounded-2xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 md:ring-black/5 md:dark:ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 p-4">
-                      <div>
-                        <div className="text-xs text-base-muted">
-                          Von {a.author} • {a.category} • genehmigt von {a.approver || "—"} am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
+                    <div key={a.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#7a9b88]/15 dark:border-[#8faf9d]/15 bg-[#7a9b88]/5 dark:bg-[#8faf9d]/5 p-4 hover:border-[#7a9b88]/25 dark:hover:border-[#8faf9d]/25 transition-all">
+                      <div className="flex-1">
+                        <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] mb-2">
+                          Von <strong>{a.author}</strong> • {a.category} • genehmigt von <strong>{a.approver || "—"}</strong> am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
                         </div>
-                        <div className="mt-1 text-sm text-base-strong line-clamp-3 whitespace-pre-wrap">{a.text}</div>
+                        <div className="text-sm text-[#2a2520] dark:text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap">{a.text}</div>
                       </div>
                       <form action={deleteSubmissionAction}>
                         <input type="hidden" name="id" value={a.id} />
-                        <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<Trash2 className="h-4 w-4" />}>Löschen</GlowButton>
+                        <GlowButton
+                          variant="secondary"
+                          className="px-3 py-2 text-sm"
+                          iconLeft={<Trash2 className="h-4 w-4" />}
+                        >
+                          Löschen
+                        </GlowButton>
                       </form>
                     </div>
                   ))}
@@ -278,23 +351,36 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             </GlassCard>
 
             <GlassCard
-              header={<div className="text-lg font-semibold text-base-strong">Gelöscht (zuletzt)</div>}
+              header={
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#c96846]/10 dark:bg-[#d97757]/10 text-[#c96846] dark:text-[#d97757]">
+                    <Trash2 className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Gelöscht (zuletzt 50)</h3>
+                </div>
+              }
             >
               {deleted.length === 0 ? (
-                <p className="text-sm text-base-muted">Keine gelöschten Beiträge.</p>
+                <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Keine gelöschten Beiträge.</p>
               ) : (
                 <div className="space-y-3">
                   {deleted.map((d) => (
-                    <div key={d.id} className="flex items-start justify-between gap-4 rounded-2xl ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 md:ring-black/5 md:dark:ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60 p-4">
-                      <div>
-                        <div className="text-xs text-base-muted">
-                          Von {d.author} • {d.category} • gelöscht von {d.deleter || "—"} am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
+                    <div key={d.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#c96846]/15 dark:border-[#d97757]/15 bg-[#c96846]/5 dark:bg-[#d97757]/5 p-4 hover:border-[#c96846]/25 dark:hover:border-[#d97757]/25 transition-all">
+                      <div className="flex-1">
+                        <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] mb-2">
+                          Von <strong>{d.author}</strong> • {d.category} • gelöscht von <strong>{d.deleter || "—"}</strong> am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
                         </div>
-                        <div className="mt-1 text-sm text-base-strong line-clamp-3 whitespace-pre-wrap">{d.text}</div>
+                        <div className="text-sm text-[#2a2520] dark:text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap opacity-75">{d.text}</div>
                       </div>
                       <form action={restoreSubmissionAction}>
                         <input type="hidden" name="id" value={d.id} />
-                        <GlowButton variant="primary" className="px-3 py-2 text-sm" iconLeft={<RotateCcw className="h-4 w-4" />}>Wiederherstellen</GlowButton>
+                        <GlowButton
+                          variant="primary"
+                          className="px-3 py-2 text-sm"
+                          iconLeft={<RotateCcw className="h-4 w-4" />}
+                        >
+                          Wiederherstellen
+                        </GlowButton>
                       </form>
                     </div>
                   ))}
@@ -303,33 +389,83 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             </GlassCard>
           </div>
 
-          {/* Audit + Benutzer */}
-          <div className="lg:col-span-1 space-y-8">
-            <TiltCard>
-              <GlassCard
-                header={<div className="text-lg font-semibold text-base-strong">Aktivität</div>}
-              >
-                {audit.length === 0 ? (
-                  <p className="text-sm text-base-muted">Noch keine Aktivitäten.</p>
-                ) : (
-                  <div className="space-y-3">
-                    {audit.map((e) => (
-                      <div key={e.id} className="rounded-xl p-3 ring-1 ring-slate-200 dark:ring-slate-700 bg-white dark:bg-slate-800 md:ring-black/5 md:dark:ring-white/10 md:bg-white/60 md:dark:bg-slate-800/60">
-                        <div className="text-xs text-base-muted flex items-center justify-between gap-2">
-                          <span>
-                            <span className="font-medium text-base-strong">{e.actor}</span> – {e.action}
-                          </span>
-                          <span>{new Date(e.created_at).toLocaleString("de-DE")}</span>
-                        </div>
-                        <div className="mt-1 text-xs text-base-strong line-clamp-2">{e.preview}</div>
-                      </div>
-                    ))}
-                  </div>
+          {/* Sidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            <GlassCard
+              header={
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                    <Shield className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Schnellzugriff</h3>
+                </div>
+              }
+            >
+              <div className="space-y-3">
+                <GlowButton
+                  as="a"
+                  href="/"
+                  variant="secondary"
+                  className="w-full justify-start"
+                >
+                  Zur Startseite
+                </GlowButton>
+                <GlowButton
+                  as="a"
+                  href="/phase-1"
+                  variant="secondary"
+                  className="w-full justify-start"
+                >
+                  Beitrag einreichen
+                </GlowButton>
+                {isAdmin && (
+                  <GlowButton
+                    as="a"
+                    href="/admin/user"
+                    variant="primary"
+                    className="w-full justify-start"
+                    iconLeft={<Users className="h-4 w-4" />}
+                  >
+                    Benutzerverwaltung
+                  </GlowButton>
                 )}
-              </GlassCard>
-            </TiltCard>
+              </div>
+            </GlassCard>
 
-
+            <GlassCard
+              header={
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                    <Activity className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Aktivitätsprotokoll</h3>
+                </div>
+              }
+            >
+              <div className="space-y-3 max-h-[500px] overflow-y-auto">
+                {audit.slice(0, 20).map((log) => (
+                  <div key={log.id} className="text-xs">
+                    <div className="flex items-center gap-2 text-[#6b635a] dark:text-[#b8aea5]">
+                      <span className={`inline-flex h-2 w-2 rounded-full ${
+                        log.action === 'create' ? 'bg-[#7a9b88]' :
+                        log.action === 'approve' ? 'bg-[#7a9b88]' :
+                        log.action === 'delete' ? 'bg-[#c96846]' :
+                        'bg-[#d97757]'
+                      }`} />
+                      <strong className="text-[#2a2520] dark:text-[#f5f1ed]">{log.actor}</strong>
+                      <span>•</span>
+                      <span>{log.action === 'create' ? 'erstellt' : log.action === 'approve' ? 'genehmigt' : log.action === 'delete' ? 'gelöscht' : 'wiederhergestellt'}</span>
+                    </div>
+                    <div className="mt-1 text-[#6b635a] dark:text-[#b8aea5] line-clamp-2 pl-4">
+                      {log.preview}...
+                    </div>
+                    <div className="text-[#6b635a] dark:text-[#b8aea5] opacity-60 pl-4 mt-0.5">
+                      {new Date(log.created_at).toLocaleString("de-DE")}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </GlassCard>
           </div>
         </div>
       </div>

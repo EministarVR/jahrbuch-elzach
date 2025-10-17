@@ -24,6 +24,7 @@ const display = DM_Serif_Display({
 export const metadata: Metadata = {
   title: "Jahrbuch – Schulzentrum Oberes Elztal",
   description: "Gemacht vom Jahrbuch-Team der SMV",
+  themeColor: "#1a1714",
 };
 
 export default async function RootLayout({
@@ -31,14 +32,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Theme wird global auf dark erzwungen
   const initialHtmlClass = "scroll-smooth noise dark";
   return (
     <html lang="de" className={initialHtmlClass} suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${display.variable} antialiased min-h-dvh text-black dark:text-slate-100`}
+        className={`${geistSans.variable} ${geistMono.variable} ${display.variable} antialiased min-h-dvh text-[#2a2520] dark:text-[#f5f1ed]`}
       >
-        {/* Pre-hydration theme bootstrap: force dark globally */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(()=>{try{const K='jahrbuch-theme';const d=document.documentElement;const t='dark';localStorage.setItem(K,t);document.cookie=K+'='+t+';path=/;max-age=31536000';d.classList.add('dark');}catch(e){}})();`,
@@ -46,7 +45,6 @@ export default async function RootLayout({
         />
         <Aurora />
           <Header />
-          {/* Mobile spacer so the fixed header doesn't cover content */}
           <div className="h-16 md:hidden" aria-hidden />
           <div className="relative">{children}</div>
           <Footer />

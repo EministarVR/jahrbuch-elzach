@@ -24,10 +24,10 @@ export default function ParallaxHero({
     const el = layerRef.current;
     if (!el) return;
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mq.matches) return; // skip parallax
+    if (mq.matches) return;
     const onScroll = () => {
       const y = window.scrollY;
-      el.style.transform = `translate3d(0, ${Math.min(y * 0.18, 100)}px, 0)`;
+      el.style.transform = `translate3d(0, ${Math.min(y * 0.15, 80)}px, 0)`;
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -37,50 +37,49 @@ export default function ParallaxHero({
   return (
     <section
       className={clsx(
-        // Fallback-Farbe + Gradient-Layer
-        "relative h-[60svh] sm:h-[70svh] flex items-center justify-center overflow-hidden bg-white dark:bg-slate-900 bg-gradient-to-b from-indigo-50 to-white dark:from-slate-900 dark:to-slate-900",
+        "relative min-h-[75vh] flex items-center justify-center overflow-hidden",
+        "bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3]",
+        "dark:bg-gradient-to-br dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]",
         className
       )}
     >
-      <div className="hidden md:block absolute inset-0 -z-10 overflow-hidden">
+      {/* Subtile Hintergrundeffekte */}
+      <div className="absolute inset-0 overflow-hidden">
         <div ref={layerRef} className="parallax-layer h-full w-full">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(99,102,241,0.18),transparent_65%)] dark:bg-[radial-gradient(circle_at_50%_40%,rgba(90,104,255,0.14),transparent_65%)]" />
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-indigo-100/50 via-transparent to-transparent dark:from-indigo-900/25" />
+          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#d97757]/8 dark:bg-[#e89a7a]/6 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-[32rem] h-[32rem] bg-[#7a9b88]/6 dark:bg-[#8faf9d]/5 rounded-full blur-3xl" />
         </div>
       </div>
+
       <motion.div
-        initial={{ opacity: 0, y: 36 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.85, ease: [0.16, 0.84, 0.44, 1] }}
-        className={clsx(
-          "rounded-[2rem] px-7 sm:px-14 py-10 sm:py-16 text-center max-w-4xl mx-auto relative overflow-hidden",
-          // Fallback-Hintergrundfarben (solide)
-          "bg-slate-900 md:bg-white md:dark:bg-slate-900",
-          // Mobile: dunkle Karte mit Gradient
-          "border border-slate-700/90 bg-[linear-gradient(145deg,rgba(28,36,52,0.96),rgba(20,27,39,0.9))] shadow-[0_6px_22px_-8px_rgba(0,0,0,0.6),0_18px_48px_-10px_rgba(0,0,0,0.55)]",
-          // Desktop: bestehendes Glass/Blur behalten
-          "md:shadow-[0_6px_22px_-8px_rgba(15,23,42,0.35),0_18px_48px_-10px_rgba(15,23,42,0.25)] md:backdrop-blur-2xl md:bg-[rgba(255,255,255,0.72)] md:dark:bg-[rgba(25,32,46,0.72)] md:border md:border-white/50 md:dark:border-white/10"
-        )}
+        transition={{ duration: 0.8, ease: [0.16, 0.84, 0.44, 1] }}
+        className="relative z-10 text-center max-w-4xl mx-auto px-6 py-20"
       >
-        <div className="hidden md:block pointer-events-none absolute inset-0 opacity-60 bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.65),transparent_65%)] dark:bg-[radial-gradient(circle_at_30%_25%,rgba(255,255,255,0.09),transparent_65%)] mix-blend-overlay" />
         {eyebrow && (
-          <div className="relative z-10 text-xs font-medium tracking-wider uppercase text-indigo-300/90 md:text-indigo-600/80 mb-4">
-            {eyebrow}
+          <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-[#d97757]/10 dark:bg-[#e89a7a]/10 border border-[#d97757]/20 dark:border-[#e89a7a]/20">
+            <span className="text-xs font-medium tracking-wide uppercase text-[#d97757] dark:text-[#e89a7a]">
+              {eyebrow}
+            </span>
           </div>
         )}
-        <h1 className="relative z-10 font-display text-gradient text-3xl sm:text-5xl font-semibold leading-tight">
-          {title}
+
+        <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold leading-[1.1] mb-6">
+          <span className="text-gradient">{title}</span>
         </h1>
-        {subtitle ? (
-          <p className="relative z-10 text-slate-300 md:text-base-muted mt-5 max-w-2xl mx-auto text-sm sm:text-base tracking-[0.01em]">
+
+        {subtitle && (
+          <p className="text-base sm:text-lg md:text-xl text-[#6b635a] dark:text-[#b8aea5] leading-relaxed max-w-2xl mx-auto mb-10">
             {subtitle}
           </p>
-        ) : null}
-        {cta ? (
-          <div className="relative z-10 mt-8 flex flex-wrap gap-4 justify-center">
+        )}
+
+        {cta && (
+          <div className="flex flex-wrap gap-4 justify-center items-center">
             {cta}
           </div>
-        ) : null}
+        )}
       </motion.div>
     </section>
   );
