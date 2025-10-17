@@ -1,13 +1,7 @@
 "use client";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  PropsWithChildren,
-} from "react";
+import { createContext, useContext, PropsWithChildren } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "dark";
 interface ThemeContextValue {
   theme: Theme;
   toggle: () => void;
@@ -15,38 +9,12 @@ interface ThemeContextValue {
 }
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const STORAGE_KEY = "jahrbuch-theme";
-
 export function ThemeProvider({ children }: PropsWithChildren) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const theme: Theme = "dark";
 
-  useEffect(() => {
-    // initial load: system preference OR stored
-    const stored =
-      typeof window !== "undefined"
-        ? (localStorage.getItem(STORAGE_KEY) as Theme | null)
-        : null;
-    const sys =
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-    const start = stored || sys;
-    setTheme(start);
-  }, []);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") root.classList.add("dark");
-    else root.classList.remove("dark");
-    localStorage.setItem(STORAGE_KEY, theme);
-    try {
-      document.cookie = `${STORAGE_KEY}=${theme};path=/;max-age=31536000`;
-    } catch {}
-  }, [theme]);
-
-  const toggle = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
-  const set = (t: Theme) => setTheme(t);
+  // Leere Funktionen, da das Theme nicht mehr geändert werden kann
+  const toggle = () => {};
+  const set = (newTheme: Theme) => {};
 
   return (
     <ThemeContext.Provider value={{ theme, toggle, set }}>
@@ -55,8 +23,8 @@ export function ThemeProvider({ children }: PropsWithChildren) {
   );
 }
 
-export function useTheme() {
+export const useTheme = () => {
   const ctx = useContext(ThemeContext);
   if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
   return ctx;
-}
+};
