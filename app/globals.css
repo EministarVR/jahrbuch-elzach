@@ -72,13 +72,9 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Eleganter Hintergrund mit subtilen Texturen */
+/* Eleganter Hintergrund mit subtilen Texturen - IMMER DUNKEL */
 html, body {
-  background-color: var(--background);
-}
-
-.dark body {
-  background-color: var(--background);
+  background-color: #1a1714 !important;
   background-image:
     radial-gradient(
       circle at 25% 15%,
@@ -115,10 +111,10 @@ body {
 }
 
 .text-base-strong {
-  color: var(--on-surface);
+  color: #f5f1ed;
 }
 .text-base-muted {
-  color: var(--on-surface-muted);
+  color: #d4cdc5;
 }
 .dark .text-base-strong {
   color: var(--on-surface);
