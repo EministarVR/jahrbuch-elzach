@@ -28,12 +28,12 @@ export default function GlassCard({
         className={clsx(
           "relative rounded-3xl overflow-hidden backdrop-blur-xl",
           // Elegantes Design mit warmen Farben
-          "bg-[#fffcf8]/80 dark:bg-[#2a2520]/80",
-          "border border-[#d97757]/15 dark:border-[#e89a7a]/15",
-          "shadow-lg shadow-[#2a2520]/5 dark:shadow-[#e89a7a]/5",
+          "bg-[#2a2520]/80",
+          "border border-[#e89a7a]/15",
+          "shadow-lg shadow-[#e89a7a]/5",
           // Hover-Effekte
           hover &&
-            "transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-[#d97757]/10 dark:hover:shadow-[#e89a7a]/10 hover:border-[#d97757]/25 dark:hover:border-[#e89a7a]/25"
+            "transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-xl hover:shadow-[#e89a7a]/10 hover:border-[#e89a7a]/25"
         )}
       >
         {/* Subtiler Glanz-Effekt */}

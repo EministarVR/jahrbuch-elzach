@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 geistSans.variable,
                 geistMono.variable,
                 display.variable,
-                "antialiased min-h-dvh text-[#2a2520] dark:text-[#f5f1ed]",
+                "antialiased min-h-dvh text-[#f5f1ed]",
             ].join(" ")}
             style={{ colorScheme: "dark" }}
         >

@@ -60,22 +60,22 @@ export default function PromptDialog({
       onClick={onClose}
     >
       <div
-        className="bg-gradient-to-br from-white to-gray-50 dark:from-[#2a2520] dark:to-[#1f1b17] rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-200/50 dark:border-[#e89a7a]/20 animate-in zoom-in-95 duration-300"
+        className="bg-gradient-to-br from-[#2a2520] to-[#1f1b17] rounded-3xl p-8 max-w-md w-full shadow-2xl border border-[#e89a7a]/20 animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Icon */}
         <div className="flex justify-center mb-6">
-          <div className="bg-gradient-to-br from-[#7a9b88]/20 to-[#6a8b78]/20 text-[#7a9b88] dark:text-[#8faf9d] p-4 rounded-2xl backdrop-blur-sm border border-current/20 shadow-xl">
+          <div className="bg-gradient-to-br from-[#7a9b88]/20 to-[#6a8b78]/20 text-[#8faf9d] p-4 rounded-2xl backdrop-blur-sm border border-current/20 shadow-xl">
             <MessageSquare className="w-12 h-12 animate-in zoom-in duration-500" strokeWidth={2.5} />
           </div>
         </div>
 
         {/* Header */}
         <div className="text-center mb-6">
-          <h3 className="text-2xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-3">
+          <h3 className="text-2xl font-bold text-[#f5f1ed] mb-3">
             {title}
           </h3>
-          <p className="text-[#6b635a] dark:text-[#b8aea5] leading-relaxed text-base">
+          <p className="text-[#b8aea5] leading-relaxed text-base">
             {message}
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function PromptDialog({
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder={placeholder}
-              className="w-full px-5 py-4 rounded-xl border-2 border-gray-200 dark:border-[#3a3530] bg-white/80 dark:bg-[#1a1714]/80 text-[#2a2520] dark:text-[#f5f1ed] placeholder-[#6b635a] dark:placeholder-[#b8aea5] focus:outline-none focus:ring-2 focus:ring-[#7a9b88] dark:focus:ring-[#8faf9d] focus:border-transparent transition-all font-medium text-base"
+              className="w-full px-5 py-4 rounded-xl border-2 border-[#3a3530] bg-[#1a1714]/80 text-[#f5f1ed] placeholder-[#b8aea5] focus:outline-none focus:ring-2 focus:ring-[#8faf9d] focus:border-transparent transition-all font-medium text-base"
               autoFocus
             />
           </div>
@@ -98,7 +98,7 @@ export default function PromptDialog({
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-6 py-3.5 rounded-xl bg-white dark:bg-[#1a1714] text-[#2a2520] dark:text-[#f5f1ed] hover:bg-gray-50 dark:hover:bg-[#2a2520] transition-all font-semibold border-2 border-gray-200 dark:border-[#3a3530] hover:border-gray-300 dark:hover:border-[#4a4540] active:scale-95"
+              className="flex-1 px-6 py-3.5 rounded-xl bg-[#1a1714] text-[#f5f1ed] hover:bg-[#2a2520] transition-all font-semibold border-2 border-[#3a3530] hover:border-[#4a4540] active:scale-95"
             >
               {cancelText}
             </button>

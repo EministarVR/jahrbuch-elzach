@@ -21,7 +21,7 @@ export default function FancyHeading({
     <div className={clsx("mb-8", center && "text-center", className)}>
       <MotionFade className="inline-flex items-center gap-2">
         {icon && (
-          <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+          <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
             <BookOpen className="h-5 w-5" />
           </span>
         )}
@@ -33,7 +33,7 @@ export default function FancyHeading({
         <MotionFade
           delay={0.08}
           className={clsx(
-            "mt-2 max-w-prose text-sm sm:text-base text-[#6b635a] dark:text-[#b8aea5]",
+            "mt-2 max-w-prose text-sm sm:text-base text-[#b8aea5]",
             center && "mx-auto"
           )}
         >
