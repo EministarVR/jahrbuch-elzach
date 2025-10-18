@@ -131,18 +131,18 @@ export default function BrowseClient({
   return (
     <div className="space-y-6">
       {/* Filters - Sticky and smooth */}
-      <div className="sticky top-0 z-30 bg-[#faf8f5] dark:bg-[#1a1714] backdrop-blur-xl pb-6 -mx-4 px-4 pt-4">
+      <div className="sticky top-0 z-30 bg-[#1a1714] backdrop-blur-xl pb-6 -mx-4 px-4 pt-4">
         <div className="flex flex-col sm:flex-row gap-4">
           {/* Sort */}
           <div className="flex-1">
-            <label className="block text-sm font-medium text-[#2a2520] dark:text-[#f5f1ed] mb-2">
+            <label className="block text-sm font-medium text-[#f5f1ed] mb-2">
               <ArrowUpDown className="inline h-4 w-4 mr-2" />
               Sortierung
             </label>
             <select
               value={currentSort}
               onChange={(e) => handleSortChange(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-0 bg-white/50 dark:bg-[#2a2520]/50 backdrop-blur-sm text-[#2a2520] dark:text-[#f5f1ed] focus:outline-none focus:ring-2 focus:ring-[#d97757]/50 dark:focus:ring-[#e89a7a]/50 transition-all cursor-pointer hover:bg-white/70 dark:hover:bg-[#2a2520]/70 shadow-sm hover:shadow-md"
+              className="w-full px-4 py-3 rounded-xl border-0 bg-[#2a2520]/50 backdrop-blur-sm text-[#f5f1ed] focus:outline-none focus:ring-2 focus:ring-[#e89a7a]/50 transition-all cursor-pointer hover:bg-[#2a2520]/70 shadow-sm hover:shadow-md"
             >
               <option value="recent">Neueste zuerst</option>
               <option value="oldest">Älteste zuerst</option>
@@ -154,14 +154,14 @@ export default function BrowseClient({
 
           {/* Category Filter */}
           <div className="flex-1">
-            <label className="block text-sm font-medium text-[#2a2520] dark:text-[#f5f1ed] mb-2">
+            <label className="block text-sm font-medium text-[#f5f1ed] mb-2">
               <Filter className="inline h-4 w-4 mr-2" />
               Kategorie
             </label>
             <select
               value={currentCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-0 bg-white/50 dark:bg-[#2a2520]/50 backdrop-blur-sm text-[#2a2520] dark:text-[#f5f1ed] focus:outline-none focus:ring-2 focus:ring-[#d97757]/50 dark:focus:ring-[#e89a7a]/50 transition-all cursor-pointer hover:bg-white/70 dark:hover:bg-[#2a2520]/70 shadow-sm hover:shadow-md"
+              className="w-full px-4 py-3 rounded-xl border-0 bg-[#2a2520]/50 backdrop-blur-sm text-[#f5f1ed] focus:outline-none focus:ring-2 focus:ring-[#e89a7a]/50 transition-all cursor-pointer hover:bg-[#2a2520]/70 shadow-sm hover:shadow-md"
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -173,9 +173,9 @@ export default function BrowseClient({
         </div>
 
         {/* Submissions Count */}
-        <div className="mt-4 text-sm text-[#6b635a] dark:text-[#b8aea5]">
-          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
-            <span className="inline-flex h-2 w-2 rounded-full bg-[#7a9b88] dark:bg-[#8faf9d] animate-pulse" />
+        <div className="mt-4 text-sm text-[#b8aea5]">
+          <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#8faf9d]/10 border border-[#8faf9d]/20">
+            <span className="inline-flex h-2 w-2 rounded-full bg-[#8faf9d] animate-pulse" />
             {submissions.length} {submissions.length === 1 ? 'Beitrag' : 'Beiträge'}
           </span>
         </div>
@@ -184,13 +184,13 @@ export default function BrowseClient({
       {/* Submissions Grid with stagger animation */}
       {submissions.length === 0 ? (
         <div className="text-center py-20 animate-in fade-in duration-500">
-          <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 mb-4">
-            <Filter className="h-10 w-10 text-[#7a9b88] dark:text-[#8faf9d]" />
+          <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-[#8faf9d]/10 mb-4">
+            <Filter className="h-10 w-10 text-[#8faf9d]" />
           </div>
-          <p className="text-[#6b635a] dark:text-[#b8aea5] text-lg">
+          <p className="text-[#b8aea5] text-lg">
             Keine Beiträge gefunden.
           </p>
-          <p className="text-sm text-[#6b635a] dark:text-[#b8aea5] mt-2">
+          <p className="text-sm text-[#b8aea5] mt-2">
             Versuche andere Filter oder komm später wieder!
           </p>
         </div>

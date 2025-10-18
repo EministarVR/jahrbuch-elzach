@@ -9,18 +9,18 @@ const IMPRESSUM_URL = "https://www.schulzentrum-oberes-elztal.de/verschiedenes/i
 
 export default function ImpressumPage() {
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]">
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#1a1714] via-[#221e1a] to-[#1a1714]">
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f1ed] mb-4">
             Impressum
           </h1>
-          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+          <p className="text-lg text-[#b8aea5] max-w-2xl mx-auto">
             Rechtliche Angaben zum Schulzentrum Oberes Elztal
           </p>
         </div>
@@ -29,17 +29,17 @@ export default function ImpressumPage() {
           <GlassCard
             header={
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
                   <FileText className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Impressum der Schule</h3>
-                  <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Die vollständigen Angaben finden Sie auf der offiziellen Schul-Website.</p>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Impressum der Schule</h3>
+                  <p className="text-sm text-[#b8aea5]">Die vollständigen Angaben finden Sie auf der offiziellen Schul-Website.</p>
                 </div>
               </div>
             }
           >
-            <div className="space-y-6 text-sm text-[#6b635a] dark:text-[#b8aea5] leading-relaxed">
+            <div className="space-y-6 text-sm text-[#b8aea5] leading-relaxed">
               <p>
                 Für das Jahrbuch-Projekt verweisen wir auf das offizielle Impressum des
                 Schulzentrums Oberes Elztal. Dort finden Sie alle Pflichtangaben und Kontakt-Informationen.
@@ -67,7 +67,7 @@ export default function ImpressumPage() {
                   Zur Startseite
                 </GlowButton>
               </div>
-              <p className="text-xs text-[#6b635a] dark:text-[#b8aea5] pt-2">
+              <p className="text-xs text-[#b8aea5] pt-2">
                 Der Link öffnet sich in einem neuen Tab
               </p>
             </div>

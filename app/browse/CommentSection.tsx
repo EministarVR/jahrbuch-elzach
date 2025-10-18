@@ -191,26 +191,26 @@ export default function CommentSection({
         {/* Reply form */}
         {replyingTo === comment.id && (
           <div style={{ marginLeft: `${Math.min((depth + 1) * 2, 8)}rem` }} className="mb-3">
-            <div className="bg-white/60 dark:bg-[#2a2520]/60 backdrop-blur-md border border-[#d97757]/20 dark:border-[#e89a7a]/20 rounded-xl p-3">
+            <div className="bg-[#2a2520]/60 backdrop-blur-md border border-[#e89a7a]/20 rounded-xl p-3">
               <textarea
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
                 placeholder="Deine Antwort..."
-                className="w-full px-3 py-2 rounded-lg border border-[#d97757]/20 dark:border-[#e89a7a]/20 bg-white/50 dark:bg-[#1a1714]/50 text-sm text-[#2a2520] dark:text-[#f5f1ed] placeholder-[#6b635a] dark:placeholder-[#b8aea5] focus:outline-none focus:ring-2 focus:ring-[#d97757] dark:focus:ring-[#e89a7a] resize-none transition-all"
+                className="w-full px-3 py-2 rounded-lg border border-[#e89a7a]/20 bg-[#1a1714]/50 text-sm text-[#f5f1ed] placeholder-[#b8aea5] focus:outline-none focus:ring-2 focus:ring-[#e89a7a] resize-none transition-all"
                 rows={3}
                 autoFocus
               />
               <div className="flex gap-2 mt-2">
                 <button
                   onClick={() => setReplyingTo(null)}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-[#6b635a]/10 dark:bg-[#b8aea5]/10 text-[#2a2520] dark:text-[#f5f1ed] hover:bg-[#6b635a]/20 dark:hover:bg-[#b8aea5]/20 transition-all"
+                  className="px-3 py-1.5 text-xs rounded-lg bg-[#b8aea5]/10 text-[#f5f1ed] hover:bg-[#b8aea5]/20 transition-all"
                 >
                   Abbrechen
                 </button>
                 <button
                   onClick={() => handleSubmitReply(comment.id)}
                   disabled={!replyText.trim() || isSubmitting}
-                  className="flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-[#7a9b88] dark:bg-[#8faf9d] text-white hover:bg-[#6a8b78] dark:hover:bg-[#7f9f8d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                  className="flex items-center gap-1 px-3 py-1.5 text-xs rounded-lg bg-[#8faf9d] text-white hover:bg-[#7f9f8d] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                 >
                   <Send className="h-3 w-3" />
                   {isSubmitting ? 'Wird gesendet...' : 'Antworten'}
@@ -233,18 +233,18 @@ export default function CommentSection({
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-white/40 dark:bg-[#2a2520]/40 backdrop-blur-sm border border-[#d97757]/10 dark:border-[#e89a7a]/10 hover:border-[#d97757]/20 dark:hover:border-[#e89a7a]/20 transition-all"
+        className="w-full flex items-center justify-between px-4 py-3 rounded-xl bg-[#2a2520]/40 backdrop-blur-sm border border-[#e89a7a]/10 hover:border-[#e89a7a]/20 transition-all"
       >
         <div className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5 text-[#7a9b88] dark:text-[#8faf9d]" />
-          <span className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">
+          <MessageSquare className="h-5 w-5 text-[#8faf9d]" />
+          <span className="font-medium text-[#f5f1ed]">
             Kommentare {commentCount > 0 && `(${commentCount})`}
           </span>
         </div>
         {isOpen ? (
-          <ChevronUp className="h-5 w-5 text-[#6b635a] dark:text-[#b8aea5]" />
+          <ChevronUp className="h-5 w-5 text-[#b8aea5]" />
         ) : (
-          <ChevronDown className="h-5 w-5 text-[#6b635a] dark:text-[#b8aea5]" />
+          <ChevronDown className="h-5 w-5 text-[#b8aea5]" />
         )}
       </button>
 
@@ -252,19 +252,19 @@ export default function CommentSection({
       {isOpen && (
         <div className="mt-4 space-y-4 animate-in slide-in-from-top-2 fade-in duration-200">
           {/* New Comment Form */}
-          <div className="bg-white/60 dark:bg-[#2a2520]/60 backdrop-blur-md border border-[#d97757]/20 dark:border-[#e89a7a]/20 rounded-xl p-4">
+          <div className="bg-[#2a2520]/60 backdrop-blur-md border border-[#e89a7a]/20 rounded-xl p-4">
             <textarea
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               placeholder="Schreibe einen Kommentar..."
-              className="w-full px-4 py-3 rounded-xl border border-[#d97757]/20 dark:border-[#e89a7a]/20 bg-white/50 dark:bg-[#1a1714]/50 text-[#2a2520] dark:text-[#f5f1ed] placeholder-[#6b635a] dark:placeholder-[#b8aea5] focus:outline-none focus:ring-2 focus:ring-[#d97757] dark:focus:ring-[#e89a7a] resize-none transition-all"
+              className="w-full px-4 py-3 rounded-xl border border-[#e89a7a]/20 bg-[#1a1714]/50 text-[#f5f1ed] placeholder-[#b8aea5] focus:outline-none focus:ring-2 focus:ring-[#e89a7a] resize-none transition-all"
               rows={3}
             />
             <div className="flex justify-end mt-3">
               <button
                 onClick={handleSubmitComment}
                 disabled={!newComment.trim() || isSubmitting}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#7a9b88] dark:bg-[#8faf9d] text-white hover:bg-[#6a8b78] dark:hover:bg-[#7f9f8d] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-[#7a9b88]/30 dark:shadow-[#8faf9d]/30"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#8faf9d] text-white hover:bg-[#7f9f8d] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-[#8faf9d]/30"
               >
                 <Send className="h-4 w-4" />
                 {isSubmitting ? 'Wird gesendet...' : 'Kommentieren'}
@@ -274,11 +274,11 @@ export default function CommentSection({
 
           {/* Comments List */}
           {isLoading ? (
-            <div className="text-center py-8 text-[#6b635a] dark:text-[#b8aea5]">
+            <div className="text-center py-8 text-[#b8aea5]">
               Lädt Kommentare...
             </div>
           ) : commentCount === 0 ? (
-            <div className="text-center py-8 text-[#6b635a] dark:text-[#b8aea5]">
+            <div className="text-center py-8 text-[#b8aea5]">
               Noch keine Kommentare. Sei der Erste!
             </div>
           ) : (

@@ -71,25 +71,25 @@ export default async function Phase1Page({
   const isSuccess = sp?.success === '1';
 
   return (
-    <div className="relative min-h-dvh bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714] overflow-hidden">
+    <div className="relative min-h-dvh bg-gradient-to-br from-[#1a1714] via-[#221e1a] to-[#1a1714] overflow-hidden">
       {/* Subtile Hintergrundeffekte */}
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-5xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
-            <Send className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
-            <span className="text-xs font-medium tracking-wide uppercase text-[#7a9b88] dark:text-[#8faf9d]">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#8faf9d]/10 border border-[#8faf9d]/20">
+            <Send className="h-4 w-4 text-[#8faf9d]" />
+            <span className="text-xs font-medium tracking-wide uppercase text-[#8faf9d]">
               Jetzt aktiv
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f1ed] mb-4">
             Phase 1 – Einsenden
           </h1>
-          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+          <p className="text-lg text-[#b8aea5] max-w-2xl mx-auto">
             Schick uns deinen Beitrag fürs Jahrbuch – persönlich, kreativ oder ganz sachlich. Wir kümmern uns um den Rest.
           </p>
         </div>
@@ -100,15 +100,15 @@ export default async function Phase1Page({
               fade={false}
               className="mb-8"
               header={
-                <div className="flex items-center gap-3 text-[#7a9b88] dark:text-[#8faf9d]">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10">
+                <div className="flex items-center gap-3 text-[#8faf9d]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#8faf9d]/10">
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Danke für deinen Beitrag!</h3>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Danke für deinen Beitrag!</h3>
                 </div>
               }
             >
-              <p className="text-sm text-[#6b635a] dark:text-[#b8aea5] mb-4">
+              <p className="text-sm text-[#b8aea5] mb-4">
                 Dein Text wurde gespeichert. Du kannst gerne noch einen weiteren Beitrag einsenden.
               </p>
               <GlowButton as="a" href="/" variant="secondary">
@@ -124,23 +124,23 @@ export default async function Phase1Page({
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
                     <FileText className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Dein Beitrag</h3>
-                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Max. 2000 Zeichen. Du kannst optional Name und Telefon hinterlassen.</p>
+                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Dein Beitrag</h3>
+                    <p className="text-sm text-[#b8aea5]">Max. 2000 Zeichen. Du kannst optional Name und Telefon hinterlassen.</p>
                   </div>
                 </div>
               }
               footer={
-                <div className="flex items-center justify-between flex-wrap gap-3 text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                <div className="flex items-center justify-between flex-wrap gap-3 text-sm text-[#b8aea5]">
                   <div className="inline-flex items-center gap-2">
-                    <Shield className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
+                    <Shield className="h-4 w-4 text-[#8faf9d]" />
                     <span>Deine Angaben werden auf einer Seite zum Voting angezeigt. Wenn du das nicht möchtest, wende dich an Emin (Schulsprecher)</span>
                   </div>
                   <div className="inline-flex items-center gap-2">
-                    <Send className="h-4 w-4 text-[#d97757] dark:text-[#e89a7a]" />
+                    <Send className="h-4 w-4 text-[#e89a7a]" />
                     <span>Danke fürs Mitmachen!</span>
                   </div>
                 </div>
@@ -156,37 +156,37 @@ export default async function Phase1Page({
               <GlassCard
                 header={
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#8faf9d]/10 text-[#8faf9d]">
                       <Lightbulb className="h-5 w-5" />
                     </span>
-                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Tipps</h3>
+                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Tipps</h3>
                   </div>
                 }
                 hover
               >
-                <ul className="space-y-3 text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                <ul className="space-y-3 text-sm text-[#b8aea5]">
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
+                    <span className="mt-0.5 text-[#e89a7a]">•</span>
                     Schreib so, wie du es deinen Freund:innen erzählen würdest.
                   </li>
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
+                    <span className="mt-0.5 text-[#e89a7a]">•</span>
                     Nenne Namen nur, wenn alle damit einverstanden sind.
                   </li>
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
+                    <span className="mt-0.5 text-[#e89a7a]">•</span>
                     Kein Stress: Kurze Beiträge sind genauso willkommen!
                   </li>
                   <li className="flex gap-3">
-                    <span className="mt-0.5 text-[#d97757] dark:text-[#e89a7a]">•</span>
+                    <span className="mt-0.5 text-[#e89a7a]">•</span>
                     Fragen oder Probleme? Wende dich an die Schulsprecher:innen (SMV).
                   </li>
                 </ul>
 
                 <MotionFade delay={0.08} className="mt-6">
-                  <div className="rounded-xl p-4 bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
-                    <p className="text-sm font-semibold text-[#2a2520] dark:text-[#f5f1ed] mb-1">Transparenz</p>
-                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                  <div className="rounded-xl p-4 bg-[#8faf9d]/10 border border-[#8faf9d]/20">
+                    <p className="text-sm font-semibold text-[#f5f1ed] mb-1">Transparenz</p>
+                    <p className="text-sm text-[#b8aea5]">
                       Beiträge werden vor der Veröffentlichung kurz gesichtet – nur für Rechtschreibung und Inhalt.
                     </p>
                   </div>

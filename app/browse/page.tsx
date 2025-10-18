@@ -96,25 +96,25 @@ export default async function BrowsePage({
     const isModerator = session.role === 'moderator' || session.role === 'admin';
 
     return (
-      <div className="relative min-h-dvh bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714] overflow-hidden">
+      <div className="relative min-h-dvh bg-gradient-to-br from-[#1a1714] via-[#221e1a] to-[#1a1714] overflow-hidden">
         {/* Subtile Hintergrundeffekte */}
         <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl animate-pulse" />
-          <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#e89a7a]/6 blur-3xl animate-pulse" />
+          <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#8faf9d]/6 blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
         </div>
 
         <div className="max-w-6xl mx-auto px-4 py-12">
           <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20 shadow-lg shadow-[#7a9b88]/10 dark:shadow-[#8faf9d]/10">
-              <BookOpen className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
-              <span className="text-xs font-medium tracking-wide uppercase text-[#7a9b88] dark:text-[#8faf9d]">
+            <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#8faf9d]/10 border border-[#8faf9d]/20 shadow-lg shadow-[#8faf9d]/10">
+              <BookOpen className="h-4 w-4 text-[#8faf9d]" />
+              <span className="text-xs font-medium tracking-wide uppercase text-[#8faf9d]">
                 Community
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4 bg-gradient-to-br from-[#2a2520] to-[#6b635a] dark:from-[#f5f1ed] dark:to-[#b8aea5] bg-clip-text text-transparent">
+            <h1 className="text-4xl sm:text-5xl font-bold mb-4 bg-gradient-to-br from-[#f5f1ed] to-[#b8aea5] bg-clip-text text-transparent">
               Alle Beiträge
             </h1>
-            <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+            <p className="text-lg text-[#b8aea5] max-w-2xl mx-auto">
               Entdecke die Beiträge der Schüler, vote für deine Favoriten und teile deine Meinung.
             </p>
           </div>

@@ -67,12 +67,12 @@ export default function LoginClient() {
         <div>
           <label
             htmlFor="username"
-            className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+            className="block text-sm font-semibold mb-3 text-[#f5f1ed]"
           >
             Username
           </label>
           <div className="relative">
-            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#d97757]/60 dark:text-[#e89a7a]/60 pointer-events-none transition-colors" />
+            <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#e89a7a]/60 pointer-events-none transition-colors" />
             <input
               id="username"
               name="username"
@@ -89,12 +89,12 @@ export default function LoginClient() {
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]"
+            className="block text-sm font-semibold mb-3 text-[#f5f1ed]"
           >
             Passwort
           </label>
           <div className="relative">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#d97757]/60 dark:text-[#e89a7a]/60 pointer-events-none transition-colors" />
+            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#e89a7a]/60 pointer-events-none transition-colors" />
             <input
               id="password"
               name="password"
@@ -110,7 +110,7 @@ export default function LoginClient() {
 
         {error && (
           <div
-            className="flex items-start gap-3 rounded-xl border border-[#c96846]/40 dark:border-[#d97757]/40 bg-[#c96846]/10 dark:bg-[#d97757]/10 px-4 py-3 text-sm text-[#c96846] dark:text-[#e89a7a] shadow-lg animate-[fade-in_0.3s_ease-out]"
+            className="flex items-start gap-3 rounded-xl border border-[#d97757]/40 bg-[#d97757]/10 px-4 py-3 text-sm text-[#e89a7a] shadow-lg animate-[fade-in_0.3s_ease-out]"
             role="alert"
             aria-live="assertive"
           >
