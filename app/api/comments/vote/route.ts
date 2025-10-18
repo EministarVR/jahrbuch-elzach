@@ -1,0 +1,62 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getSession } from '@/lib/session';
+import { getDbPool } from '@/lib/db';
+import type { RowDataPacket } from 'mysql2';
+
+export const dynamic = 'force-dynamic';
+
+export async function POST(req: NextRequest) {
+  try {
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { commentId, voteType } = body;
+
+    if (!commentId || !voteType || !['upvote', 'downvote'].includes(voteType)) {
+      return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+    }
+
+    const conn = await getDbPool().getConnection();
+    try {
+      // Check if user already voted
+      const [existing] = await conn.query<RowDataPacket[]>(
+        `SELECT vote_type FROM comment_votes WHERE comment_id = ? AND user_id = ?`,
+        [commentId, session.userId]
+      );
+
+      if (existing.length > 0) {
+        const currentVote = existing[0].vote_type;
+
+        if (currentVote === voteType) {
+          // Remove vote (toggle off)
+          await conn.query(
+            `DELETE FROM comment_votes WHERE comment_id = ? AND user_id = ?`,
+            [commentId, session.userId]
+          );
+        } else {
+          // Change vote
+          await conn.query(
+            `UPDATE comment_votes SET vote_type = ? WHERE comment_id = ? AND user_id = ?`,
+            [voteType, commentId, session.userId]
+          );
+        }
+      } else {
+        // New vote
+        await conn.query(
+          `INSERT INTO comment_votes (comment_id, user_id, vote_type) VALUES (?, ?, ?)`,
+          [commentId, session.userId, voteType]
+        );
+      }
+
+      return NextResponse.json({ success: true });
+    } finally {
+      conn.release();
+    }
+  } catch (error) {
+    console.error('Failed to vote on comment:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}

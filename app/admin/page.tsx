@@ -13,6 +13,7 @@ import {
   deleteManySubmissionsAction,
   togglePhaseAction,
 } from "./actions";
+import ReportsList from "./ReportsList";
 import {
   CheckCircle2,
   XCircle,
@@ -27,6 +28,7 @@ import {
   Layers,
   ToggleLeft,
   Wrench,
+  Flag,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -57,6 +59,18 @@ type AuditRow = {
   created_at: string;
   actor: string;
   preview: string;
+};
+
+type ReportRow = {
+  id: number;
+  submission_id: number;
+  reporter_user_id: number;
+  reason: string;
+  status: 'pending' | 'reviewed' | 'dismissed';
+  created_at: string;
+  reporter: string;
+  submission_text: string;
+  submission_author: string;
 };
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<{ [_key: string]: string | string[] | undefined }> }) {
@@ -129,6 +143,20 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
      JOIN submissions s ON s.id = a.submission_id
      ORDER BY a.created_at DESC
      LIMIT 60`
+  );
+
+  const reports = await query<ReportRow[]>(
+    `SELECT r.*, 
+            u.username AS reporter,
+            LEFT(s.text, 100) AS submission_text,
+            au.username AS submission_author
+     FROM submission_reports r
+     JOIN users u ON u.id = r.reporter_user_id
+     JOIN submissions s ON s.id = r.submission_id
+     JOIN users au ON au.id = s.user_id
+     WHERE r.status = 'pending'
+     ORDER BY r.created_at DESC
+     LIMIT 50`
   );
 
   const categories = await query<{ category: string }[]>(
@@ -288,7 +316,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                               <input type="hidden" name="id" value={p.id} />
                               <GlowButton
                                 variant="primary"
-                                className="px-4 py-2 text-sm whitespace-nowrap"
+                                className="px-4 py-2 text-sm whitespace-nowrap w-full"
                                 iconLeft={<CheckCircle2 className="h-4 w-4" />}
                               >
                                 Genehmigen
@@ -298,7 +326,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                               <input type="hidden" name="id" value={p.id} />
                               <GlowButton
                                 variant="secondary"
-                                className="px-4 py-2 text-sm whitespace-nowrap"
+                                className="px-4 py-2 text-sm whitespace-nowrap w-full"
                                 iconLeft={<XCircle className="h-4 w-4" />}
                               >
                                 Löschen
@@ -387,6 +415,22 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   ))}
                 </div>
               )}
+            </GlassCard>
+
+            <GlassCard
+              header={
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 dark:bg-red-400/10 text-red-600 dark:text-red-400">
+                    <Flag className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Gemeldete Beiträge</h3>
+                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">User-Meldungen prüfen und bearbeiten.</p>
+                  </div>
+                </div>
+              }
+            >
+              <ReportsList reports={reports} />
             </GlassCard>
           </div>
 

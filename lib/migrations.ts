@@ -131,6 +131,54 @@ export async function ensureModerationSchema(): Promise<boolean> {
       }
     }
 
+    // 6) Voting tables
+    const hasVotes = await tableExists(conn, 'submission_votes');
+    if (!hasVotes) {
+      try {
+        await conn.query(
+          `CREATE TABLE submission_votes (
+             id INT AUTO_INCREMENT PRIMARY KEY,
+             submission_id INT NOT NULL,
+             user_id INT NOT NULL,
+             vote_type ENUM('upvote','downvote') NOT NULL,
+             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+             UNIQUE KEY unique_user_submission (user_id, submission_id),
+             FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
+             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+           )`
+        );
+      } catch (e) {
+        ok = false;
+        console.error('Failed to create submission_votes table:', e);
+      }
+    }
+
+    // 7) Reports table
+    const hasReports = await tableExists(conn, 'submission_reports');
+    if (!hasReports) {
+      try {
+        await conn.query(
+          `CREATE TABLE submission_reports (
+             id INT AUTO_INCREMENT PRIMARY KEY,
+             submission_id INT NOT NULL,
+             reporter_user_id INT NOT NULL,
+             reason TEXT NOT NULL,
+             status ENUM('pending','reviewed','dismissed') NOT NULL DEFAULT 'pending',
+             reviewed_by INT NULL,
+             reviewed_at TIMESTAMP NULL,
+             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             FOREIGN KEY (submission_id) REFERENCES submissions(id) ON DELETE CASCADE,
+             FOREIGN KEY (reporter_user_id) REFERENCES users(id) ON DELETE CASCADE,
+             FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL
+           )`
+        );
+      } catch (e) {
+        ok = false;
+        console.error('Failed to create submission_reports table:', e);
+      }
+    }
+
     return ok;
   } finally {
     conn.release();
@@ -151,6 +199,29 @@ export async function ensureUserClassColumn(): Promise<boolean> {
     return true;
   } catch (e) {
     console.error('Failed to ensure users.class column:', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
+
+export async function ensureCommentsSchema(): Promise<boolean> {
+  // Comments werden jetzt über schema.sql verwaltet
+  // Diese Funktion prüft nur noch, ob die Tabellen existieren
+  const conn = await getDbPool().getConnection();
+  try {
+    const hasComments = await tableExists(conn, 'comments');
+    const hasCommentVotes = await tableExists(conn, 'comment_votes');
+    const hasCommentReports = await tableExists(conn, 'comment_reports');
+
+    if (!hasComments || !hasCommentVotes || !hasCommentReports) {
+      console.warn('Comment tables do not exist. Please run schema.sql');
+      return false;
+    }
+
+    return true;
+  } catch (e) {
+    console.error('Failed to check comment tables:', e);
     return false;
   } finally {
     conn.release();

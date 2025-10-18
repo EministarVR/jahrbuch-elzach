@@ -137,7 +137,7 @@ export default async function Phase1Page({
                 <div className="flex items-center justify-between flex-wrap gap-3 text-sm text-[#6b635a] dark:text-[#b8aea5]">
                   <div className="inline-flex items-center gap-2">
                     <Shield className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
-                    <span>Wir behandeln deine Angaben vertraulich.</span>
+                    <span>Deine Angaben werden auf einer Seite zum Voting angezeigt. Wenn du das nicht möchtest, wende dich an Emin (Schulsprecher)</span>
                   </div>
                   <div className="inline-flex items-center gap-2">
                     <Send className="h-4 w-4 text-[#d97757] dark:text-[#e89a7a]" />

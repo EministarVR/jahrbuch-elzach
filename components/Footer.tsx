@@ -1,6 +1,6 @@
 import Link from "next/link";
 import GlowButton from "@/components/ui/GlowButton";
-import { ShieldCheck, FileText, ExternalLink, BookOpen, Mail } from "lucide-react";
+import { ShieldCheck, FileText, ExternalLink, BookOpen, Mail, HelpCircle } from "lucide-react";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -37,6 +37,15 @@ export default function Footer() {
               Rechtliches
             </h4>
             <ul className="space-y-3">
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-sm text-[#6b635a] dark:text-[#b8aea5] hover:text-[#d97757] dark:hover:text-[#e89a7a] transition-colors inline-flex items-center gap-2 group"
+                >
+                  <HelpCircle className="w-4 h-4" />
+                  FAQ & Hilfe
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/datenschutz"
@@ -94,4 +103,3 @@ export default function Footer() {
     </footer>
   );
 }
-

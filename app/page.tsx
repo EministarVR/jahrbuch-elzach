@@ -14,6 +14,8 @@ import {
   ArrowRight,
   BarChart3,
   Wrench,
+  ThumbsUp,
+  MessageSquare,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -104,6 +106,74 @@ export default async function Home() {
             </GlassCard>
           ))}
         </div>
+      </section>
+
+      {/* Browse & Abstimmen CTA */}
+      <section className="max-w-6xl mx-auto px-6 py-24">
+        <GlassCard delay={0}>
+          <div className="text-center space-y-8 py-8">
+            <div className="flex justify-center gap-4">
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#7a9b88] to-[#6a8b78] flex items-center justify-center text-white shadow-lg">
+                <ThumbsUp className="h-8 w-8" />
+              </div>
+              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#d97757] to-[#c96846] flex items-center justify-center text-white shadow-lg">
+                <MessageSquare className="h-8 w-8" />
+              </div>
+            </div>
+
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+                Beiträge bewerten & kommentieren
+              </h2>
+              <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto leading-relaxed">
+                Schau dir die eingereichten Beiträge an, stimme für deine Favoriten ab und teile deine Gedanken in den Kommentaren.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <GlowButton
+                as="a"
+                href="/browse"
+                variant="gradient"
+                className="text-lg px-8 py-4"
+                iconLeft={<ThumbsUp className="h-5 w-5" />}
+              >
+                Jetzt Beiträge durchstöbern
+                <ArrowRight className="h-5 w-5 ml-1" />
+              </GlowButton>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto pt-8">
+              <div className="flex items-start gap-4 text-left">
+                <div className="w-10 h-10 rounded-xl bg-[#7a9b88]/15 flex items-center justify-center text-[#7a9b88] dark:text-[#8faf9d] flex-shrink-0">
+                  <ThumbsUp className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[#2a2520] dark:text-[#f5f1ed] mb-1">
+                    Abstimmen
+                  </h3>
+                  <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                    Unterstütze die besten Beiträge mit deiner Stimme
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 text-left">
+                <div className="w-10 h-10 rounded-xl bg-[#d97757]/15 flex items-center justify-center text-[#d97757] dark:text-[#e89a7a] flex-shrink-0">
+                  <MessageSquare className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[#2a2520] dark:text-[#f5f1ed] mb-1">
+                    Kommentieren
+                  </h3>
+                  <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">
+                    Hinterlasse Feedback und tausche dich mit anderen aus
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </GlassCard>
       </section>
 
       {/* Prozess */}
