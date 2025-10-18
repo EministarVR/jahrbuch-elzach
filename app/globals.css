@@ -1,257 +1,296 @@
 @import "tailwindcss";
 
+/* ==========================================================
+   DARKMODE ERZWUNGEN – ALLE BROWSER, SYSTEMUNABHÄNGIG
+   ========================================================== */
+:root,
+html {
+    color-scheme: dark !important;
+    forced-color-adjust: none !important; /* blockt Auto-Theming/HC-Recolor */
+}
+
+/* Falls ein Browser Light bevorzugt – komplett ignorieren */
+@media (prefers-color-scheme: light) {
+    :root,
+    html,
+    body {
+        color-scheme: dark !important;
+        forced-color-adjust: none !important;
+    }
+}
+
+/* Basen festnageln (gegen Weißblitze & Auto-Invert) */
+html,
+body,
+#__next,
+#root {
+    background-color: #1a1714 !important;
+    color: #f5f1ed !important;
+}
+
+/* ==========================================================
+   DEIN DESIGN AB HIER – UNVERÄNDERT
+   ========================================================== */
+
 /* Small global fix: hide default marker on <summary> for iOS/Safari */
-details > summary::-webkit-details-marker { display: none; }
+details > summary::-webkit-details-marker {
+    display: none;
+}
 
 /* Neue hochwertige Farbpalette - Warme, natürliche Töne */
 :root {
-  /* Setze direkt die dunklen Farben als Standard */
-  --background: #1a1714;
-  --foreground: #f5f1ed;
-  --muted: #b8aea5;
-  --surface: rgba(42, 37, 32, 0.92);
-  --surface-alt: rgba(56, 48, 43, 0.75);
-  --on-surface: #f5f1ed;
-  --on-surface-muted: #d4cdc5;
-  --accent: #e89a7a;
-  --accent-alt: #8faf9d;
-  --accent-rgb: 232 154 122;
-  --accent-gradient: linear-gradient(
-    135deg,
-    #e89a7a 0%,
-    #d97757 50%,
-    #8faf9d 100%
-  );
-  --radius-xs: 8px;
-  --radius-sm: 12px;
-  --radius: 20px;
-  --radius-lg: 28px;
-  --radius-xl: 36px;
-  --radius-2xl: 48px;
-  --shadow-sm: 0 2px 12px -2px rgba(0, 0, 0, 0.3),
+    /* Setze direkt die dunklen Farben als Standard */
+    --background: #1a1714;
+    --foreground: #f5f1ed;
+    --muted: #b8aea5;
+    --surface: rgba(42, 37, 32, 0.92);
+    --surface-alt: rgba(56, 48, 43, 0.75);
+    --on-surface: #f5f1ed;
+    --on-surface-muted: #d4cdc5;
+    --accent: #e89a7a;
+    --accent-alt: #8faf9d;
+    --accent-rgb: 232 154 122;
+    --accent-gradient: linear-gradient(
+            135deg,
+            #e89a7a 0%,
+            #d97757 50%,
+            #8faf9d 100%
+    );
+    --radius-xs: 8px;
+    --radius-sm: 12px;
+    --radius: 20px;
+    --radius-lg: 28px;
+    --radius-xl: 36px;
+    --radius-2xl: 48px;
+    --shadow-sm: 0 2px 12px -2px rgba(0, 0, 0, 0.3),
     0 4px 16px -2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.4),
+    --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.4),
     0 16px 40px -6px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 12px 48px -6px rgba(0, 0, 0, 0.5),
+    --shadow-lg: 0 12px 48px -6px rgba(0, 0, 0, 0.5),
     0 24px 64px -8px rgba(0, 0, 0, 0.4);
-  --gradient-hero: radial-gradient(
-      ellipse at 30% 20%,
-      rgba(232, 154, 122, 0.12),
-      transparent 60%
+    --gradient-hero: radial-gradient(
+            ellipse at 30% 20%,
+            rgba(232, 154, 122, 0.12),
+            transparent 60%
     ),
     radial-gradient(
-      ellipse at 70% 70%,
-      rgba(143, 175, 157, 0.1),
-      transparent 60%
+            ellipse at 70% 70%,
+            rgba(143, 175, 157, 0.1),
+            transparent 60%
     );
-  /* Easing tokens */
-  --ease-emphasized: cubic-bezier(0.16, 0.84, 0.44, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-  --ease-soft: cubic-bezier(0.33, 0.66, 0.45, 1);
-  color-scheme: dark;
+    /* Easing tokens */
+    --ease-emphasized: cubic-bezier(0.16, 0.84, 0.44, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-soft: cubic-bezier(0.33, 0.66, 0.45, 1);
+    color-scheme: dark;
 }
 
 /* Elegantes dunkles Theme mit warmen Tönen */
 .dark {
-  --background: #1a1714;
-  --foreground: #f5f1ed;
-  --muted: #b8aea5;
-  --surface: rgba(42, 37, 32, 0.92);
-  --surface-alt: rgba(56, 48, 43, 0.75);
-  --on-surface: #f5f1ed;
-  --on-surface-muted: #d4cdc5;
-  --accent: #e89a7a;
-  --accent-alt: #8faf9d;
-  --accent-rgb: 232 154 122;
-  color-scheme: dark;
+    --background: #1a1714;
+    --foreground: #f5f1ed;
+    --muted: #b8aea5;
+    --surface: rgba(42, 37, 32, 0.92);
+    --surface-alt: rgba(56, 48, 43, 0.75);
+    --on-surface: #f5f1ed;
+    --on-surface-muted: #d4cdc5;
+    --accent: #e89a7a;
+    --accent-alt: #8faf9d;
+    --accent-rgb: 232 154 122;
+    color-scheme: dark;
 }
 
 html {
-  scroll-padding-top: 5rem;
-  -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
 }
 
 /* Eleganter Hintergrund mit subtilen Texturen - IMMER DUNKEL */
-html, body {
-  background-color: #1a1714 !important;
-  background-image:
-    radial-gradient(
-      circle at 25% 15%,
-      rgba(232, 154, 122, 0.08) 0%,
-      transparent 50%
+html,
+body {
+    background-color: #1a1714 !important;
+    background-image: radial-gradient(
+            circle at 25% 15%,
+            rgba(232, 154, 122, 0.08) 0%,
+            transparent 50%
     ),
     radial-gradient(
-      circle at 75% 85%,
-      rgba(143, 175, 157, 0.06) 0%,
-      transparent 50%
+            circle at 75% 85%,
+            rgba(143, 175, 157, 0.06) 0%,
+            transparent 50%
     ),
-    linear-gradient(
-      180deg,
-      #1a1714 0%,
-      #221e1a 50%,
-      #1a1714 100%
-    );
-  background-attachment: fixed;
+    linear-gradient(180deg, #1a1714 0%, #221e1a 50%, #1a1714 100%);
+    background-attachment: fixed;
 }
 
 body {
-  background-image:
-    radial-gradient(
-      circle at 30% 20%,
-      rgba(217, 119, 87, 0.04) 0%,
-      transparent 50%
+    background-image: radial-gradient(
+            circle at 30% 20%,
+            rgba(217, 119, 87, 0.04) 0%,
+            transparent 50%
     ),
     radial-gradient(
-      circle at 70% 80%,
-      rgba(122, 155, 136, 0.03) 0%,
-      transparent 50%
+            circle at 70% 80%,
+            rgba(122, 155, 136, 0.03) 0%,
+            transparent 50%
     );
-  background-attachment: fixed;
+    background-attachment: fixed;
 }
 
 .text-base-strong {
-  color: #f5f1ed;
+    color: #f5f1ed;
 }
 .text-base-muted {
-  color: #d4cdc5;
+    color: #d4cdc5;
 }
 .dark .text-base-strong {
-  color: var(--on-surface);
+    color: var(--on-surface);
 }
 .dark .text-base-muted {
-  color: var(--on-surface-muted);
+    color: var(--on-surface-muted);
 }
 
 /* Typography helpers */
 .font-display {
-  font-feature-settings: "ss01" 1, "ss02" 1;
-  letter-spacing: -0.025em;
+    font-feature-settings: "ss01" 1, "ss02" 1;
+    letter-spacing: -0.025em;
 }
 .text-gradient {
-  background-image: linear-gradient(120deg, #d97757, #c96846 45%, #7a9b88 90%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+    background-image: linear-gradient(120deg, #d97757, #c96846 45%, #7a9b88 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 
 /* Utility classes */
 .backdrop-soft {
-  backdrop-filter: blur(24px) saturate(120%);
+    backdrop-filter: blur(24px) saturate(120%);
 }
 .border-glow {
-  box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0.1),
+    box-shadow: 0 0 0 1px rgb(var(--accent-rgb) / 0.1),
     0 0 0 4px rgb(var(--accent-rgb) / 0.03);
 }
 .divider-gradient {
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgb(var(--accent-rgb) / 0.25),
-    transparent
-  );
+    height: 1px;
+    background: linear-gradient(
+            90deg,
+            transparent,
+            rgb(var(--accent-rgb) / 0.25),
+            transparent
+    );
 }
+
 /* Hide scrollbars for chip nav (mobile) */
 .no-scrollbar {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
 }
 .no-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+    display: none; /* Chrome/Safari */
 }
 
-/* NEUE SCHÖNERE INPUT/TEXTAREA STYLES */
+/* NEUE SCHÖNERE INPUT/TEXTAREA STYLES – DARK ONLY */
 .input-base,
 .textarea-base {
-  @apply w-full rounded-xl px-4 py-3 text-sm
-    bg-white/95 dark:bg-[#2a2520]/95
-    text-[#2a2520] dark:text-[#f5f1ed]
-    placeholder:text-[#6b635a]/60 dark:placeholder:text-[#b8aea5]/60
-    border border-[#d97757]/20 dark:border-[#e89a7a]/20
-    shadow-sm shadow-[#2a2520]/5 dark:shadow-[#e89a7a]/5
+    @apply w-full rounded-xl px-4 py-3 text-sm
+    bg-[#2a2520]/95
+    text-[#f5f1ed]
+    placeholder:text-[#b8aea5]/60
+    border border-[#e89a7a]/20
+    shadow-sm shadow-[#e89a7a]/5
     outline-none
     transition-all duration-300 ease-out
-    hover:border-[#d97757]/30 dark:hover:border-[#e89a7a]/30
-    hover:shadow-md hover:shadow-[#d97757]/8 dark:hover:shadow-[#e89a7a]/8
-    focus:border-[#d97757]/50 dark:focus:border-[#e89a7a]/50
-    focus:ring-4 focus:ring-[#d97757]/10 dark:focus:ring-[#e89a7a]/10
-    focus:shadow-lg focus:shadow-[#d97757]/10 dark:focus:shadow-[#e89a7a]/10
+    hover:border-[#e89a7a]/30
+    hover:shadow-md hover:shadow-[#e89a7a]/8
+    focus:border-[#e89a7a]/50
+    focus:ring-4 focus:ring-[#e89a7a]/10
+    focus:shadow-lg focus:shadow-[#e89a7a]/10
     backdrop-blur-sm;
 }
-
 .textarea-base {
-  @apply resize-none leading-relaxed;
+    @apply resize-none leading-relaxed;
 }
 
-/* Select Styles */
+/* Select Styles – DARK ONLY */
 select.input-base {
-  @apply appearance-none cursor-pointer
-    bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23d97757%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')]
-    bg-[length:1.25rem_1.25rem]
-    bg-[position:right_0.75rem_center]
-    bg-no-repeat;
-}
-
-.dark select.input-base {
-  @apply bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23e89a7a%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22%2F%3E%3C%2Fsvg%3E')];
+    @apply appearance-none cursor-pointer;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23e89a7a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-size: 1.25rem 1.25rem;
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
 }
 
 /* Input mit Icons */
 .input-base:has(~ .icon-left) {
-  @apply pl-11;
+    @apply pl-11;
 }
 
 /* Animations */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 @keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 @keyframes pulse-border {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgb(var(--accent-rgb) / 0);
-  }
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgb(var(--accent-rgb) / 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgb(var(--accent-rgb) / 0);
+    }
 }
 @keyframes shimmer {
-  0% {
-    background-position: 0 50%;
-  }
-  100% {
-    background-position: 200% 50%;
-  }
+    0% {
+        background-position: 0 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
 }
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-  20%, 40%, 60%, 80% { transform: translateX(4px); }
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-4px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(4px);
+    }
 }
 
 /* Smooth transitions */
 * {
-  transition: background-color 0.3s var(--ease-soft), border-color 0.3s var(--ease-soft);
+    transition: background-color 0.3s var(--ease-soft),
+    border-color 0.3s var(--ease-soft);
 }
 
 /* Animation utilities */
 .animate-shake {
-  animation: shake 0.6s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
