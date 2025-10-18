@@ -5,17 +5,22 @@ details > summary::-webkit-details-marker { display: none; }
 
 /* Neue hochwertige Farbpalette - Warme, natürliche Töne */
 :root {
-  --background: #faf8f5;
-  --foreground: #2a2520;
-  --muted: #6b635a;
-  --accent: #d97757;
-  --accent-alt: #7a9b88;
-  --accent-rgb: 217 119 87;
+  /* Setze direkt die dunklen Farben als Standard */
+  --background: #1a1714;
+  --foreground: #f5f1ed;
+  --muted: #b8aea5;
+  --surface: rgba(42, 37, 32, 0.92);
+  --surface-alt: rgba(56, 48, 43, 0.75);
+  --on-surface: #f5f1ed;
+  --on-surface-muted: #d4cdc5;
+  --accent: #e89a7a;
+  --accent-alt: #8faf9d;
+  --accent-rgb: 232 154 122;
   --accent-gradient: linear-gradient(
     135deg,
-    #d97757 0%,
-    #c96846 50%,
-    #7a9b88 100%
+    #e89a7a 0%,
+    #d97757 50%,
+    #8faf9d 100%
   );
   --radius-xs: 8px;
   --radius-sm: 12px;
@@ -23,30 +28,27 @@ details > summary::-webkit-details-marker { display: none; }
   --radius-lg: 28px;
   --radius-xl: 36px;
   --radius-2xl: 48px;
-  --shadow-sm: 0 2px 12px -2px rgba(42, 37, 32, 0.08),
-    0 4px 16px -2px rgba(42, 37, 32, 0.05);
-  --shadow-md: 0 8px 24px -4px rgba(42, 37, 32, 0.12),
-    0 16px 40px -6px rgba(42, 37, 32, 0.08);
-  --shadow-lg: 0 12px 48px -6px rgba(42, 37, 32, 0.18),
-    0 24px 64px -8px rgba(42, 37, 32, 0.12);
-  --surface: rgba(255, 252, 248, 0.95);
-  --surface-alt: rgba(250, 244, 237, 0.82);
-  --on-surface: #2a2520;
-  --on-surface-muted: #6b635a;
+  --shadow-sm: 0 2px 12px -2px rgba(0, 0, 0, 0.3),
+    0 4px 16px -2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.4),
+    0 16px 40px -6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 48px -6px rgba(0, 0, 0, 0.5),
+    0 24px 64px -8px rgba(0, 0, 0, 0.4);
   --gradient-hero: radial-gradient(
       ellipse at 30% 20%,
-      rgba(217, 119, 87, 0.12),
+      rgba(232, 154, 122, 0.12),
       transparent 60%
     ),
     radial-gradient(
       ellipse at 70% 70%,
-      rgba(122, 155, 136, 0.1),
+      rgba(143, 175, 157, 0.1),
       transparent 60%
     );
   /* Easing tokens */
   --ease-emphasized: cubic-bezier(0.16, 0.84, 0.44, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-soft: cubic-bezier(0.33, 0.66, 0.45, 1);
+  color-scheme: dark;
 }
 
 /* Elegantes dunkles Theme mit warmen Tönen */
@@ -62,24 +64,6 @@ details > summary::-webkit-details-marker { display: none; }
   --accent-alt: #8faf9d;
   --accent-rgb: 232 154 122;
   color-scheme: dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #1a1714;
-    --foreground: #f5f1ed;
-    --muted: #b8aea5;
-    --surface: rgba(42, 37, 32, 0.92);
-    --surface-alt: rgba(56, 48, 43, 0.75);
-    --on-surface: #f5f1ed;
-    --on-surface-muted: #d4cdc5;
-    --accent: #e89a7a;
-    --accent-alt: #8faf9d;
-    --accent-rgb: 232 154 122;
-  }
-  .dark .noise::before {
-    opacity: 0.08;
-  }
 }
 
 html {
