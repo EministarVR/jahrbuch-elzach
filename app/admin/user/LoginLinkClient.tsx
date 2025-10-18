@@ -101,8 +101,9 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
 
     printWindow.document.write(`
       <!DOCTYPE html>
-      <html>
+      <html lang="de">
         <head>
+          <meta charSet="utf-8" />
           <title>Login-Daten - ${result.username}</title>
           <style>
             body { 
@@ -179,7 +180,7 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
           </div>
           
           <div class="footer">
-            <strong>💡 So funktioniert&apos;s:</strong>
+            <strong>💡 So funktioniert's:</strong>
             <ul>
               <li>Scanne den QR-Code mit deinem Smartphone</li>
               <li>Oder öffne den Login-Link im Browser</li>
@@ -233,21 +234,21 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
       </div>
 
       {error && (
-        <div className="rounded-xl bg-[#c96846]/10 dark:bg-[#d97757]/10 border border-[#c96846]/30 dark:border-[#d97757]/30 px-4 py-3">
-          <div className="text-sm text-[#c96846] dark:text-[#d97757] font-medium">{error}</div>
+        <div className="rounded-xl bg-[#d97757]/10 border border-[#d97757]/30 px-4 py-3">
+          <div className="text-sm text-[#d97757] font-medium">{error}</div>
         </div>
       )}
 
       {result && (
-        <div className="rounded-2xl bg-gradient-to-br from-white/80 to-white/60 dark:from-[#2a2520]/80 dark:to-[#2a2520]/60 backdrop-blur-sm border border-[#d97757]/20 dark:border-[#e89a7a]/20 p-6 space-y-5 shadow-lg shadow-[#d97757]/10">
+        <div className="rounded-2xl bg-gradient-to-br from-[#2a2520]/80 to-[#2a2520]/60 backdrop-blur-sm border border-[#e89a7a]/20 p-6 space-y-5 shadow-lg shadow-[#d97757]/10">
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div className="flex items-center gap-2">
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-[#7a9b88] to-[#6a8b78] flex items-center justify-center text-white shadow-md">
                 <CheckCircle2 className="h-5 w-5" />
               </div>
               <div>
-                <div className="text-sm font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Login-Link erstellt</div>
-                <div className="text-xs text-[#6b635a] dark:text-[#b8aea5]">Für {result.username}</div>
+                <div className="text-sm font-semibold text-[#f5f1ed]">Login-Link erstellt</div>
+                <div className="text-xs text-[#b8aea5]">Für {result.username}</div>
               </div>
             </div>
             <div className="flex gap-2">
@@ -261,31 +262,31 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
                   Teilen
                 </GlowButton>
                 {showShareMenu && (
-                  <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-white dark:bg-[#2a2520] border border-[#d97757]/20 dark:border-[#e89a7a]/20 shadow-xl z-50 overflow-hidden">
+                  <div className="absolute right-0 top-full mt-2 w-48 rounded-xl bg-[#2a2520] border border-[#e89a7a]/20 shadow-xl z-50 overflow-hidden">
                     <button
                       onClick={() => { shareViaEmail(); setShowShareMenu(false); }}
-                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#d97757]/10 dark:hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#2a2520] dark:text-[#f5f1ed] transition-colors"
+                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#f5f1ed] transition-colors"
                     >
                       <Mail className="h-4 w-4 text-[#7a9b88]" />
                       Per E-Mail
                     </button>
                     <button
                       onClick={() => { shareViaWhatsApp(); setShowShareMenu(false); }}
-                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#d97757]/10 dark:hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#2a2520] dark:text-[#f5f1ed] transition-colors"
+                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#f5f1ed] transition-colors"
                     >
                       <MessageCircle className="h-4 w-4 text-[#7a9b88]" />
                       Per WhatsApp
                     </button>
                     <button
                       onClick={() => { copyAll(); setShowShareMenu(false); }}
-                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#d97757]/10 dark:hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#2a2520] dark:text-[#f5f1ed] transition-colors"
+                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#f5f1ed] transition-colors"
                     >
                       <Copy className="h-4 w-4 text-[#7a9b88]" />
                       Alles kopieren
                     </button>
                     <button
                       onClick={() => { print(); setShowShareMenu(false); }}
-                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#d97757]/10 dark:hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#2a2520] dark:text-[#f5f1ed] transition-colors"
+                      className="w-full px-4 py-3 text-left text-sm hover:bg-[#e89a7a]/10 flex items-center gap-3 text-[#f5f1ed] transition-colors"
                     >
                       <Printer className="h-4 w-4 text-[#7a9b88]" />
                       Drucken
@@ -307,7 +308,7 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
           <div className="grid md:grid-cols-[auto,1fr] gap-6 items-start">
             {qrUrl && (
               <div className="flex flex-col items-center gap-3">
-                <div className="rounded-2xl bg-white p-4 shadow-lg ring-1 ring-[#d97757]/20 dark:ring-[#e89a7a]/20">
+                <div className="rounded-2xl bg-white p-4 shadow-lg ring-1 ring-[#e89a7a]/20">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrUrl}
@@ -328,22 +329,22 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
 
             <div className="space-y-4">
               <div className="space-y-2">
-                <div className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5] uppercase tracking-wide">Login-Link</div>
+                <div className="text-xs font-medium text-[#b8aea5] uppercase tracking-wide">Login-Link</div>
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 rounded-xl bg-[#7a9b88]/5 dark:bg-[#8faf9d]/5 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20 px-4 py-3">
+                  <div className="flex-1 rounded-xl bg-[#8faf9d]/5 border border-[#8faf9d]/20 px-4 py-3">
                     <a
-                      href={result.link}
+                      href={result!.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-[#7a9b88] dark:text-[#8faf9d] hover:text-[#6a8b78] dark:hover:text-[#7a9b88] break-all font-medium hover:underline"
+                      className="text-sm text-[#8faf9d] hover:text-[#7a9b88] break-all font-medium hover:underline"
                     >
-                      {result.link}
+                      {result!.link}
                     </a>
                   </div>
                 </div>
                 <div className="flex gap-2">
                   <GlowButton
-                    onClick={() => copyToClipboard(result.link, 'link')}
+                    onClick={() => copyToClipboard(result!.link, 'link')}
                     variant={copied === 'link' ? 'primary' : 'secondary'}
                     className="px-3 py-2 text-xs flex-1"
                     iconLeft={copied === 'link' ? <CheckCircle2 className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
@@ -363,12 +364,12 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <div className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5] uppercase tracking-wide">Username</div>
-                  <div className="rounded-xl bg-white/60 dark:bg-[#1a1714]/60 border border-[#d97757]/15 dark:border-[#e89a7a]/15 px-3 py-2.5">
-                    <div className="text-sm font-semibold text-[#2a2520] dark:text-[#f5f1ed]">{result.username}</div>
+                  <div className="text-xs font-medium text-[#b8aea5] uppercase tracking-wide">Username</div>
+                  <div className="rounded-xl bg-[#1a1714]/60 border border-[#e89a7a]/15 px-3 py-2.5">
+                    <div className="text-sm font-semibold text-[#f5f1ed]">{result!.username}</div>
                   </div>
                   <GlowButton
-                    onClick={() => copyToClipboard(result.username, 'username')}
+                    onClick={() => copyToClipboard(result!.username, 'username')}
                     variant="ghost"
                     className="px-2 py-1.5 text-xs w-full"
                     iconLeft={copied === 'username' ? <CheckCircle2 className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
@@ -378,12 +379,12 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
                 </div>
 
                 <div className="space-y-1.5">
-                  <div className="text-xs font-medium text-[#6b635a] dark:text-[#b8aea5] uppercase tracking-wide">Passwort</div>
-                  <div className="rounded-xl bg-white/60 dark:bg-[#1a1714]/60 border border-[#d97757]/15 dark:border-[#e89a7a]/15 px-3 py-2.5">
-                    <div className="text-sm font-mono font-semibold text-[#2a2520] dark:text-[#f5f1ed]">{result.password}</div>
+                  <div className="text-xs font-medium text-[#b8aea5] uppercase tracking-wide">Passwort</div>
+                  <div className="rounded-xl bg-[#1a1714]/60 border border-[#e89a7a]/15 px-3 py-2.5">
+                    <div className="text-sm font-mono font-semibold text-[#f5f1ed]">{result!.password}</div>
                   </div>
                   <GlowButton
-                    onClick={() => copyToClipboard(result.password, 'password')}
+                    onClick={() => copyToClipboard(result!.password, 'password')}
                     variant="ghost"
                     className="px-2 py-1.5 text-xs w-full"
                     iconLeft={copied === 'password' ? <CheckCircle2 className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
@@ -393,9 +394,9 @@ export default function LoginLinkClient({ userId }: { userId: number; username: 
                 </div>
               </div>
 
-              <div className="rounded-xl bg-[#d97757]/5 dark:bg-[#e89a7a]/5 border border-[#d97757]/20 dark:border-[#e89a7a]/20 px-4 py-3">
-                <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] space-y-1">
-                  <div className="font-medium text-[#2a2520] dark:text-[#f5f1ed]">💡 Hinweise:</div>
+              <div className="rounded-xl bg-[#e89a7a]/5 border border-[#e89a7a]/20 px-4 py-3">
+                <div className="text-xs text-[#b8aea5] space-y-1">
+                  <div className="font-medium text-[#f5f1ed]">💡 Hinweise:</div>
                   <div>• QR-Code scannen für sofortigen Login</div>
                   <div>• Link funktioniert auf allen Geräten</div>
                   <div>• Login-Daten können mehrfach genutzt werden</div>

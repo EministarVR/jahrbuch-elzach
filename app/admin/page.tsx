@@ -166,25 +166,25 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const phaseSettings = await getPhaseSettings();
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]">
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#1a1714] via-[#221e1a] to-[#1a1714]">
       {/* Subtile Hintergrundeffekte */}
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-12 space-y-10">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 border border-[#7a9b88]/20 dark:border-[#8faf9d]/20">
-            <Shield className="h-4 w-4 text-[#7a9b88] dark:text-[#8faf9d]" />
-            <span className="text-xs font-medium tracking-wide uppercase text-[#7a9b88] dark:text-[#8faf9d]">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#8faf9d]/10 border border-[#8faf9d]/20">
+            <Shield className="h-4 w-4 text-[#8faf9d]" />
+            <span className="text-xs font-medium tracking-wide uppercase text-[#8faf9d]">
               Admin-Bereich
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f1ed] mb-4">
             Dashboard
           </h1>
-          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+          <p className="text-lg text-[#b8aea5] max-w-2xl mx-auto">
             Moderiere Einsendungen, verwalte Accounts und behalte den Überblick.
           </p>
         </div>
@@ -203,8 +203,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   {s.icon}
                 </div>
                 <div>
-                  <div className="text-sm text-[#6b635a] dark:text-[#b8aea5]">{s.label}</div>
-                  <div className="text-2xl font-bold text-[#2a2520] dark:text-[#f5f1ed]">{s.value}</div>
+                  <div className="text-sm text-[#b8aea5]">{s.label}</div>
+                  <div className="text-2xl font-bold text-[#f5f1ed]">{s.value}</div>
                 </div>
               </div>
             </GlassCard>
@@ -217,12 +217,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
                     <FileText className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Ausstehende Einsendungen</h3>
-                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Prüfen, genehmigen oder löschen.</p>
+                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Ausstehende Einsendungen</h3>
+                    <p className="text-sm text-[#b8aea5]">Prüfen, genehmigen oder löschen.</p>
                   </div>
                 </div>
               }
@@ -247,15 +247,15 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   ))}
                 </select>
                 <GlowButton variant="primary" className="px-5">Filtern</GlowButton>
-                <a href="/admin" className="text-sm text-[#d97757] dark:text-[#e89a7a] hover:underline">Zurücksetzen</a>
+                <a href="/admin" className="text-sm text-[#e89a7a] hover:underline">Zurücksetzen</a>
               </form>
 
               {pending.length === 0 ? (
                 <div className="text-center py-12">
-                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d] mb-4">
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-[#8faf9d]/10 text-[#8faf9d] mb-4">
                     <CheckCircle2 className="h-8 w-8" />
                   </div>
-                  <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Keine ausstehenden Einsendungen. Alles erledigt! ✨</p>
+                  <p className="text-sm text-[#b8aea5]">Keine ausstehenden Einsendungen. Alles erledigt! ✨</p>
                 </div>
               ) : (
                 <form>
@@ -279,33 +279,33 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   </div>
                   <div className="space-y-4">
                     {pending.map((p) => (
-                      <div key={p.id} className="rounded-2xl border border-[#d97757]/15 dark:border-[#e89a7a]/15 bg-white/80 dark:bg-[#2a2520]/80 p-5 hover:border-[#d97757]/25 dark:hover:border-[#e89a7a]/25 transition-all">
+                      <div key={p.id} className="rounded-2xl border border-[#e89a7a]/15 bg-[#2a2520]/80 p-5 hover:border-[#e89a7a]/25 transition-all">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-start gap-4 flex-1">
                             <input
                               type="checkbox"
                               name="ids"
                               value={p.id}
-                              className="mt-1.5 h-5 w-5 rounded border-[#d97757]/30 dark:border-[#e89a7a]/30 text-[#d97757] dark:text-[#e89a7a] focus:ring-[#d97757]/50"
+                              className="mt-1.5 h-5 w-5 rounded border-[#e89a7a]/30 text-[#e89a7a] focus:ring-[#d97757]/50"
                             />
                             <div className="flex-1">
-                              <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] flex flex-wrap items-center gap-2 mb-3">
+                              <div className="text-xs text-[#b8aea5] flex flex-wrap items-center gap-2 mb-3">
                                 <span className="inline-flex items-center gap-1.5">
-                                  <User2 className="h-3.5 w-3.5 text-[#7a9b88] dark:text-[#8faf9d]" />
-                                  <strong className="text-[#2a2520] dark:text-[#f5f1ed]">{p.author}</strong>
+                                  <User2 className="h-3.5 w-3.5 text-[#8faf9d]" />
+                                  <strong className="text-[#f5f1ed]">{p.author}</strong>
                                 </span>
                                 <span>•</span>
                                 <span>{new Date(p.created_at).toLocaleString("de-DE")}</span>
                                 <span>•</span>
-                                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a] text-xs font-medium border border-[#d97757]/20 dark:border-[#e89a7a]/20">
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#e89a7a]/10 text-[#e89a7a] text-xs font-medium border border-[#e89a7a]/20">
                                   {p.category}
                                 </span>
                               </div>
-                              <div className="text-sm text-[#2a2520] dark:text-[#f5f1ed] leading-relaxed whitespace-pre-wrap">
+                              <div className="text-sm text-[#f5f1ed] leading-relaxed whitespace-pre-wrap">
                                 {p.text}
                               </div>
                               {(p.name || p.phone) && (
-                                <div className="mt-3 pt-3 border-t border-[#d97757]/10 dark:border-[#e89a7a]/10 text-xs text-[#6b635a] dark:text-[#b8aea5]">
+                                <div className="mt-3 pt-3 border-t border-[#e89a7a]/10 text-xs text-[#b8aea5]">
                                   {[p.name, p.phone].filter(Boolean).join(" · ")}
                                 </div>
                               )}
@@ -344,24 +344,24 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#8faf9d]/10 text-[#8faf9d]">
                     <CheckCircle2 className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Genehmigt (zuletzt 50)</h3>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Genehmigt (zuletzt 50)</h3>
                 </div>
               }
             >
               {approved.length === 0 ? (
-                <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Noch nichts genehmigt.</p>
+                <p className="text-sm text-[#b8aea5]">Noch nichts genehmigt.</p>
               ) : (
                 <div className="space-y-3">
                   {approved.map((a) => (
-                    <div key={a.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#7a9b88]/15 dark:border-[#8faf9d]/15 bg-[#7a9b88]/5 dark:bg-[#8faf9d]/5 p-4 hover:border-[#7a9b88]/25 dark:hover:border-[#8faf9d]/25 transition-all">
+                    <div key={a.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#8faf9d]/15 bg-[#8faf9d]/5 p-4 hover:border-[#8faf9d]/25 transition-all">
                       <div className="flex-1">
-                        <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] mb-2">
+                        <div className="text-xs text-[#b8aea5] mb-2">
                           Von <strong>{a.author}</strong> • {a.category} • genehmigt von <strong>{a.approver || "—"}</strong> am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
                         </div>
-                        <div className="text-sm text-[#2a2520] dark:text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap">{a.text}</div>
+                        <div className="text-sm text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap">{a.text}</div>
                       </div>
                       <form action={deleteSubmissionAction}>
                         <input type="hidden" name="id" value={a.id} />
@@ -382,24 +382,24 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#c96846]/10 dark:bg-[#d97757]/10 text-[#c96846] dark:text-[#d97757]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 text-[#d97757]">
                     <Trash2 className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Gelöscht (zuletzt 50)</h3>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Gelöscht (zuletzt 50)</h3>
                 </div>
               }
             >
               {deleted.length === 0 ? (
-                <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Keine gelöschten Beiträge.</p>
+                <p className="text-sm text-[#b8aea5]">Keine gelöschten Beiträge.</p>
               ) : (
                 <div className="space-y-3">
                   {deleted.map((d) => (
-                    <div key={d.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#c96846]/15 dark:border-[#d97757]/15 bg-[#c96846]/5 dark:bg-[#d97757]/5 p-4 hover:border-[#c96846]/25 dark:hover:border-[#d97757]/25 transition-all">
+                    <div key={d.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#d97757]/15 bg-[#d97757]/5 p-4 hover:border-[#d97757]/25 transition-all">
                       <div className="flex-1">
-                        <div className="text-xs text-[#6b635a] dark:text-[#b8aea5] mb-2">
+                        <div className="text-xs text-[#b8aea5] mb-2">
                           Von <strong>{d.author}</strong> • {d.category} • gelöscht von <strong>{d.deleter || "—"}</strong> am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
                         </div>
-                        <div className="text-sm text-[#2a2520] dark:text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap opacity-75">{d.text}</div>
+                        <div className="text-sm text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap opacity-75">{d.text}</div>
                       </div>
                       <form action={restoreSubmissionAction}>
                         <input type="hidden" name="id" value={d.id} />
@@ -420,12 +420,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 dark:bg-red-400/10 text-red-600 dark:text-red-400">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-red-400/10 text-red-400">
                     <Flag className="h-5 w-5" />
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Gemeldete Beiträge</h3>
-                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">User-Meldungen prüfen und bearbeiten.</p>
+                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Gemeldete Beiträge</h3>
+                    <p className="text-sm text-[#b8aea5]">User-Meldungen prüfen und bearbeiten.</p>
                   </div>
                 </div>
               }
@@ -439,10 +439,10 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#8faf9d]/10 text-[#8faf9d]">
                     <Shield className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Schnellzugriff</h3>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Schnellzugriff</h3>
                 </div>
               }
             >
@@ -480,31 +480,31 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
                     <Activity className="h-5 w-5" />
                   </span>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Aktivitätsprotokoll</h3>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Aktivitätsprotokoll</h3>
                 </div>
               }
             >
               <div className="space-y-3 max-h-[500px] overflow-y-auto">
                 {audit.slice(0, 20).map((log) => (
                   <div key={log.id} className="text-xs">
-                    <div className="flex items-center gap-2 text-[#6b635a] dark:text-[#b8aea5]">
+                    <div className="flex items-center gap-2 text-[#b8aea5]">
                       <span className={`inline-flex h-2 w-2 rounded-full ${
                         log.action === 'create' ? 'bg-[#7a9b88]' :
                         log.action === 'approve' ? 'bg-[#7a9b88]' :
                         log.action === 'delete' ? 'bg-[#c96846]' :
                         'bg-[#d97757]'
                       }`} />
-                      <strong className="text-[#2a2520] dark:text-[#f5f1ed]">{log.actor}</strong>
+                      <strong className="text-[#f5f1ed]">{log.actor}</strong>
                       <span>•</span>
                       <span>{log.action === 'create' ? 'erstellt' : log.action === 'approve' ? 'genehmigt' : log.action === 'delete' ? 'gelöscht' : 'wiederhergestellt'}</span>
                     </div>
-                    <div className="mt-1 text-[#6b635a] dark:text-[#b8aea5] line-clamp-2 pl-4">
+                    <div className="mt-1 text-[#b8aea5] line-clamp-2 pl-4">
                       {log.preview}...
                     </div>
-                    <div className="text-[#6b635a] dark:text-[#b8aea7] opacity-60 pl-4 mt-0.5">
+                    <div className="text-[#b8aea7] opacity-60 pl-4 mt-0.5">
                       {new Date(log.created_at).toLocaleString("de-DE")}
                     </div>
                   </div>
@@ -517,12 +517,12 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <GlassCard
                 header={
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#4caf50]/10 dark:bg-[#66bb6a]/10 text-[#4caf50] dark:text-[#66bb6a]">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#66bb6a]/10 text-[#66bb6a]">
                       <Layers className="h-5 w-5" />
                     </span>
                     <div>
-                      <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Phasensteuerung</h3>
-                      <p className="text-xs text-[#6b635a] dark:text-[#b8aea5]">Aktiviere/Deaktiviere Phasen für User</p>
+                      <h3 className="text-lg font-semibold text-[#f5f1ed]">Phasensteuerung</h3>
+                      <p className="text-xs text-[#b8aea5]">Aktiviere/Deaktiviere Phasen für User</p>
                     </div>
                   </div>
                 }
@@ -534,19 +534,19 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     return (
                       <div key={phase.id} className={`rounded-xl border ${
                         phase.enabled 
-                          ? 'border-[#4caf50]/20 dark:border-[#66bb6a]/20 bg-[#4caf50]/5 dark:bg-[#66bb6a]/5' 
+                          ? 'border-[#66bb6a]/20 bg-[#66bb6a]/5' 
                           : isDevelopment
-                          ? 'border-[#ff9800]/20 dark:border-[#ffb74d]/20 bg-[#ff9800]/5 dark:bg-[#ffb74d]/5'
-                          : 'border-[#6b635a]/20 dark:border-[#b8aea5]/20 bg-[#6b635a]/5 dark:bg-[#b8aea5]/5'
+                          ? 'border-[#ffb74d]/20 bg-[#ffb74d]/5'
+                          : 'border-[#b8aea5]/20 bg-[#b8aea5]/5'
                       } p-4 transition-all`}>
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-1">
-                              <div className="text-sm font-semibold text-[#2a2520] dark:text-[#f5f1ed]">
+                              <div className="text-sm font-semibold text-[#f5f1ed]">
                                 {phase.title}
                               </div>
                               {isDevelopment && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 text-[#ff9800] dark:text-[#ffb74d] text-xs font-medium border border-[#ff9800]/20 dark:border-[#ffb74d]/20">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#ffb74d]/10 text-[#ffb74d] text-xs font-medium border border-[#ffb74d]/20">
                                   <Wrench className="h-3 w-3" />
                                   In Entwicklung
                                 </span>
@@ -557,15 +557,15 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                                 }`} />
                               )}
                             </div>
-                            <p className="text-xs text-[#6b635a] dark:text-[#b8aea5]">
+                            <p className="text-xs text-[#b8aea5]">
                               {phase.description}
                             </p>
                           </div>
                         </div>
 
                         {isDevelopment ? (
-                          <div className="rounded-lg bg-[#ff9800]/10 dark:bg-[#ffb74d]/10 border border-[#ff9800]/20 dark:border-[#ffb74d]/20 px-4 py-3 text-center">
-                            <span className="text-xs font-medium text-[#ff9800] dark:text-[#ffb74d]">
+                          <div className="rounded-lg bg-[#ffb74d]/10 border border-[#ffb74d]/20 px-4 py-3 text-center">
+                            <span className="text-xs font-medium text-[#ffb74d]">
                               Diese Phase ist noch nicht fertig und kann nicht aktiviert werden
                             </span>
                           </div>
@@ -586,9 +586,9 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     );
                   })}
                 </div>
-                <div className="mt-4 p-3 rounded-xl bg-[#2196f3]/5 dark:bg-[#64b5f6]/5 border border-[#2196f3]/20 dark:border-[#64b5f6]/20">
-                  <div className="text-xs text-[#6b635a] dark:text-[#b8aea5]">
-                    <strong className="text-[#2a2520] dark:text-[#f5f1ed]">💡 Info:</strong> Admins können deaktivierte Phasen trotzdem betreten (Testzwecke).
+                <div className="mt-4 p-3 rounded-xl bg-[#64b5f6]/5 border border-[#64b5f6]/20">
+                  <div className="text-xs text-[#b8aea5]">
+                    <strong className="text-[#f5f1ed]">💡 Info:</strong> Admins können deaktivierte Phasen trotzdem betreten (Testzwecke).
                   </div>
                 </div>
               </GlassCard>

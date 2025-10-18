@@ -49,24 +49,24 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
   ];
 
   return (
-    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#faf8f5] via-[#faf4ed] to-[#f5ede3] dark:from-[#1a1714] dark:via-[#221e1a] dark:to-[#1a1714]">
+    <div className="relative min-h-dvh overflow-hidden bg-gradient-to-br from-[#1a1714] via-[#221e1a] to-[#1a1714]">
       <div className="hidden md:block pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#d97757]/8 dark:bg-[#e89a7a]/6 blur-3xl" />
-        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#7a9b88]/8 dark:bg-[#8faf9d]/6 blur-3xl" />
+        <div className="absolute -top-40 -left-40 h-[520px] w-[520px] rounded-full bg-[#e89a7a]/6 blur-3xl" />
+        <div className="absolute top-1/3 -right-32 h-[420px] w-[420px] rounded-full bg-[#8faf9d]/6 blur-3xl" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 py-12 space-y-10">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#d97757]/10 dark:bg-[#e89a7a]/10 border border-[#d97757]/20 dark:border-[#e89a7a]/20">
-            <Shield className="h-4 w-4 text-[#d97757] dark:text-[#e89a7a]" />
-            <span className="text-xs font-medium tracking-wide uppercase text-[#d97757] dark:text-[#e89a7a]">
+          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#e89a7a]/10 border border-[#e89a7a]/20">
+            <Shield className="h-4 w-4 text-[#e89a7a]" />
+            <span className="text-xs font-medium tracking-wide uppercase text-[#e89a7a]">
               Nur für Admins
             </span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#2a2520] dark:text-[#f5f1ed] mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f1ed] mb-4">
             Benutzerverwaltung
           </h1>
-          <p className="text-lg text-[#6b635a] dark:text-[#b8aea5] max-w-2xl mx-auto">
+          <p className="text-lg text-[#b8aea5] max-w-2xl mx-auto">
             Alle Account-Werkzeuge an einem Ort – schön, klar, schnell.
           </p>
         </div>
@@ -85,8 +85,8 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                   {s.icon}
                 </div>
                 <div>
-                  <div className="text-sm text-[#6b635a] dark:text-[#b8aea5]">{s.label}</div>
-                  <div className="text-2xl font-bold text-[#2a2520] dark:text-[#f5f1ed]">{s.value}</div>
+                  <div className="text-sm text-[#b8aea5]">{s.label}</div>
+                  <div className="text-2xl font-bold text-[#f5f1ed]">{s.value}</div>
                 </div>
               </div>
             </GlassCard>
@@ -100,15 +100,15 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
               header={
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
                       <Users className="h-5 w-5"/>
                     </span>
                     <div>
-                      <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Benutzer</h3>
-                      <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Rollen, Passwörter und Login-Links verwalten.</p>
+                      <h3 className="text-lg font-semibold text-[#f5f1ed]">Benutzer</h3>
+                      <p className="text-sm text-[#b8aea5]">Rollen, Passwörter und Login-Links verwalten.</p>
                     </div>
                   </div>
-                  <a href="/admin" className="text-sm text-[#d97757] dark:text-[#e89a7a] hover:underline inline-flex items-center gap-1">
+                  <a href="/admin" className="text-sm text-[#e89a7a] hover:underline inline-flex items-center gap-1">
                     <ArrowLeft className="h-3 w-3" />
                     Zurück
                   </a>
@@ -125,20 +125,20 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                   ))}
                 </select>
                 <GlowButton variant="primary" className="px-5">Filtern</GlowButton>
-                <a href="/admin/user" className="text-sm text-[#d97757] dark:text-[#e89a7a] hover:underline">Zurücksetzen</a>
+                <a href="/admin/user" className="text-sm text-[#e89a7a] hover:underline">Zurücksetzen</a>
               </form>
               <div className="space-y-4">
                 {users.map((u) => (
-                  <div key={u.id} className="rounded-xl border border-[#d97757]/15 dark:border-[#e89a7a]/15 bg-white/60 dark:bg-[#2a2520]/60 p-4 hover:border-[#d97757]/25 dark:hover:border-[#e89a7a]/25 transition-all">
+                  <div key={u.id} className="rounded-xl border border-[#e89a7a]/15 bg-[#2a2520]/60 p-4 hover:border-[#e89a7a]/25 transition-all">
                     <div className="flex items-center justify-between gap-4 mb-3">
                       <div>
                         <div className="text-sm flex items-center gap-2">
-                          <span className="font-semibold text-[#2a2520] dark:text-[#f5f1ed]">{u.username}</span>
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a] border border-[#d97757]/20 dark:border-[#e89a7a]/20 text-xs font-medium">
+                          <span className="font-semibold text-[#f5f1ed]">{u.username}</span>
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#e89a7a]/10 text-[#e89a7a] border border-[#e89a7a]/20 text-xs font-medium">
                             {u.role}
                           </span>
                           {u.class && (
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d] border border-[#7a9b88]/20 dark:border-[#8faf9d]/20 text-xs font-medium">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#8faf9d]/10 text-[#8faf9d] border border-[#8faf9d]/20 text-xs font-medium">
                               {u.class}
                             </span>
                           )}
@@ -167,9 +167,9 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                       </form>
                     </div>
 
-                    <div className="mt-3 pt-3 border-t border-[#d97757]/10 dark:border-[#e89a7a]/10">
-                      <div className="inline-flex items-center gap-2 text-xs text-[#6b635a] dark:text-[#b8aea5] mb-2">
-                        <QrCode className="h-3.5 w-3.5 text-[#d97757] dark:text-[#e89a7a]" />
+                    <div className="mt-3 pt-3 border-t border-[#e89a7a]/10">
+                      <div className="inline-flex items-center gap-2 text-xs text-[#b8aea5] mb-2">
+                        <QrCode className="h-3.5 w-3.5 text-[#e89a7a]" />
                         <span>Login-Link erstellen:</span>
                       </div>
                       <LoginLinkClient userId={u.id} username={u.username} />
@@ -185,28 +185,28 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#7a9b88]/10 dark:bg-[#8faf9d]/10 text-[#7a9b88] dark:text-[#8faf9d]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#8faf9d]/10 text-[#8faf9d]">
                     <Users className="h-5 w-5"/>
                   </span>
-                  <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Nach Klassen</h3>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Nach Klassen</h3>
                 </div>
               }
             >
               <div className="space-y-3 max-h-[400px] overflow-y-auto">
                 {groups.map((g) => (
-                  <details key={g.label} className="rounded-xl border border-[#d97757]/10 dark:border-[#e89a7a]/10 bg-white/40 dark:bg-[#2a2520]/40 p-3 hover:border-[#d97757]/20 dark:hover:border-[#e89a7a]/20 transition-all">
-                    <summary className="cursor-pointer select-none text-sm text-[#2a2520] dark:text-[#f5f1ed] flex items-center justify-between font-medium">
+                  <details key={g.label} className="rounded-xl border border-[#e89a7a]/10 bg-[#2a2520]/40 p-3 hover:border-[#e89a7a]/20 transition-all">
+                    <summary className="cursor-pointer select-none text-sm text-[#f5f1ed] flex items-center justify-between font-medium">
                       <span>{g.label}</span>
-                      <span className="text-xs text-[#6b635a] dark:text-[#b8aea5]">{g.items.length}</span>
+                      <span className="text-xs text-[#b8aea5]">{g.items.length}</span>
                     </summary>
                     {g.items.length === 0 ? (
-                      <div className="mt-2 text-xs text-[#6b635a] dark:text-[#b8aea5]">Keine Nutzer</div>
+                      <div className="mt-2 text-xs text-[#b8aea5]">Keine Nutzer</div>
                     ) : (
                       <ul className="mt-3 space-y-2 text-sm">
                         {g.items.map((u) => (
-                          <li key={u.id} className="flex items-center justify-between text-[#2a2520] dark:text-[#f5f1ed]">
+                          <li key={u.id} className="flex items-center justify-between text-[#f5f1ed]">
                             <span>{u.username}</span>
-                            <span className="text-xs text-[#6b635a] dark:text-[#b8aea5]">{u.role}</span>
+                            <span className="text-xs text-[#b8aea5]">{u.role}</span>
                           </li>
                         ))}
                       </ul>
@@ -219,12 +219,12 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 dark:bg-[#e89a7a]/10 text-[#d97757] dark:text-[#e89a7a]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#e89a7a]/10 text-[#e89a7a]">
                     <UserPlus className="h-5 w-5"/>
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Benutzer anlegen</h3>
-                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">Schnell einen Zugang erstellen.</p>
+                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Benutzer anlegen</h3>
+                    <p className="text-sm text-[#b8aea5]">Schnell einen Zugang erstellen.</p>
                   </div>
                 </div>
               }
@@ -247,19 +247,19 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
             <GlassCard
               header={
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#c96846]/10 dark:bg-[#d97757]/10 text-[#c96846] dark:text-[#d97757]">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#d97757]/10 text-[#d97757]">
                     <Ban className="h-5 w-5"/>
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold text-[#2a2520] dark:text-[#f5f1ed]">Sperren</h3>
-                    <p className="text-sm text-[#6b635a] dark:text-[#b8aea5]">User- und IP-Sperren verwalten.</p>
+                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Sperren</h3>
+                    <p className="text-sm text-[#b8aea5]">User- und IP-Sperren verwalten.</p>
                   </div>
                 </div>
               }
             >
               <div className="space-y-6">
                 <div>
-                  <div className="text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]">Benutzer sperren</div>
+                  <div className="text-sm font-semibold mb-3 text-[#f5f1ed]">Benutzer sperren</div>
                   <form action={banUserAction} className="space-y-3">
                     <input name="user_id" placeholder="User ID" className="input-base" />
                     <input name="reason" placeholder="Grund (optional)" className="input-base" />
@@ -271,8 +271,8 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                     <GlowButton variant="secondary" className="px-4">Entsperren</GlowButton>
                   </form>
                 </div>
-                <div className="pt-3 border-t border-[#d97757]/10 dark:border-[#e89a7a]/10">
-                  <div className="text-sm font-semibold mb-3 text-[#2a2520] dark:text-[#f5f1ed]">IP sperren</div>
+                <div className="pt-3 border-t border-[#e89a7a]/10">
+                  <div className="text-sm font-semibold mb-3 text-[#f5f1ed]">IP sperren</div>
                   <form action={banIpAction} className="space-y-3">
                     <input name="ip" placeholder="IP-Adresse" className="input-base" />
                     <input name="reason" placeholder="Grund (optional)" className="input-base" />
