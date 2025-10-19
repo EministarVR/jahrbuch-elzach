@@ -4,14 +4,15 @@ import { query } from "@/lib/db";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import LoginLinkClient from "./LoginLinkClient";
+import ResetPollClient from "./ResetPollClient";
 import { createUserAction, deleteUserAction, updateUserPasswordAction, updateUserRoleAction, banUserAction, unbanUserAction, banIpAction, unbanIpAction } from "../actions";
-import { Users, Shield, KeyRound, UserPlus, Trash2, QrCode, Ban, ArrowLeft } from "lucide-react";
-import { ensureUserClassColumn } from "@/lib/migrations";
+import { Users, Shield, KeyRound, UserPlus, Trash2, QrCode, Ban, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { ensureUserClassColumn, ensurePollSubmissionsTable } from "@/lib/migrations";
 import { CLASSES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
 
-type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin"; class: string | null };
+type UserRow = { id: number; username: string; role: "user" | "moderator" | "admin"; class: string | null; has_voted: number };
 
 export default async function AdminUserPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
   const session = await getSession();
@@ -19,6 +20,7 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
   if (session.role !== "admin") redirect("/zugriff-verweigert");
 
   await ensureUserClassColumn();
+  await ensurePollSubmissionsTable();
 
   const sp = await searchParams;
   const q = typeof sp?.q === "string" ? sp.q.trim() : "";
@@ -26,13 +28,15 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
 
   const where: string[] = [];
   const params: string[] = [];
-  if (q) { where.push("username LIKE ?"); params.push(`%${q}%`); }
-  if (classFilter === "none") { where.push("class IS NULL"); }
-  else if (classFilter) { where.push("class = ?"); params.push(classFilter); }
+  if (q) { where.push("u.username LIKE ?"); params.push(`%${q}%`); }
+  if (classFilter === "none") { where.push("u.class IS NULL"); }
+  else if (classFilter) { where.push("u.class = ?"); params.push(classFilter); }
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
 
   const users = await query<UserRow[]>(
-    `SELECT id, username, role, class FROM users ${whereSql} ORDER BY id DESC`,
+    `SELECT u.id, u.username, u.role, u.class, 
+     COALESCE((SELECT 1 FROM poll_submissions ps WHERE ps.user_id = u.id LIMIT 1), 0) as has_voted
+     FROM users u ${whereSql} ORDER BY u.id DESC`,
     params
   );
 
@@ -173,6 +177,20 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                         <span>Login-Link erstellen:</span>
                       </div>
                       <LoginLinkClient userId={u.id} username={u.username} />
+                    </div>
+
+                    {/* Poll status */}
+                    <div className="mt-4 pt-4 border-t border-[#e89a7a]/10">
+                      <div className="inline-flex items-center gap-2 text-xs text-[#b8aea5] mb-2">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#8faf9d]" />
+                        <span>Umfrage-Status:</span>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${u.has_voted ? 'bg-[#8faf9d]/10 text-[#8faf9d]' : 'bg-[#d97757]/10 text-[#d97757]'}`}>
+                          {u.has_voted ? 'Hat abgestimmt' : 'Nicht abgestimmt'}
+                        </span>
+                        <ResetPollClient userId={u.id} username={u.username} />
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -134,6 +134,15 @@ CREATE TABLE IF NOT EXISTS poll_responses (
   INDEX idx_question (question_id)
 );
 
+-- Poll Submission Status (Track if user has submitted in Phase 2)
+CREATE TABLE IF NOT EXISTS poll_submissions (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_user (user_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 -- Comments (Kommentare zu Beiträgen)
 CREATE TABLE IF NOT EXISTS comments (
   id INT AUTO_INCREMENT PRIMARY KEY,

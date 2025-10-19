@@ -1,12 +1,13 @@
 "use client";
 import { useState, useTransition, useEffect } from "react";
 import GlowButton from "@/components/ui/GlowButton";
-import { User, Lock, ArrowRight, AlertCircle } from "lucide-react";
+import { User, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function LoginClient() {
   const [error, setError] = useState<string | null>(null);
   const [shake, setShake] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -98,14 +99,31 @@ export default function LoginClient() {
             <input
               id="password"
               name="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="••••••••"
               autoComplete="current-password"
               aria-label="Passwort"
-              className="input-base pl-12"
+              className="input-base pl-12 pr-12"
               required
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#e89a7a]/60 hover:text-[#e89a7a] transition-colors p-1 rounded-lg hover:bg-[#e89a7a]/5"
+              aria-label={
+                showPassword ? "Passwort verbergen" : "Passwort anzeigen"
+              }
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
+              ) : (
+                <Eye className="h-5 w-5" />
+              )}
+            </button>
           </div>
+          <p className="mt-2 text-xs text-[#b8aea5]">
+            Passwort vergessen? Melde dich beim Jahrbuch-Ausschuss der SMV.
+          </p>
         </div>
 
         {error && (

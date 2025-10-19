@@ -21,7 +21,18 @@ export async function POST(req: Request) {
     try {
       await conn.beginTransaction();
 
-      // Delete existing responses for this user and poll (allow re-submission)
+      // Prüfe ob User bereits abgestimmt hat
+      const [existingSubmission] = await conn.execute(
+        'SELECT id FROM poll_submissions WHERE user_id = ?',
+        [userId]
+      );
+
+      if (Array.isArray(existingSubmission) && existingSubmission.length > 0) {
+        await conn.rollback();
+        return NextResponse.json({ success: false, error: 'Already submitted' }, { status: 400 });
+      }
+
+      // Delete existing responses for this user and poll (falls vorhanden)
       await conn.execute(
         'DELETE FROM poll_responses WHERE user_id = ? AND poll_id = ?',
         [userId, pollId]
@@ -38,6 +49,12 @@ export async function POST(req: Request) {
         );
       }
 
+      // Markiere User als abgestimmt
+      await conn.execute(
+        'INSERT INTO poll_submissions (user_id) VALUES (?)',
+        [userId]
+      );
+
       await conn.commit();
 
       return NextResponse.json({ success: true });
@@ -52,4 +69,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
-

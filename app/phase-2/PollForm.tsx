@@ -312,30 +312,30 @@ export default function PollForm({ userId }: { userId: number }) {
   }
 
   return (
-    <div className="space-y-6 min-w-0">
-      <GlassCard>
-        <div className="mb-8">
+    <div style={{ width: '100%', maxWidth: '100%' }}>
+      <GlassCard fade={false}>
+        <div className="mb-8" style={{ width: '100%' }}>
           <h2 className="text-2xl font-bold text-[#f5f1ed] mb-2">
             {poll.title}
           </h2>
           <p className="text-[#b8aea5]">{poll.description}</p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-8" style={{ width: '100%' }}>
           {poll.questions.map((question, index) => (
-            <div key={question.id} className="space-y-3 min-w-0">
-              <div className="flex items-start gap-3">
+            <div key={question.id} className="space-y-3" style={{ width: '100%', maxWidth: '100%' }}>
+              <div className="flex items-start gap-3" style={{ width: '100%' }}>
                 <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#e89a7a]/10 text-[#e89a7a] text-sm font-bold">
                   {index + 1}
                 </span>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-lg font-semibold text-[#f5f1ed] mb-1 break-words">
+                <div style={{ flex: 1, width: '100%', minWidth: 0 }}>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed] mb-3 break-words">
                     {question.question}
                     {question.required && (
                       <span className="text-[#ef5350] ml-1">*</span>
                     )}
                   </h3>
-                  <div className="min-w-0 w-full">
+                  <div style={{ width: '100%', maxWidth: '100%' }}>
                     {renderQuestion(question)}
                   </div>
                   {errors[question.id] && (

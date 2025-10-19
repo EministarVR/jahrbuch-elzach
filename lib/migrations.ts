@@ -263,3 +263,33 @@ export async function ensurePollsTable(): Promise<boolean> {
     conn.release();
   }
 }
+
+export async function ensurePollSubmissionsTable(): Promise<boolean> {
+  const conn = await getDbPool().getConnection();
+  try {
+    const hasTable = await tableExists(conn, 'poll_submissions');
+    if (!hasTable) {
+      try {
+        await conn.query(
+          `CREATE TABLE poll_submissions (
+             id INT AUTO_INCREMENT PRIMARY KEY,
+             user_id INT NOT NULL,
+             submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+             UNIQUE KEY unique_user (user_id),
+             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+           )`
+        );
+        return true;
+      } catch (e) {
+        console.error('Failed to create poll_submissions table:', e);
+        return false;
+      }
+    }
+    return true;
+  } catch (e) {
+    console.error('Failed to check poll_submissions table:', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
