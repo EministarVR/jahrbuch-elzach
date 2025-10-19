@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
     const couponsPerPage = rowsPerPage * cols;
     const totalPages = Math.ceil(users.length / couponsPerPage);
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://jahrbuch-elzach.info/";
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://jahrbuch-elzach.info";
     const loginUrl = `${baseUrl}/login`;
 
     // Helpers
