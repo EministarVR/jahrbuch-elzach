@@ -5,6 +5,7 @@ import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
 import LoginLinkClient from "./LoginLinkClient";
 import ResetPollClient from "./ResetPollClient";
+import UserListClient from "./UserListClient";
 import { createUserAction, deleteUserAction, updateUserPasswordAction, updateUserRoleAction, banUserAction, unbanUserAction, banIpAction, unbanIpAction } from "../actions";
 import { Users, Shield, KeyRound, UserPlus, Trash2, QrCode, Ban, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { ensureUserClassColumn, ensurePollSubmissionsTable } from "@/lib/migrations";
@@ -131,70 +132,8 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                 <GlowButton variant="primary" className="px-5">Filtern</GlowButton>
                 <a href="/admin/user" className="text-sm text-[#e89a7a] hover:underline">Zurücksetzen</a>
               </form>
-              <div className="space-y-4">
-                {users.map((u) => (
-                  <div key={u.id} className="rounded-xl border border-[#e89a7a]/15 bg-[#2a2520]/60 p-4 hover:border-[#e89a7a]/25 transition-all">
-                    <div className="flex items-center justify-between gap-4 mb-3">
-                      <div>
-                        <div className="text-sm flex items-center gap-2">
-                          <span className="font-semibold text-[#f5f1ed]">{u.username}</span>
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#e89a7a]/10 text-[#e89a7a] border border-[#e89a7a]/20 text-xs font-medium">
-                            {u.role}
-                          </span>
-                          {u.class && (
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#8faf9d]/10 text-[#8faf9d] border border-[#8faf9d]/20 text-xs font-medium">
-                              {u.class}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <form action={deleteUserAction}>
-                        <input type="hidden" name="id" value={u.id} />
-                        <GlowButton variant="secondary" className="px-3 py-2 text-sm" iconLeft={<Trash2 className="h-4 w-4" />}>Löschen</GlowButton>
-                      </form>
-                    </div>
 
-                    <div className="flex flex-wrap items-center gap-3">
-                      <form action={updateUserRoleAction} className="flex items-center gap-2">
-                        <input type="hidden" name="id" value={u.id} />
-                        <select name="role" defaultValue={u.role} className="input-base text-sm">
-                          <option value="user">user</option>
-                          <option value="moderator">moderator</option>
-                          <option value="admin">admin</option>
-                        </select>
-                        <GlowButton variant="primary" className="px-3 py-2 text-sm">Rolle</GlowButton>
-                      </form>
-                      <form action={updateUserPasswordAction} className="flex items-center gap-2 flex-1">
-                        <input type="hidden" name="id" value={u.id} />
-                        <input name="password" type="password" placeholder="Neues Passwort" className="input-base text-sm flex-1 min-w-[120px]" />
-                        <GlowButton variant="secondary" className="px-3 py-2 text-sm">Passwort</GlowButton>
-                      </form>
-                    </div>
-
-                    <div className="mt-3 pt-3 border-t border-[#e89a7a]/10">
-                      <div className="inline-flex items-center gap-2 text-xs text-[#b8aea5] mb-2">
-                        <QrCode className="h-3.5 w-3.5 text-[#e89a7a]" />
-                        <span>Login-Link erstellen:</span>
-                      </div>
-                      <LoginLinkClient userId={u.id} username={u.username} />
-                    </div>
-
-                    {/* Poll status */}
-                    <div className="mt-4 pt-4 border-t border-[#e89a7a]/10">
-                      <div className="inline-flex items-center gap-2 text-xs text-[#b8aea5] mb-2">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[#8faf9d]" />
-                        <span>Umfrage-Status:</span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${u.has_voted ? 'bg-[#8faf9d]/10 text-[#8faf9d]' : 'bg-[#d97757]/10 text-[#d97757]'}`}>
-                          {u.has_voted ? 'Hat abgestimmt' : 'Nicht abgestimmt'}
-                        </span>
-                        <ResetPollClient userId={u.id} username={u.username} />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <UserListClient users={users} />
             </GlassCard>
           </div>
 
@@ -220,14 +159,7 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                     {g.items.length === 0 ? (
                       <div className="mt-2 text-xs text-[#b8aea5]">Keine Nutzer</div>
                     ) : (
-                      <ul className="mt-3 space-y-2 text-sm">
-                        {g.items.map((u) => (
-                          <li key={u.id} className="flex items-center justify-between text-[#f5f1ed]">
-                            <span>{u.username}</span>
-                            <span className="text-xs text-[#b8aea5]">{u.role}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <UserListClient users={g.items} />
                     )}
                   </details>
                 ))}

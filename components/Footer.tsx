@@ -29,6 +29,27 @@ export default function Footer() {
                         <p className="text-sm text-[#b8aea5] leading-relaxed max-w-sm">
                             Ein Projekt der SMV – mit Herz und Leidenschaft erstellt, um eure schönsten Erinnerungen festzuhalten.
                         </p>
+
+                        {/* Sponsoren-Info Box */}
+                        <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-[#2a2520]/80 to-[#38302b]/60 border border-[#e89a7a]/20 shadow-lg">
+                            <div className="flex items-center gap-2 mb-2">
+                                <div className="h-8 w-8 rounded-lg bg-[#e89a7a]/10 flex items-center justify-center">
+                                    <Heart className="h-4 w-4 text-[#e89a7a]" />
+                                </div>
+                                <p className="text-xs font-semibold text-[#f5f1ed]">Noch keine Sponsoren :/</p>
+                            </div>
+                            <p className="text-xs text-[#b8aea5] leading-relaxed mb-2">
+                                Unterstützen Sie unser Jahrbuch-Projekt und werden Sie sichtbar in der Schulgemeinschaft!
+                            </p>
+                            <p className="text-xs text-[#b8aea5] mb-2">Bei Interesse →</p>
+                            <a
+                                href="mailto:sekretariat@schulzentrumoe.de"
+                                className="inline-flex items-center gap-1.5 text-xs text-[#e89a7a] hover:text-[#d97757] font-medium transition-colors group"
+                            >
+                                <Mail className="w-3 h-3" />
+                                <span className="group-hover:underline">sekretariat@schulzentrumoe.de</span>
+                            </a>
+                        </div>
                     </div>
 
                     {/* Navigation */}
@@ -75,7 +96,7 @@ export default function Footer() {
                         <h4 className="text-sm font-semibold text-[#f5f1ed] mb-4 uppercase tracking-wider">
                             Sponsoren
                         </h4>
-                        <ul className="space-y-3 mb-4">
+                        <ul className="space-y-3">
                             <li>
                                 <Link
                                     href="/sponsoren"
@@ -95,24 +116,6 @@ export default function Footer() {
                                 </Link>
                             </li>
                         </ul>
-                        <div className="mt-4 p-4 rounded-xl bg-gradient-to-br from-[#2a2520]/80 to-[#38302b]/60 border border-[#e89a7a]/20 shadow-lg">
-                            <div className="flex items-center gap-2 mb-3">
-                                <div className="h-8 w-8 rounded-lg bg-[#e89a7a]/10 flex items-center justify-center">
-                                    <Heart className="h-4 w-4 text-[#e89a7a]" />
-                                </div>
-                                <p className="text-xs font-semibold text-[#f5f1ed]">Noch keine Sponsoren</p>
-                            </div>
-                            <p className="text-xs text-[#b8aea5] leading-relaxed mb-3">
-                                Unterstützen Sie unser Jahrbuch-Projekt und werden Sie sichtbar in der Schulgemeinschaft!
-                            </p>
-                            <a
-                                href="mailto:sekretariat@schulzentrumoe.de"
-                                className="inline-flex items-center gap-1.5 text-xs text-[#e89a7a] hover:text-[#d97757] font-medium transition-colors group"
-                            >
-                                <Mail className="w-3 h-3" />
-                                <span className="group-hover:underline">sekretariat@schulzentrumoe.de</span>
-                            </a>
-                        </div>
                     </div>
 
                     {/* CTA Bereich */}
