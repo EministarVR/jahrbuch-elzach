@@ -1,6 +1,7 @@
 import ParallaxHero from "@/components/ParallaxHero";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
+import SponsorenSection from "@/components/SponsorenSection";
 import { getPhaseSettings } from "@/lib/phases";
 import { ensurePhaseSettings } from "@/lib/migrations";
 import Link from "next/link";
@@ -336,6 +337,9 @@ export default async function Home() {
           </GlowButton>
         </div>
       </section>
+
+      {/* Sponsoren Section */}
+      <SponsorenSection />
     </main>
   );
 }
