@@ -10,32 +10,33 @@ import { CLASSES } from '@/lib/constants';
 
 export async function createUserAction(formData: FormData) {
   const session = await getSession();
-  if (!session) redirect('/login');
-  if (session.role !== 'admin' && session.role !== 'moderator') redirect('/zugriff-verweigert');
+  if (!session) return { error: 'Nicht eingeloggt' };
+  if (session.role !== 'admin' && session.role !== 'moderator') return { error: 'Keine Berechtigung' };
 
   const username = String(formData.get('username') || '').trim();
   const password = String(formData.get('password') || '').trim();
   const klass = String(formData.get('class') || '').trim();
-  
+
   if (!username || !password) {
-    throw new Error('Username and password are required');
+    return { error: 'Username und Passwort sind erforderlich' };
   }
 
   let classValue: string | null = null;
   if (klass) {
     if (!CLASSES.includes(klass)) {
-      throw new Error('Ungültige Klasse');
+      return { error: 'Ungültige Klasse' };
     }
     classValue = klass;
   }
-  
+
   try {
     await ensureUserClassColumn();
     await createUser(username, password, 'user', classValue);
     revalidatePath('/admin/user');
+    return { success: true };
   } catch (error) {
     console.error('Error creating user:', error);
-    throw error;
+    return { error: 'Fehler beim Erstellen des Benutzers' };
   }
 }
 

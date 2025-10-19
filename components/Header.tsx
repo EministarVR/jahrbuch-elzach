@@ -3,7 +3,7 @@ import { getSession, clearSession } from "@/lib/session";
 import { query } from "@/lib/db";
 import { redirect } from "next/navigation";
 import GlowButton from "@/components/ui/GlowButton";
-import { LogOut, Menu, Home, Send, Shield, BookOpen, FileText, Lock, Users, BarChart3, Sparkles, HelpCircle, ShieldAlert, AlertCircle, Heart } from "lucide-react";
+import { LogOut, Menu, Home, Send, Shield, BookOpen, FileText, Lock, Users, BarChart3, Sparkles, HelpCircle, ShieldAlert, AlertCircle, Heart, Info, DollarSign } from "lucide-react";
 
 async function logout() {
   "use server";
@@ -82,6 +82,27 @@ export default async function Header() {
                   >
                     <FileText className="h-4 w-4" />
                     Beiträge durchsuchen
+                  </Link>
+                  <Link
+                    href="/sponsoren"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                  >
+                    <Heart className="h-4 w-4" />
+                    Sponsoren
+                  </Link>
+                  <Link
+                    href="/sponsoring"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                  >
+                    <DollarSign className="h-4 w-4" />
+                    Sponsoring
+                  </Link>
+                  <Link
+                    href="/sponsoring/info"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                  >
+                    <Info className="h-4 w-4" />
+                    Sponsoring Info
                   </Link>
 
                   {/* Phasen Section */}
@@ -224,6 +245,20 @@ export default async function Header() {
                 >
                   <Heart className="h-4 w-4" />
                   Sponsoren
+                </Link>
+                <Link
+                  href="/sponsoring"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                >
+                  <DollarSign className="h-4 w-4" />
+                  Sponsoring
+                </Link>
+                <Link
+                  href="/sponsoring/info"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                >
+                  <Info className="h-4 w-4" />
+                  Sponsoring Info
                 </Link>
 
                 {/* Phasen Section */}

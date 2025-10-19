@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(50) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
+  password_plain VARCHAR(255) NULL,
   role ENUM('user','moderator','admin') DEFAULT 'user',
   class VARCHAR(50) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -23,7 +24,7 @@ CREATE TABLE IF NOT EXISTS submissions (
   approved_at TIMESTAMP NULL,
   deleted_by INT NULL,
   deleted_at TIMESTAMP NULL,
-  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (approved_by) REFERENCES users(id),
   FOREIGN KEY (deleted_by) REFERENCES users(id)
 );

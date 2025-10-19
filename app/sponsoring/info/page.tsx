@@ -25,11 +25,13 @@ export default function SponsoringInfoPage() {
             <ArrowLeft className="h-4 w-4" />
             Zurück zu Sponsoren
           </Link>
-          <div className="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full bg-[#e89a7a]/10 border border-[#e89a7a]/20">
-            <Info className="h-4 w-4 text-[#e89a7a]" />
-            <span className="text-xs font-medium tracking-wide uppercase text-[#e89a7a]">
-              Sponsoring
-            </span>
+          <div className="flex justify-center mb-4">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#e89a7a]/10 border border-[#e89a7a]/20">
+              <Info className="h-4 w-4 text-[#e89a7a]" />
+              <span className="text-xs font-medium tracking-wide uppercase text-[#e89a7a]">
+        Sponsoring
+      </span>
+            </div>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-[#f5f1ed] mb-4">
             Sponsoring-Informationen
@@ -80,46 +82,7 @@ export default function SponsoringInfoPage() {
               </div>
             </div>
 
-            <div className="border-t border-[#e89a7a]/10 pt-8">
-              <h2 className="text-2xl font-bold text-[#f5f1ed] mb-4 flex items-center gap-3">
-                <DollarSign className="h-6 w-6 text-[#e89a7a]" />
-                Sponsoring-Pakete
-              </h2>
-              <div className="space-y-4">
-                <div className="p-5 rounded-xl bg-[#d97757]/5 border border-[#d97757]/10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-2 w-2 rounded-full bg-[#d97757]" />
-                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Bronze-Paket</h3>
-                  </div>
-                  <p className="text-sm text-[#b8aea5] ml-5">
-                    Logoeinbindung im Jahrbuch (klein), Erwähnung auf der Website
-                  </p>
-                </div>
 
-                <div className="p-5 rounded-xl bg-[#8faf9d]/5 border border-[#8faf9d]/10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-2 w-2 rounded-full bg-[#8faf9d]" />
-                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Silber-Paket</h3>
-                  </div>
-                  <p className="text-sm text-[#b8aea5] ml-5">
-                    Logoeinbindung im Jahrbuch (mittel), prominente Platzierung auf der Website, Social Media Erwähnung
-                  </p>
-                </div>
-
-                <div className="p-5 rounded-xl bg-[#e89a7a]/5 border border-[#e89a7a]/10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="h-2 w-2 rounded-full bg-[#e89a7a]" />
-                    <h3 className="text-lg font-semibold text-[#f5f1ed]">Gold-Paket</h3>
-                  </div>
-                  <p className="text-sm text-[#b8aea5] ml-5">
-                    Ganzseitige Anzeige im Jahrbuch, Premium-Platzierung auf Website, umfassende Social Media Präsenz
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm text-[#b8aea5] mt-4 italic">
-                * Individuelle Pakete und Preise auf Anfrage verfügbar
-              </p>
-            </div>
           </div>
         </GlassCard>
 

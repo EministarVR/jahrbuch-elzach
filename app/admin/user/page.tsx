@@ -6,8 +6,10 @@ import GlowButton from "@/components/ui/GlowButton";
 import LoginLinkClient from "./LoginLinkClient";
 import ResetPollClient from "./ResetPollClient";
 import UserListClient from "./UserListClient";
+import ClassPdfGenerator from "./ClassPdfGenerator";
+import NewUserForm from "./NewUserForm";
 import { createUserAction, deleteUserAction, updateUserPasswordAction, updateUserRoleAction, banUserAction, unbanUserAction, banIpAction, unbanIpAction } from "../actions";
-import { Users, Shield, KeyRound, UserPlus, Trash2, QrCode, Ban, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Users, Shield, KeyRound, UserPlus, Trash2, QrCode, Ban, ArrowLeft, CheckCircle2, FileDown } from "lucide-react";
 import { ensureUserClassColumn, ensurePollSubmissionsTable } from "@/lib/migrations";
 import { CLASSES } from "@/lib/constants";
 
@@ -75,6 +77,23 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
             Alle Account-Werkzeuge an einem Ort – schön, klar, schnell.
           </p>
         </div>
+
+        {/* PDF Generator */}
+        <GlassCard
+          header={
+            <div className="flex items-center gap-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-[#8faf9d]/10 text-[#8faf9d]">
+                <FileDown className="h-5 w-5"/>
+              </span>
+              <div>
+                <h3 className="text-lg font-semibold text-[#f5f1ed]">Login-Daten als PDF</h3>
+                <p className="text-sm text-[#b8aea5]">Erstelle eine übersichtliche PDF-Liste für eine Klasse zum Verteilen.</p>
+              </div>
+            </div>
+          }
+        >
+          <ClassPdfGenerator />
+        </GlassCard>
 
         {/* Quick stats */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -179,19 +198,7 @@ export default async function AdminUserPage({ searchParams }: { searchParams: Pr
                 </div>
               }
             >
-              <form action={createUserAction} className="space-y-3">
-                <input name="username" placeholder="Username" className="input-base" />
-                <input name="password" placeholder="Passwort" type="password" className="input-base" />
-                <select name="class" defaultValue="" className="input-base">
-                  <option value="">Klasse (optional)</option>
-                  {CLASSES.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-                <GlowButton variant="gradient" className="w-full" iconLeft={<UserPlus className="h-4 w-4" />}>
-                  Benutzer erstellen
-                </GlowButton>
-              </form>
+              <NewUserForm />
             </GlassCard>
 
             <GlassCard
