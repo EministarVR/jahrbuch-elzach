@@ -156,7 +156,7 @@ export async function GET(request: NextRequest) {
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
-      if (anyDoc.setCharSpace) anyDoc.setCharSpace(0.5);
+
       doc.text(username, x + padX + 22, cursorY);
       if (anyDoc.setCharSpace) anyDoc.setCharSpace(0);
 
@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(180, 0, 0);
-      if (anyDoc.setCharSpace) anyDoc.setCharSpace(0.5);
+
       doc.text(password || "", x + padX + 22, cursorY);
       if (anyDoc.setCharSpace) anyDoc.setCharSpace(0);
       doc.setTextColor(0, 0, 0);
