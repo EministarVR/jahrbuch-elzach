@@ -10,6 +10,7 @@ export default function NewUserForm() {
   const [success, setSuccess] = useState(false);
   const [isPending, startTransition] = useTransition();
   const passwordRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   function generatePassword(length = 12) {
     const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
@@ -39,13 +40,13 @@ export default function NewUserForm() {
         setError(result.error);
       } else {
         setSuccess(true);
-        e.currentTarget.reset();
+        formRef.current?.reset();
       }
     });
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
       {error && (
         <div className="rounded bg-red-100 text-red-800 px-3 py-2 text-sm">{error}</div>
       )}
