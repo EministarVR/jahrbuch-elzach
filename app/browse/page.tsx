@@ -21,6 +21,7 @@ export interface Submission extends RowDataPacket {
   downvotes: number;
   user_vote: 'upvote' | 'downvote' | null;
   author: string;
+  author_class: string | null;
 }
 
 export default async function BrowsePage({
@@ -52,6 +53,7 @@ export default async function BrowsePage({
         s.created_at,
         s.status,
         u.username AS author,
+        u.class AS author_class,
         COALESCE(SUM(CASE WHEN sv.vote_type = 'upvote' THEN 1 ELSE 0 END), 0) AS upvotes,
         COALESCE(SUM(CASE WHEN sv.vote_type = 'downvote' THEN 1 ELSE 0 END), 0) AS downvotes,
         uv.vote_type AS user_vote
@@ -69,7 +71,7 @@ export default async function BrowsePage({
       params.push(filterCategory);
     }
 
-    query += ' GROUP BY s.id, s.user_id, s.text, s.category, s.name, s.phone, s.created_at, s.status, u.username, uv.vote_type';
+    query += ' GROUP BY s.id, s.user_id, s.text, s.category, s.name, s.phone, s.created_at, s.status, u.username, u.class, uv.vote_type';
 
     // Sortierung
     switch (sortBy) {

@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
   password_plain VARCHAR(255) NULL,
   role ENUM('user','moderator','admin') DEFAULT 'user',
   class VARCHAR(50) NULL,
+  bio TEXT NULL,
+  avatar_url VARCHAR(255) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

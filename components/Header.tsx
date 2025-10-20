@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { getSession, clearSession } from "@/lib/session";
 import { query } from "@/lib/db";
+import { ensureUserProfileColumns } from "@/lib/migrations";
 import { redirect } from "next/navigation";
 import GlowButton from "@/components/ui/GlowButton";
-import { LogOut, Menu, Home, Send, Shield, BookOpen, FileText, Lock, Users, BarChart3, Sparkles, HelpCircle, ShieldAlert, AlertCircle, Heart, Info, DollarSign } from "lucide-react";
+import { LogOut, Menu, Home, Send, Shield, BookOpen, FileText, Lock, Users, BarChart3, Sparkles, HelpCircle, ShieldAlert, AlertCircle, Heart, Info, DollarSign, User } from "lucide-react";
 
 async function logout() {
   "use server";
@@ -15,12 +16,15 @@ export default async function Header() {
   const session = await getSession();
   if (!session) return null;
 
-  // Get the actual username
-  const users = await query<{ username: string }[]>(
-    "SELECT username FROM users WHERE id = ? LIMIT 1",
+  await ensureUserProfileColumns();
+
+  // Get the actual username and avatar
+  const users = await query<{ username: string; avatar_url: string | null }[]>(
+    "SELECT username, avatar_url FROM users WHERE id = ? LIMIT 1",
     [session.userId]
   );
   const username = users[0]?.username || "User";
+  const avatarUrl = users[0]?.avatar_url || null;
   const role = session.role;
   const isAdmin = role === "admin";
   const isModerator = role === "moderator" || isAdmin;
@@ -31,8 +35,13 @@ export default async function Header() {
       <div className="hidden md:flex justify-end">
         <div className="flex items-center gap-4 backdrop-blur-xl bg-[#2a2520]/95 rounded-2xl pl-6 pr-3 py-3 shadow-lg border border-[#e89a7a]/10">
           <span className="inline-flex items-center gap-3 text-sm text-[#b8aea5]">
-            <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
-              <BookOpen className="h-4 w-4" />
+            <div className="flex items-center justify-center w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <BookOpen className="h-4 w-4" />
+              )}
             </div>
             <span>
               Willkommen,{" "}
@@ -68,6 +77,13 @@ export default async function Header() {
                   >
                     <HelpCircle className="h-4 w-4" />
                     FAQ
+                  </Link>
+                  <Link
+                    href="/account"
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                  >
+                    <User className="h-4 w-4" />
+                    Mein Account
                   </Link>
                   <Link
                     href="/datenschutz"
@@ -194,8 +210,13 @@ export default async function Header() {
       <div className="md:hidden">
         <div className="flex items-center justify-between backdrop-blur-xl bg-[#2a2520]/95 rounded-2xl px-5 py-3 shadow-lg border border-[#e89a7a]/10">
           <span className="inline-flex items-center gap-2.5 text-sm">
-            <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
-              <BookOpen className="h-4 w-4" />
+            <div className="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <BookOpen className="h-4 w-4" />
+              )}
             </div>
             <span className="font-medium text-[#f5f1ed]">{username}</span>
           </span>
@@ -224,6 +245,13 @@ export default async function Header() {
                 >
                   <HelpCircle className="h-4 w-4" />
                   FAQ
+                </Link>
+                <Link
+                  href="/account"
+                  className="flex items-center gap-3 px-4 py-3 text-sm text-[#b8aea5] hover:bg-[#38302b] hover:text-[#e89a7a] transition-colors"
+                >
+                  <User className="h-4 w-4" />
+                  Mein Account
                 </Link>
                 <Link
                   href="/datenschutz"

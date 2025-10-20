@@ -16,6 +16,7 @@ interface Comment extends RowDataPacket {
   created_at: string;
   author: string;
   author_role: string;
+  author_class: string | null;
   upvotes: number;
   downvotes: number;
   user_vote: 'upvote' | 'downvote' | null;
@@ -51,6 +52,7 @@ export async function GET(req: NextRequest) {
           c.created_at,
           u.username AS author,
           u.role AS author_role,
+          u.class AS author_class,
           s.user_id AS submission_author_id,
           COALESCE(SUM(CASE WHEN cv.vote_type = 'upvote' THEN 1 ELSE 0 END), 0) AS upvotes,
           COALESCE(SUM(CASE WHEN cv.vote_type = 'downvote' THEN 1 ELSE 0 END), 0) AS downvotes,
@@ -61,7 +63,7 @@ export async function GET(req: NextRequest) {
         LEFT JOIN comment_votes cv ON c.id = cv.comment_id
         LEFT JOIN comment_votes uv ON c.id = uv.comment_id AND uv.user_id = ?
         WHERE c.submission_id = ? AND c.status = 'active'
-        GROUP BY c.id, c.submission_id, c.user_id, c.parent_id, c.text, c.status, c.created_at, u.username, u.role, s.user_id, uv.vote_type
+        GROUP BY c.id, c.submission_id, c.user_id, c.parent_id, c.text, c.status, c.created_at, u.username, u.role, u.class, s.user_id, uv.vote_type
         ORDER BY c.created_at ASC
       `;
 

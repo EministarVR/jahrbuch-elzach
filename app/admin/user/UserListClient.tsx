@@ -6,6 +6,8 @@ import LoginLinkClient from "./LoginLinkClient";
 import ResetPollClient from "./ResetPollClient";
 import { deleteUserAction, updateUserPasswordAction, updateUserRoleAction } from "../actions";
 import { Trash2, QrCode, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import ProfileAvatar from "@/components/ProfileAvatar";
+import AdminProfileEditor from "./AdminProfileEditor";
 
 type UserRow = {
   id: number;
@@ -38,6 +40,7 @@ export default function UserListClient({ users }: { users: UserRow[] }) {
                 className="w-full px-4 py-3 flex items-center justify-between gap-4 text-left hover:bg-[#38302b]/30 transition-colors"
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <ProfileAvatar userId={u.id} username={u.username} size={24} />
                   <span className="font-semibold text-[#f5f1ed] truncate">{u.username}</span>
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#e89a7a]/10 text-[#e89a7a] border border-[#e89a7a]/20 text-xs font-medium shrink-0">
                     {u.role}
@@ -126,6 +129,14 @@ export default function UserListClient({ users }: { users: UserRow[] }) {
                         Passwort ändern
                       </GlowButton>
                     </form>
+                  </div>
+
+                  {/* Profil */}
+                  <div className="pt-3 border-t border-[#e89a7a]/10">
+                    <div className="inline-flex items-center gap-2 text-xs text-[#b8aea5] mb-2">
+                      <span>Profil:</span>
+                    </div>
+                    <AdminProfileEditor userId={u.id} username={u.username} />
                   </div>
 
                   {/* Login Link */}

@@ -6,6 +6,7 @@ import type { Submission } from './page';
 import CommentSection from './CommentSection';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import PromptDialog from '@/components/ui/PromptDialog';
+import ProfileAvatar from '@/components/ProfileAvatar';
 
 interface SubmissionCardProps {
   submission: Submission;
@@ -225,9 +226,14 @@ export default function SubmissionCard({
 
       {/* Author and Date */}
       <div className="mb-3 flex items-center gap-2 text-xs text-[#b8aea5]">
-        <span className="font-medium text-[#f5f1ed]">
-          {submission.author}
-        </span>
+        <ProfileAvatar userId={submission.user_id} username={submission.author} size={24} />
+        <span className="font-medium text-[#f5f1ed]">{submission.author}</span>
+        {submission.author_class && (
+          <>
+            <span>•</span>
+            <span className="text-[#b8aea5]">Klasse {submission.author_class}</span>
+          </>
+        )}
         <span>•</span>
         <span>{new Date(submission.created_at).toLocaleDateString('de-DE', {
           day: '2-digit',

@@ -12,6 +12,7 @@ interface Comment {
   text: string;
   author: string;
   author_role: string;
+  author_class: string | null;
   created_at: string;
   upvotes: number;
   downvotes: number;

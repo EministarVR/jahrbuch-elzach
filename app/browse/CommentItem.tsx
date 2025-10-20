@@ -3,13 +3,16 @@
 import { useState } from 'react';
 import { ThumbsUp, ThumbsDown, Reply, Trash2, Flag, X } from 'lucide-react';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
+import ProfileAvatar from '@/components/ProfileAvatar';
 
 interface CommentItemProps {
   comment: {
     id: number;
+    user_id?: number; // optional: API provides it; required for avatar
     text: string;
     author: string;
     author_role: string;
+    author_class: string | null;
     created_at: string;
     upvotes: number;
     downvotes: number;
@@ -139,10 +142,20 @@ export default function CommentItem({
       <div className="bg-[#2a2520]/40 backdrop-blur-sm border border-[#e89a7a]/10 rounded-xl p-4">
         {/* Header */}
         <div className="flex items-center gap-2 mb-2 flex-wrap">
+          {typeof comment.user_id === 'number' && (
+            <ProfileAvatar userId={comment.user_id} username={comment.author} size={20} />
+          )}
           <span className="font-medium text-sm text-[#f5f1ed]">
             {comment.author}
           </span>
           {getBadge()}
+          {comment.author_class && (
+            <>
+              <span className="text-[#b8aea5]">•</span>
+              <span className="text-xs text-[#b8aea5]">Klasse {comment.author_class}</span>
+            </>
+          )}
+          <span className="text-[#b8aea5]">•</span>
           <span className="text-xs text-[#b8aea5]">
             {new Date(comment.created_at).toLocaleDateString('de-DE', {
               day: '2-digit',

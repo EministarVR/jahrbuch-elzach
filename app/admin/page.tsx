@@ -5,6 +5,7 @@ import { ensureModerationSchema, ensurePhaseSettings } from "@/lib/migrations";
 import { getPhaseSettings } from "@/lib/phases";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
+import ProfileAvatar from "@/components/ProfileAvatar";
 import {
   approveSubmissionAction,
   deleteSubmissionAction,
@@ -258,8 +259,8 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   <p className="text-sm text-[#b8aea5]">Keine ausstehenden Einsendungen. Alles erledigt! ✨</p>
                 </div>
               ) : (
-                <form>
-                  <div className="mb-4 flex items-center justify-end gap-3">
+                <div>
+                  <form id="bulk-form-pending" className="mb-4 flex items-center justify-end gap-3">
                     <GlowButton
                       formAction={approveManySubmissionsAction}
                       variant="primary"
@@ -276,7 +277,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     >
                       Auswahl löschen
                     </GlowButton>
-                  </div>
+                  </form>
                   <div className="space-y-4">
                     {pending.map((p) => (
                       <div key={p.id} className="rounded-2xl border border-[#e89a7a]/15 bg-[#2a2520]/80 p-5 hover:border-[#e89a7a]/25 transition-all">
@@ -286,12 +287,13 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                               type="checkbox"
                               name="ids"
                               value={p.id}
+                              form="bulk-form-pending"
                               className="mt-1.5 h-5 w-5 rounded border-[#e89a7a]/30 text-[#e89a7a] focus:ring-[#d97757]/50"
                             />
                             <div className="flex-1">
                               <div className="text-xs text-[#b8aea5] flex flex-wrap items-center gap-2 mb-3">
                                 <span className="inline-flex items-center gap-1.5">
-                                  <User2 className="h-3.5 w-3.5 text-[#8faf9d]" />
+                                  <ProfileAvatar userId={p.user_id} username={p.author} size={18} />
                                   <strong className="text-[#f5f1ed]">{p.author}</strong>
                                 </span>
                                 <span>•</span>
@@ -337,7 +339,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                       </div>
                     ))}
                   </div>
-                </form>
+                </div>
               )}
             </GlassCard>
 
@@ -359,7 +361,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     <div key={a.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#8faf9d]/15 bg-[#8faf9d]/5 p-4 hover:border-[#8faf9d]/25 transition-all">
                       <div className="flex-1">
                         <div className="text-xs text-[#b8aea5] mb-2">
-                          Von <strong>{a.author}</strong> • {a.category} • genehmigt von <strong>{a.approver || "—"}</strong> am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
+                          Von <span className="inline-flex items-center gap-1.5"><ProfileAvatar userId={a.user_id} username={a.author} size={16} /> <strong>{a.author}</strong></span> • {a.category} • genehmigt von <strong>{a.approver || "—"}</strong> am {a.approved_at ? new Date(a.approved_at).toLocaleString("de-DE") : "—"}
                         </div>
                         <div className="text-sm text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap">{a.text}</div>
                       </div>
@@ -397,7 +399,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                     <div key={d.id} className="flex items-start justify-between gap-4 rounded-xl border border-[#d97757]/15 bg-[#d97757]/5 p-4 hover:border-[#d97757]/25 transition-all">
                       <div className="flex-1">
                         <div className="text-xs text-[#b8aea5] mb-2">
-                          Von <strong>{d.author}</strong> • {d.category} • gelöscht von <strong>{d.deleter || "—"}</strong> am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
+                          Von <span className="inline-flex items-center gap-1.5"><ProfileAvatar userId={d.user_id} username={d.author} size={16} /> <strong>{d.author}</strong></span> • {d.category} • gelöscht von <strong>{d.deleter || "—"}</strong> am {d.deleted_at ? new Date(d.deleted_at).toLocaleString("de-DE") : "—"}
                         </div>
                         <div className="text-sm text-[#f5f1ed] line-clamp-3 whitespace-pre-wrap opacity-75">{d.text}</div>
                       </div>

@@ -205,6 +205,26 @@ export async function ensureUserClassColumn(): Promise<boolean> {
   }
 }
 
+export async function ensureUserProfileColumns(): Promise<boolean> {
+  const conn = await getDbPool().getConnection();
+  try {
+    const hasBio = await columnExists(conn, 'users', 'bio');
+    if (!hasBio) {
+      await conn.query(`ALTER TABLE users ADD COLUMN bio TEXT NULL AFTER class`);
+    }
+    const hasAvatar = await columnExists(conn, 'users', 'avatar_url');
+    if (!hasAvatar) {
+      await conn.query(`ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255) NULL AFTER bio`);
+    }
+    return true;
+  } catch (e) {
+    console.error('Failed to ensure user profile columns (bio, avatar_url):', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
+
 export async function ensureCommentsSchema(): Promise<boolean> {
   // Comments werden jetzt über schema.sql verwaltet
   // Diese Funktion prüft nur noch, ob die Tabellen existieren
