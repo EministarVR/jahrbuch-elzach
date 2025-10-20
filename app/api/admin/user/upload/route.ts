@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs/promises';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
 const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
@@ -29,20 +30,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing userId' }, { status: 400 });
   }
 
-  if (!(file instanceof File)) {
+  if (!(file instanceof Blob)) {
     return NextResponse.json({ error: 'Missing file' }, { status: 400 });
   }
+  const f = file as Blob;
 
-  const type = file.type;
+  const type = f.type;
   if (!ALLOWED_TYPES.has(type)) {
     return NextResponse.json({ error: 'Unsupported file type' }, { status: 400 });
   }
 
-  if (file.size > MAX_SIZE_BYTES) {
+  if (f.size > MAX_SIZE_BYTES) {
     return NextResponse.json({ error: 'File too large (max 5MB)' }, { status: 400 });
   }
 
-  const arrayBuffer = await file.arrayBuffer();
+  const arrayBuffer = await f.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
   // Compute filename using target user id
