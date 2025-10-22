@@ -2,6 +2,7 @@ import { getDbPool } from './db';
 import { getSession, clearSession, type SessionPayload } from './session';
 import { ensureModerationSchema } from './migrations';
 import type { RowDataPacket } from 'mysql2/promise';
+import bcrypt from 'bcrypt';
 
 export type AuthState = {
   session: SessionPayload | null;
@@ -78,4 +79,85 @@ export async function ensureNotBanned(): Promise<{ ok: true; session: SessionPay
   }
   if (state.banned) return { ok: false, status: 403, reason: 'Banned' };
   return { ok: true, session: state.session };
+}
+
+// --- Missing helpers used across the app ---
+
+export type UserRecord = {
+  id: number;
+  username: string;
+  password_hash: string;
+  role: 'user' | 'moderator' | 'admin';
+  class?: string | null;
+};
+
+export async function findUserByUsername(username: string): Promise<UserRecord | null> {
+  const pool = getDbPool();
+  type Row = RowDataPacket & UserRecord;
+  const [rows] = await pool.execute<Row[]>(
+    'SELECT id, username, password_hash, role, class FROM users WHERE username = ? LIMIT 1',
+    [username]
+  );
+  if (rows.length === 0) return null;
+  return rows[0];
+}
+
+export async function verifyPassword(plain: string, hash: string): Promise<boolean> {
+  try {
+    // Accept exact match as fallback if stored as plain (for temporary links)
+    if (!hash || hash.length < 20) {
+      return plain === hash;
+    }
+    return await bcrypt.compare(plain, hash);
+  } catch {
+    return false;
+  }
+}
+
+export async function createUser(
+  username: string,
+  password: string,
+  role: 'user' | 'moderator' | 'admin' = 'user',
+  klass: string | null = null
+): Promise<void> {
+  const pool = getDbPool();
+  const password_hash = await bcrypt.hash(password, 10);
+  await pool.execute(
+    'INSERT INTO users (username, password_hash, password_plain, role, class) VALUES (?, ?, ?, ?, ?)',
+    [username, password_hash, password, role, klass]
+  );
+}
+
+export async function updateUserPassword(userId: number, newPassword: string): Promise<void> {
+  const pool = getDbPool();
+  const password_hash = await bcrypt.hash(newPassword, 10);
+  await pool.execute(
+    'UPDATE users SET password_hash = ?, password_plain = ? WHERE id = ?',
+    [password_hash, newPassword, userId]
+  );
+}
+
+export async function updateUserRole(userId: number, role: 'user' | 'moderator' | 'admin'): Promise<void> {
+  const pool = getDbPool();
+  await pool.execute('UPDATE users SET role = ? WHERE id = ?', [role, userId]);
+}
+
+export async function deleteUser(userId: number): Promise<void> {
+  const conn = await getDbPool().getConnection();
+  try {
+    await conn.beginTransaction();
+    // Clean up possible FK constraints that don’t cascade
+    try {
+      await conn.execute('DELETE FROM banned_users WHERE user_id = ?', [userId]);
+    } catch {
+      // ignore
+    }
+    await conn.execute('DELETE FROM users WHERE id = ?', [userId]);
+    await conn.commit();
+  } catch (e) {
+    await conn.rollback();
+    throw e;
+  } finally {
+    conn.release();
+  }
 }
