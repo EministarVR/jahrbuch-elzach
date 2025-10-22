@@ -35,6 +35,39 @@ export default function BrowseClient({
     setIsInitialLoad(false);
   }, [initialSubmissions]);
 
+  // Live updates: lightweight polling to keep list fresh without reload
+  useEffect(() => {
+    let isCancelled = false;
+    const controller = new AbortController();
+
+    async function fetchLatest() {
+      try {
+        const params = new URLSearchParams();
+        if (currentSort && currentSort !== 'recent') params.set('sort', currentSort);
+        if (currentCategory && currentCategory !== 'all') params.set('category', currentCategory);
+        const url = params.toString() ? `/api/submissions/list?${params.toString()}` : '/api/submissions/list';
+        const res = await fetch(url, { cache: 'no-store', signal: controller.signal });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!isCancelled && data && Array.isArray(data.submissions)) {
+          setSubmissions(data.submissions);
+        }
+      } catch (e) {
+        // ignore abort/errors to avoid noisy logs
+      }
+    }
+
+    // initial fetch + interval
+    fetchLatest();
+    const id = setInterval(fetchLatest, 4000);
+
+    return () => {
+      isCancelled = true;
+      controller.abort();
+      clearInterval(id);
+    };
+  }, [currentSort, currentCategory]);
+
   const handleVote = async (submissionId: number, voteType: 'upvote' | 'downvote') => {
     try {
       const response = await fetch('/api/submissions/vote', {

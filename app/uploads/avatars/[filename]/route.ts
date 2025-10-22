@@ -50,8 +50,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ fil
         status: 200,
         headers: {
           'Content-Type': contentType,
-          // Cache for 1 year, allow stale revalidation
-          'Cache-Control': 'public, max-age=31536000, immutable',
+          // Allow quick revalidation to reflect avatar changes immediately
+          'Cache-Control': 'public, max-age=0, must-revalidate',
         },
       });
     } catch (e: unknown) {

@@ -12,6 +12,8 @@ async function logout() {
   redirect("/");
 }
 
+import AuthHeartbeat from "@/components/AuthHeartbeat";
+
 export default async function Header() {
   const session = await getSession();
   if (!session) return null;
@@ -31,6 +33,7 @@ export default async function Header() {
 
   return (
     <header className="fixed top-6 left-6 right-6 md:left-auto md:right-6 z-50">
+      <AuthHeartbeat />
       {/* Desktop header */}
       <div className="hidden md:flex justify-end">
         <div className="flex items-center gap-4 backdrop-blur-xl bg-[#2a2520]/95 rounded-2xl pl-6 pr-3 py-3 shadow-lg border border-[#e89a7a]/10">

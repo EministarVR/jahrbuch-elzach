@@ -1,62 +1,81 @@
-import bcrypt from 'bcrypt';
-import { query } from './db';
+import { getDbPool } from './db';
+import { getSession, clearSession, type SessionPayload } from './session';
+import { ensureModerationSchema } from './migrations';
+import type { RowDataPacket } from 'mysql2/promise';
 
-export type DbUser = {
-  id: number;
-  username: string;
-  password_hash: string;
-  role: 'user' | 'moderator' | 'admin';
+export type AuthState = {
+  session: SessionPayload | null;
+  exists: boolean;
+  banned: boolean;
+  reason?: string | null;
+  expires_at?: string | null;
 };
 
-export async function findUserByUsername(username: string): Promise<DbUser | null> {
-  const rows = await query<DbUser[]>(
-    'SELECT id, username, password_hash, role FROM users WHERE username = ? LIMIT 1',
-    [username]
-  );
-  return rows[0] ?? null;
-}
+export async function getAuthState(): Promise<AuthState> {
+  const session = await getSession();
+  if (!session) {
+    return { session: null, exists: false, banned: false };
+  }
 
-export async function createUser(username: string, password: string, role: 'user' | 'moderator' | 'admin' = 'user', klass?: string | null) {
-  const password_hash = await bcrypt.hash(password, 10);
+  // Ensure moderation schema so banned_users table exists before querying
+  await ensureModerationSchema().catch(() => {});
+
+  const conn = await getDbPool().getConnection();
   try {
-    await query('INSERT INTO users (username, password_hash, password_plain, role, class) VALUES (?, ?, ?, ?, ?)', [
-      username,
-      password_hash,
-      password,
-      role,
-      klass ?? null,
-    ]);
-  } catch (e: unknown) {
-    // Fallback if class column doesn't exist (ältere DBs)
-    if (typeof e === 'object' && e !== null) {
-      const err = e as { code?: string; errno?: number };
-      if (err.code === 'ER_BAD_FIELD_ERROR' || err.errno === 1054) {
-        await query('INSERT INTO users (username, password_hash, password_plain, role) VALUES (?, ?, ?, ?)', [
-          username,
-          password_hash,
-          password,
-          role,
-        ]);
-        return;
-      }
+    type UserIdRow = RowDataPacket & { id: number };
+    const [userRows] = await conn.execute<UserIdRow[]>(
+      'SELECT id FROM users WHERE id = ? LIMIT 1',
+      [session.userId]
+    );
+    if (userRows.length === 0) {
+      // user removed
+      return { session, exists: false, banned: false };
     }
-    throw e;
+
+    // Check active ban (best-effort: ignore errors if table/query missing)
+    try {
+      type BanRow = RowDataPacket & { reason: string | null; expires_at: Date | string | null };
+      const [banRows] = await conn.execute<BanRow[]>(
+        `SELECT reason, expires_at FROM banned_users WHERE user_id = ? AND (expires_at IS NULL OR expires_at > NOW()) ORDER BY id DESC LIMIT 1`,
+        [session.userId]
+      );
+      if (banRows.length > 0) {
+        const ban = banRows[0];
+        const expiresIso = (() => {
+          const v = ban.expires_at;
+          if (!v) return null;
+          if (v instanceof Date) return v.toISOString();
+          const d = new Date(v);
+          return isNaN(d.getTime()) ? null : d.toISOString();
+        })();
+        return {
+          session,
+          exists: true,
+          banned: true,
+          reason: ban.reason ?? null,
+          expires_at: expiresIso,
+        };
+      }
+    } catch {
+      // ignore ban query errors
+    }
+
+    return { session, exists: true, banned: false };
+  } finally {
+    conn.release();
   }
 }
 
-export async function deleteUser(userId: number) {
-  await query('DELETE FROM users WHERE id = ?', [userId]);
-}
-
-export async function verifyPassword(password: string, hash: string) {
-  return bcrypt.compare(password, hash);
-}
-
-export async function updateUserPassword(userId: number, newPassword: string) {
-  const password_hash = await bcrypt.hash(newPassword, 10);
-  await query('UPDATE users SET password_hash = ?, password_plain = ? WHERE id = ?', [password_hash, newPassword, userId]);
-}
-
-export async function updateUserRole(userId: number, role: 'user' | 'moderator' | 'admin') {
-  await query('UPDATE users SET role = ? WHERE id = ?', [role, userId]);
+export async function ensureNotBanned(): Promise<{ ok: true; session: SessionPayload } | { ok: false; status: 401 | 403; reason: string }> {
+  const state = await getAuthState();
+  if (!state.session) {
+    await clearSession();
+    return { ok: false, status: 401, reason: 'Unauthorized' };
+  }
+  if (!state.exists) {
+    await clearSession();
+    return { ok: false, status: 401, reason: 'User not found' };
+  }
+  if (state.banned) return { ok: false, status: 403, reason: 'Banned' };
+  return { ok: true, session: state.session };
 }

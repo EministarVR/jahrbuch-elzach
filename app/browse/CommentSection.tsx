@@ -42,7 +42,7 @@ export default function CommentSection({
   const loadComments = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/comments?submissionId=${submissionId}`);
+      const response = await fetch(`/api/comments?submissionId=${submissionId}`, { cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
         setComments(data.comments || []);
@@ -60,6 +60,37 @@ export default function CommentSection({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
+
+  // Live updates: Lightweight polling while the section is open
+  useEffect(() => {
+    if (!isOpen) return;
+
+    let isCancelled = false;
+    const controller = new AbortController();
+
+    async function fetchLatest() {
+      try {
+        const res = await fetch(`/api/comments?submissionId=${submissionId}` , { cache: 'no-store', signal: controller.signal });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!isCancelled && data && Array.isArray(data.comments)) {
+          setComments(data.comments);
+        }
+      } catch {
+        // ignore fetch/abort errors
+      }
+    }
+
+    // initial fetch and then interval
+    fetchLatest();
+    const id = setInterval(fetchLatest, 4000);
+
+    return () => {
+      isCancelled = true;
+      controller.abort();
+      clearInterval(id);
+    };
+  }, [isOpen, submissionId]);
 
   const handleSubmitComment = async () => {
     if (!newComment.trim()) return;
@@ -123,7 +154,8 @@ export default function CommentSection({
       });
 
       if (response.ok) {
-        await loadComments();
+        // Trigger background refresh to keep UI in sync without waiting
+        loadComments();
       }
     } catch (error) {
       console.error('Failed to vote:', error);
@@ -132,7 +164,8 @@ export default function CommentSection({
   };
 
   const handleDelete = async (commentId: number) => {
-    if (!confirm('Möchtest du diesen Kommentar wirklich löschen?')) return;
+    // Optimistically remove the comment from UI
+    setComments(prev => prev.filter(c => c.id !== commentId));
 
     try {
       const response = await fetch('/api/comments/moderate', {
@@ -141,11 +174,13 @@ export default function CommentSection({
         body: JSON.stringify({ commentId })
       });
 
-      if (response.ok) {
+      if (!response.ok) {
+        // Revert on failure
         await loadComments();
       }
     } catch (error) {
       console.error('Failed to delete comment:', error);
+      await loadComments();
     }
   };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThumbsUp, ThumbsDown, Reply, Trash2, Flag, X } from 'lucide-react';
 import ConfirmDialog from '@/components/ui/ConfirmDialog';
 import ProfileAvatar from '@/components/ProfileAvatar';
@@ -47,6 +47,13 @@ export default function CommentItem({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [isSubmittingReport, setIsSubmittingReport] = useState(false);
+
+  // Keep local vote state in sync with latest props (e.g., after polling)
+  useEffect(() => {
+    setUpvotes(comment.upvotes);
+    setDownvotes(comment.downvotes);
+    setUserVote(comment.user_vote);
+  }, [comment.id, comment.upvotes, comment.downvotes, comment.user_vote]);
 
   const handleVoteClick = async (voteType: 'upvote' | 'downvote') => {
     if (isVoting) return;

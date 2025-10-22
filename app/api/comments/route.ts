@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
+import { getAuthState } from '@/lib/auth';
 import { getDbPool } from '@/lib/db';
 import { ensureCommentsSchema } from '@/lib/migrations';
 import type { RowDataPacket } from 'mysql2';
@@ -75,7 +76,7 @@ export async function GET(req: NextRequest) {
         is_author: comment.user_id === comment.submission_author_id
       }));
 
-      return NextResponse.json({ comments: commentsWithFlags });
+      return NextResponse.json({ comments: commentsWithFlags }, { headers: { 'Cache-Control': 'no-store' } });
     } finally {
       conn.release();
     }
@@ -87,9 +88,12 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const state = await getAuthState();
+    if (!state.session || !state.exists) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: { 'Cache-Control': 'no-store' } });
+    }
+    if (state.banned) {
+      return NextResponse.json({ error: 'Banned' }, { status: 403, headers: { 'Cache-Control': 'no-store' } });
     }
 
     await ensureCommentsSchema();

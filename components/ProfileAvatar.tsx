@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { BookOpen, Shield } from "lucide-react";
 
 export type PublicUser = {
@@ -28,6 +29,7 @@ export default function ProfileAvatar({ userId, username, avatarUrl, size = 28, 
   );
   const btnRef = useRef<HTMLDivElement>(null);
   const popRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ top: number; left: number; placement: 'top' | 'bottom' } | null>(null);
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -71,6 +73,39 @@ export default function ProfileAvatar({ userId, username, avatarUrl, size = 28, 
       .finally(() => setLoading(false));
   }, [open, userId]);
 
+  // Compute and update popover viewport position when opened and on scroll/resize
+  useEffect(() => {
+    if (!open) return;
+    function compute() {
+      const btn = btnRef.current;
+      const pop = popRef.current;
+      if (!btn || !pop) return;
+      const rect = btn.getBoundingClientRect();
+      const spacing = 8;
+      const popRect = pop.getBoundingClientRect();
+      let top = rect.bottom + spacing;
+      let placement: 'top' | 'bottom' = 'bottom';
+      if (top + popRect.height > window.innerHeight - 8) {
+        top = Math.max(8, rect.top - spacing - popRect.height);
+        placement = 'top';
+      }
+      let left = rect.left;
+      if (left + popRect.width > window.innerWidth - 8) {
+        left = Math.max(8, window.innerWidth - 8 - popRect.width);
+      }
+      if (left < 8) left = 8;
+      setPos({ top, left, placement });
+    }
+    compute();
+    const handler = () => compute();
+    window.addEventListener('scroll', handler, true);
+    window.addEventListener('resize', handler);
+    return () => {
+      window.removeEventListener('scroll', handler, true);
+      window.removeEventListener('resize', handler);
+    };
+  }, [open]);
+
   const avatar = user?.avatar_url ?? avatarUrl ?? null;
   const label = user?.username || username || "User";
 
@@ -104,12 +139,13 @@ export default function ProfileAvatar({ userId, username, avatarUrl, size = 28, 
         )}
       </div>
 
-      {open && (
+      {open && typeof window !== 'undefined' && createPortal(
         <div
           ref={popRef}
           role="dialog"
           aria-label={`Profil von ${label}`}
-          className="absolute z-40 top-[calc(100%+8px)] left-0 min-w-[240px] max-w-[320px] p-4 rounded-2xl border border-[#e89a7a]/20 bg-[#2a2520]/98 backdrop-blur-xl shadow-2xl"
+          className="fixed z-[1000] min-w-[240px] max-w-[320px] p-4 rounded-2xl border border-[#e89a7a]/20 bg-[#2a2520]/98 backdrop-blur-xl shadow-2xl"
+          style={{ top: pos?.top ?? -9999, left: pos?.left ?? -9999 }}
         >
           <div className="flex items-center gap-3 mb-3">
             <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#e89a7a]/20">
@@ -144,7 +180,8 @@ export default function ProfileAvatar({ userId, username, avatarUrl, size = 28, 
             {loading && <span className="opacity-70">Lädt…</span>}
             {!loading && (user?.bio ? user.bio : <span className="opacity-70">Keine Bio vorhanden.</span>)}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

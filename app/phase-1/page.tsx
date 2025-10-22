@@ -3,6 +3,7 @@ import { getSession } from '@/lib/session';
 import { getDbPool } from '@/lib/db';
 import { ensureModerationSchema } from '@/lib/migrations';
 import { CATEGORIES } from '@/lib/constants';
+import { getAuthState } from '@/lib/auth';
 import { canAccessPhase } from '@/lib/phases';
 import GlassCard from '@/components/ui/GlassCard';
 import GlowButton from '@/components/ui/GlowButton';
@@ -18,6 +19,8 @@ async function submitAction(formData: FormData) {
   'use server';
   const session = await getSession();
   if (!session) redirect('/login');
+  const auth = await getAuthState();
+  if (auth.banned) redirect('/phase-1?banned=1');
   const text = String(formData.get('text') || '').slice(0, 2000);
   const name = String(formData.get('name') || '') || null;
   const phone = String(formData.get('phone') || '') || null;
@@ -56,7 +59,7 @@ async function submitAction(formData: FormData) {
 export default async function Phase1Page({
   searchParams,
 }: {
-  searchParams?: Promise<{ success?: string }>;
+  searchParams?: Promise<{ success?: string; banned?: string }>;
 }) {
   const session = await getSession();
   if (!session) redirect('/login');
@@ -69,6 +72,7 @@ export default async function Phase1Page({
 
   const sp = searchParams ? await searchParams : undefined;
   const isSuccess = sp?.success === '1';
+  const isBanned = sp?.banned === '1';
 
   return (
     <div className="relative min-h-dvh bg-gradient-to-br from-[#1a1714] via-[#221e1a] to-[#1a1714] overflow-hidden">
@@ -114,6 +118,25 @@ export default async function Phase1Page({
               <GlowButton as="a" href="/" variant="secondary">
                 Zur Startseite
               </GlowButton>
+            </GlassCard>
+          </MotionFade>
+        )}
+
+        {isBanned && (
+          <MotionFade>
+            <GlassCard
+              fade={false}
+              className="mb-8 border-red-500/30"
+              header={
+                <div className="flex items-center gap-3 text-red-300">
+                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10">
+                    <Shield className="h-5 w-5" />
+                  </span>
+                  <h3 className="text-lg font-semibold text-[#f5f1ed]">Dein Account ist gesperrt</h3>
+                </div>
+              }
+            >
+              <p className="text-sm text-[#b8aea5]">Du kannst aktuell keine Beiträge einsenden. Bitte wende dich an einen Moderator oder Administrator.</p>
             </GlassCard>
           </MotionFade>
         )}

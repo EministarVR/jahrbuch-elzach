@@ -1,19 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
+import { getAuthState } from '@/lib/auth';
 import { getDbPool } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const state = await getAuthState();
+    if (!state.session || !state.exists) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: { 'Cache-Control': 'no-store' } });
+    }
+    if (state.banned) {
+      return NextResponse.json({ error: 'Banned' }, { status: 403, headers: { 'Cache-Control': 'no-store' } });
     }
 
     // Only moderators and admins can delete comments
-    if (session.role !== 'moderator' && session.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (state.session.role !== 'moderator' && state.session.role !== 'admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403, headers: { 'Cache-Control': 'no-store' } });
     }
 
     const body = await req.json();
@@ -30,7 +34,7 @@ export async function POST(req: NextRequest) {
         [session.userId, commentId]
       );
 
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true }, { headers: { 'Cache-Control': 'no-store' } });
     } finally {
       conn.release();
     }
