@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     try {
       await conn.execute<ResultSetHeader>(
         'INSERT INTO submission_reports (submission_id, reporter_user_id, reason) VALUES (?, ?, ?)',
-        [submissionId, session.userId, reason.slice(0, 1000)]
+        [submissionId, state.session.userId, reason.slice(0, 1000)]
       );
 
       return NextResponse.json({ success: true });

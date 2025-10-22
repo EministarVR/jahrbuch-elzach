@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
     try {
       await conn.query(
         `INSERT INTO comments (submission_id, user_id, parent_id, text) VALUES (?, ?, ?, ?)`,
-        [submissionId, session.userId, parentId || null, text.trim()]
+        [submissionId, state.session.userId, parentId || null, text.trim()]
       );
 
       return NextResponse.json({ success: true });

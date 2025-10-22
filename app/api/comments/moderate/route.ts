@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     try {
       await conn.query(
         `UPDATE comments SET status = 'deleted', deleted_by = ?, deleted_at = NOW() WHERE id = ?`,
-        [session.userId, commentId]
+        [state.session.userId, commentId]
       );
 
       return NextResponse.json({ success: true }, { headers: { 'Cache-Control': 'no-store' } });

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       // Prüfe ob User bereits gevoted hat
       const [existing] = await conn.execute<RowDataPacket[]>(
         'SELECT vote_type FROM submission_votes WHERE user_id = ? AND submission_id = ?',
-        [session.userId, submissionId]
+        [state.session.userId, submissionId]
       );
 
       if (existing.length > 0) {
@@ -36,14 +36,14 @@ export async function POST(req: NextRequest) {
           // Vote entfernen
           await conn.execute(
             'DELETE FROM submission_votes WHERE user_id = ? AND submission_id = ?',
-            [session.userId, submissionId]
+            [state.session.userId, submissionId]
           );
           return NextResponse.json({ success: true, action: 'removed' });
         } else {
           // Vote ändern
           await conn.execute(
             'UPDATE submission_votes SET vote_type = ?, updated_at = NOW() WHERE user_id = ? AND submission_id = ?',
-            [voteType, session.userId, submissionId]
+            [voteType, state.session.userId, submissionId]
           );
           return NextResponse.json({ success: true, action: 'updated' });
         }
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         // Neuer Vote
         await conn.execute(
           'INSERT INTO submission_votes (user_id, submission_id, vote_type) VALUES (?, ?, ?)',
-          [session.userId, submissionId, voteType]
+          [state.session.userId, submissionId, voteType]
         );
         return NextResponse.json({ success: true, action: 'created' });
       }

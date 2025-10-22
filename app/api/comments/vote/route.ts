@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       // Check if user already voted
       const [existing] = await conn.query<RowDataPacket[]>(
         `SELECT vote_type FROM comment_votes WHERE comment_id = ? AND user_id = ?`,
-        [commentId, session.userId]
+        [commentId, state.session.userId]
       );
 
       if (existing.length > 0) {
@@ -38,20 +38,20 @@ export async function POST(req: NextRequest) {
           // Remove vote (toggle off)
           await conn.query(
             `DELETE FROM comment_votes WHERE comment_id = ? AND user_id = ?`,
-            [commentId, session.userId]
+            [commentId, state.session.userId]
           );
         } else {
           // Change vote
           await conn.query(
             `UPDATE comment_votes SET vote_type = ? WHERE comment_id = ? AND user_id = ?`,
-            [voteType, commentId, session.userId]
+            [voteType, commentId, state.session.userId]
           );
         }
       } else {
         // New vote
         await conn.query(
           `INSERT INTO comment_votes (comment_id, user_id, vote_type) VALUES (?, ?, ?)`,
-          [commentId, session.userId, voteType]
+          [commentId, state.session.userId, voteType]
         );
       }
 
