@@ -216,9 +216,96 @@ export async function ensureUserProfileColumns(): Promise<boolean> {
     if (!hasAvatar) {
       await conn.query(`ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255) NULL AFTER bio`);
     }
+    const hasBanner = await columnExists(conn, 'users', 'banner_url');
+    if (!hasBanner) {
+      await conn.query(`ALTER TABLE users ADD COLUMN banner_url VARCHAR(255) NULL AFTER avatar_url`);
+    }
     return true;
   } catch (e) {
-    console.error('Failed to ensure user profile columns (bio, avatar_url):', e);
+    console.error('Failed to ensure user profile columns (bio, avatar_url, banner_url):', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
+
+export async function ensureSubmissionMediaColumns(): Promise<boolean> {
+  const conn = await getDbPool().getConnection();
+  try {
+    let ok = true;
+    const ensure = async (col: string, sql: string) => {
+      const has = await columnExists(conn, 'submissions', col);
+      if (!has) {
+        try { await conn.query(sql); } catch (e) { console.error(`Failed to add submissions.${col}:`, e); ok = false; }
+      }
+    };
+    await ensure('media_url', "ALTER TABLE submissions ADD COLUMN media_url VARCHAR(255) NULL AFTER phone");
+    await ensure('media_type', "ALTER TABLE submissions ADD COLUMN media_type ENUM('image','video','gif') NULL AFTER media_url");
+    await ensure('media_mime', "ALTER TABLE submissions ADD COLUMN media_mime VARCHAR(100) NULL AFTER media_type");
+    await ensure('media_width', "ALTER TABLE submissions ADD COLUMN media_width INT NULL AFTER media_mime");
+    await ensure('media_height', "ALTER TABLE submissions ADD COLUMN media_height INT NULL AFTER media_width");
+    await ensure('media_duration_ms', "ALTER TABLE submissions ADD COLUMN media_duration_ms INT NULL AFTER media_height");
+    await ensure('media_thumb_url', "ALTER TABLE submissions ADD COLUMN media_thumb_url VARCHAR(255) NULL AFTER media_duration_ms");
+    return ok;
+  } finally {
+    conn.release();
+  }
+}
+
+export async function ensureFollowsTable(): Promise<boolean> {
+  const conn = await getDbPool().getConnection();
+  try {
+    const has = await tableExists(conn, 'user_follows');
+    if (!has) {
+      await conn.query(
+        `CREATE TABLE user_follows (
+           follower_id INT NOT NULL,
+           following_id INT NOT NULL,
+           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+           PRIMARY KEY (follower_id, following_id),
+           FOREIGN KEY (follower_id) REFERENCES users(id) ON DELETE CASCADE,
+           FOREIGN KEY (following_id) REFERENCES users(id) ON DELETE CASCADE,
+           INDEX idx_following (following_id),
+           INDEX idx_follower (follower_id)
+         )`
+      );
+    }
+    return true;
+  } catch (e) {
+    console.error('Failed to ensure user_follows table:', e);
+    return false;
+  } finally {
+    conn.release();
+  }
+}
+
+export async function ensureProfileCommentsTable(): Promise<boolean> {
+  const conn = await getDbPool().getConnection();
+  try {
+    const has = await tableExists(conn, 'profile_comments');
+    if (!has) {
+      await conn.query(
+        `CREATE TABLE profile_comments (
+           id INT AUTO_INCREMENT PRIMARY KEY,
+           profile_user_id INT NOT NULL,
+           author_user_id INT NOT NULL,
+           text TEXT NOT NULL,
+           status ENUM('active','deleted') NOT NULL DEFAULT 'active',
+           deleted_by INT NULL,
+           deleted_at TIMESTAMP NULL,
+           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+           FOREIGN KEY (profile_user_id) REFERENCES users(id) ON DELETE CASCADE,
+           FOREIGN KEY (author_user_id) REFERENCES users(id) ON DELETE CASCADE,
+           FOREIGN KEY (deleted_by) REFERENCES users(id) ON DELETE SET NULL,
+           INDEX idx_profile (profile_user_id),
+           INDEX idx_status (status)
+         )`
+      );
+    }
+    return true;
+  } catch (e) {
+    console.error('Failed to ensure profile_comments table:', e);
     return false;
   } finally {
     conn.release();

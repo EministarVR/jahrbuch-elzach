@@ -16,6 +16,13 @@ export interface Submission extends RowDataPacket {
   category: string;
   name: string | null;
   phone: string | null;
+  media_url: string | null;
+  media_type: 'image' | 'video' | 'gif' | null;
+  media_mime: string | null;
+  media_width: number | null;
+  media_height: number | null;
+  media_duration_ms: number | null;
+  media_thumb_url: string | null;
   created_at: string;
   upvotes: number;
   downvotes: number;
@@ -50,6 +57,13 @@ export default async function BrowsePage({
         s.category,
         s.name,
         s.phone,
+        s.media_url,
+        s.media_type,
+        s.media_mime,
+        s.media_width,
+        s.media_height,
+        s.media_duration_ms,
+        s.media_thumb_url,
         s.created_at,
         s.status,
         u.username AS author,

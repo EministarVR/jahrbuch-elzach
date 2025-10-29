@@ -244,10 +244,34 @@ export default function SubmissionCard({
         })}</span>
       </div>
 
+      {/* Media */}
+      {submission.media_url && submission.media_type && (
+        <div className="mb-4">
+          {submission.media_type === 'video' ? (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video
+              src={submission.media_url}
+              controls
+              className="w-full max-h-[420px] rounded-xl border border-[#e89a7a]/20 bg-black/20"
+              poster={submission.media_thumb_url || undefined}
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={submission.media_url}
+              alt="Mediendatei"
+              className="w-full max-h-[520px] object-contain rounded-xl border border-[#e89a7a]/20 bg-black/20"
+            />
+          )}
+        </div>
+      )}
+
       {/* Content */}
-      <p className="text-[#f5f1ed] mb-4 whitespace-pre-wrap leading-relaxed">
-        {submission.text}
-      </p>
+      {submission.text && (
+        <p className="text-[#f5f1ed] mb-4 whitespace-pre-wrap leading-relaxed">
+          {submission.text}
+        </p>
+      )}
 
       {/* Meta Info - nur wenn Name oder Telefon vorhanden */}
       {(submission.name || submission.phone) && (

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/session';
 import { getDbPool } from '@/lib/db';
-import { ensureModerationSchema } from '@/lib/migrations';
+import { ensureModerationSchema, ensureSubmissionMediaColumns } from '@/lib/migrations';
 import { CATEGORIES } from '@/lib/constants';
 import { getAuthState } from '@/lib/auth';
 import { canAccessPhase } from '@/lib/phases';
@@ -31,13 +31,26 @@ async function submitAction(formData: FormData) {
   if (!text.trim()) return;
 
   await ensureModerationSchema();
+  await ensureSubmissionMediaColumns();
+
+  // Optional media fields from client-side upload
+  const media_url = String(formData.get('media_url') || '') || null;
+  const media_type = (String(formData.get('media_type') || '') as 'image'|'video'|'gif'|'' ) || null;
+  const media_mime = String(formData.get('media_mime') || '') || null;
+  const media_thumb_url = String(formData.get('media_thumb_url') || '') || null;
+  const media_width_val = Number(formData.get('media_width') || 0);
+  const media_height_val = Number(formData.get('media_height') || 0);
+  const media_duration_val = Number(formData.get('media_duration_ms') || 0);
+  const media_width = media_width_val > 0 ? media_width_val : null;
+  const media_height = media_height_val > 0 ? media_height_val : null;
+  const media_duration_ms = media_duration_val > 0 ? media_duration_val : null;
 
   const conn = await getDbPool().getConnection();
   try {
     await conn.beginTransaction();
     const [res] = await conn.execute<ResultSetHeader>(
-      'INSERT INTO submissions (user_id, text, category, name, phone) VALUES (?, ?, ?, ?, ?)',
-      [session.userId, text, category, name, phone]
+      'INSERT INTO submissions (user_id, text, category, name, phone, media_url, media_type, media_mime, media_width, media_height, media_duration_ms, media_thumb_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [session.userId, text, category, name, phone, media_url, media_type, media_mime, media_width, media_height, media_duration_ms, media_thumb_url]
     );
     const submissionId = res.insertId;
     if (submissionId) {

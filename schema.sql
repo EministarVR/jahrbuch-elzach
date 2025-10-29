@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
   class VARCHAR(50) NULL,
   bio TEXT NULL,
   avatar_url VARCHAR(255) NULL,
+  banner_url VARCHAR(255) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -19,6 +20,14 @@ CREATE TABLE IF NOT EXISTS submissions (
   category VARCHAR(50) NOT NULL DEFAULT 'Allgemein',
   name VARCHAR(100),
   phone VARCHAR(50),
+  -- Media Felder
+  media_url VARCHAR(255) NULL,
+  media_type ENUM('image','video','gif') NULL,
+  media_mime VARCHAR(100) NULL,
+  media_width INT NULL,
+  media_height INT NULL,
+  media_duration_ms INT NULL,
+  media_thumb_url VARCHAR(255) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   -- Moderationsfelder
   status ENUM('pending','approved','deleted') NOT NULL DEFAULT 'pending',

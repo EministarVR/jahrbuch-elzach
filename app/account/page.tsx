@@ -14,8 +14,8 @@ export default async function AccountPage() {
 
   await ensureUserProfileColumns();
 
-  const rows = await query<{ id: number; username: string; class: string | null; bio: string | null; avatar_url: string | null }[]>(
-    'SELECT id, username, class, bio, avatar_url FROM users WHERE id = ? LIMIT 1',
+  const rows = await query<{ id: number; username: string; class: string | null; bio: string | null; avatar_url: string | null; banner_url: string | null }[]>(
+    'SELECT id, username, class, bio, avatar_url, banner_url FROM users WHERE id = ? LIMIT 1',
     [session.userId]
   );
   const me = rows[0];
@@ -52,7 +52,7 @@ export default async function AccountPage() {
               </div>
             </div>
 
-            <AccountFormClient initialBio={me.bio} initialAvatarUrl={me.avatar_url} />
+            <AccountFormClient initialBio={me.bio} initialAvatarUrl={me.avatar_url} initialBannerUrl={me.banner_url} />
           </div>
         </GlassCard>
       </div>
