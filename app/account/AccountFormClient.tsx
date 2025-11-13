@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import GlowButton from '@/components/ui/GlowButton';
+import { withBasePath } from '@/lib/url';
 
 export default function AccountFormClient({ initialBio, initialAvatarUrl, initialBannerUrl }: { initialBio: string | null; initialAvatarUrl: string | null; initialBannerUrl: string | null; }) {
   const [bio, setBio] = useState(initialBio || "");
@@ -104,7 +105,7 @@ export default function AccountFormClient({ initialBio, initialAvatarUrl, initia
         <div className="rounded-xl overflow-hidden bg-[#38302b] border border-[#e89a7a]/20">
           {bannerUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={bannerUrl} alt="Banner" className="w-full h-40 object-cover" />
+            <img src={withBasePath(bannerUrl) || undefined} alt="Banner" className="w-full h-40 object-cover" />
           ) : (
             <div className="w-full h-40 flex items-center justify-center text-[#b8aea5] text-sm">Kein Banner</div>
           )}

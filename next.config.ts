@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       fallback: [],
     };
   },
+  serverActions: {
+    bodySizeLimit: '50mb',
+  },
 };
 
 export default nextConfig;

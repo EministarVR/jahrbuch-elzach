@@ -85,7 +85,7 @@ export default async function BrowsePage({
       params.push(filterCategory);
     }
 
-    query += ' GROUP BY s.id, s.user_id, s.text, s.category, s.name, s.phone, s.created_at, s.status, u.username, u.class, uv.vote_type';
+    query += ' GROUP BY s.id, s.user_id, s.text, s.category, s.name, s.phone, s.media_url, s.media_type, s.media_mime, s.media_width, s.media_height, s.media_duration_ms, s.media_thumb_url, s.created_at, s.status, u.username, u.class, uv.vote_type';
 
     // Sortierung
     switch (sortBy) {

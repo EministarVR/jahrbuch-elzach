@@ -5,6 +5,7 @@ import { ensureUserProfileColumns } from "@/lib/migrations";
 import { redirect } from "next/navigation";
 import GlowButton from "@/components/ui/GlowButton";
 import { LogOut, Menu, Home, Send, Shield, BookOpen, FileText, Lock, Users, BarChart3, Sparkles, HelpCircle, ShieldAlert, AlertCircle, Heart, Info, DollarSign, User } from "lucide-react";
+import { withBasePath } from "@/lib/url";
 
 async function logout() {
   "use server";
@@ -41,7 +42,7 @@ export default async function Header() {
             <div className="flex items-center justify-center w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                <img src={withBasePath(avatarUrl) || undefined} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
                 <BookOpen className="h-4 w-4" />
               )}
@@ -216,7 +217,7 @@ export default async function Header() {
             <div className="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                <img src={withBasePath(avatarUrl) || undefined} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
                 <BookOpen className="h-4 w-4" />
               )}

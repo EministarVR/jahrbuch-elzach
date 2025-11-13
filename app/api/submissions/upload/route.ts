@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     return '';
   })();
 
-  const fileName = `${session.userId}-${timestamp}${ext}`;
+  const fileName = `${session.userId}-submission-${timestamp}${ext}`;
   const uploadsDir = path.join(process.cwd(), 'public', 'uploads', 'submissions');
   await fs.mkdir(uploadsDir, { recursive: true });
   const absPath = path.join(uploadsDir, fileName);
