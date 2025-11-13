@@ -41,6 +41,7 @@ export default async function BrowsePage({
 
   await ensureModerationSchema();
   await ensureCommentsSchema();
+  await ensureSubmissionMediaColumns();
 
   const sp = searchParams ? await searchParams : undefined;
   const sortBy = sp?.sort || 'recent';

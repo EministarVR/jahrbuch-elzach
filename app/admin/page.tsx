@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/session";
 import { query } from "@/lib/db";
-import { ensureModerationSchema, ensurePhaseSettings } from "@/lib/migrations";
+import { ensureModerationSchema, ensurePhaseSettings, ensureSubmissionMediaColumns } from "@/lib/migrations";
 import { getPhaseSettings } from "@/lib/phases";
 import GlassCard from "@/components/ui/GlassCard";
 import GlowButton from "@/components/ui/GlowButton";
@@ -83,6 +83,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   // Ensure schema is ready (adds status columns + audit table if missing)
   await ensureModerationSchema();
   await ensurePhaseSettings();
+  await ensureSubmissionMediaColumns();
 
   const [stats] = (await query<
     { pending: number; approved: number; deleted: number; total: number }[]
