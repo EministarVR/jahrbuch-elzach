@@ -10,8 +10,10 @@ const nextConfig: NextConfig = {
       fallback: [],
     };
   },
-  serverActions: {
-    bodySizeLimit: '50mb',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '50mb',
+    },
   },
 };
 
