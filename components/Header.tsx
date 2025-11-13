@@ -42,10 +42,25 @@ export default async function Header() {
             <div className="flex items-center justify-center w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={withBasePath(avatarUrl) || undefined} alt="Avatar" className="w-full h-full object-cover" />
-              ) : (
+                <img
+                  src={withBasePath(avatarUrl) || undefined}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    if (target.nextElementSibling) {
+                      (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                    }
+                  }}
+                />
+              ) : null}
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{ display: avatarUrl ? 'none' : 'flex' }}
+              >
                 <BookOpen className="h-4 w-4" />
-              )}
+              </div>
             </div>
             <span>
               Willkommen,{" "}
@@ -217,10 +232,25 @@ export default async function Header() {
             <div className="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden bg-gradient-to-br from-[#d97757] to-[#c96846] text-white shadow-md">
               {avatarUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={withBasePath(avatarUrl) || undefined} alt="Avatar" className="w-full h-full object-cover" />
-              ) : (
+                <img
+                  src={withBasePath(avatarUrl) || undefined}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    if (target.nextElementSibling) {
+                      (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                    }
+                  }}
+                />
+              ) : null}
+              <div
+                className="w-full h-full flex items-center justify-center"
+                style={{ display: avatarUrl ? 'none' : 'flex' }}
+              >
                 <BookOpen className="h-4 w-4" />
-              )}
+              </div>
             </div>
             <span className="font-medium text-[#f5f1ed]">{username}</span>
           </span>

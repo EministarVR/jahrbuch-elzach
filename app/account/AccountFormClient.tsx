@@ -105,10 +105,25 @@ export default function AccountFormClient({ initialBio, initialAvatarUrl, initia
         <div className="rounded-xl overflow-hidden bg-[#38302b] border border-[#e89a7a]/20">
           {bannerUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={withBasePath(bannerUrl) || undefined} alt="Banner" className="w-full h-40 object-cover" />
-          ) : (
-            <div className="w-full h-40 flex items-center justify-center text-[#b8aea5] text-sm">Kein Banner</div>
-          )}
+            <img
+              src={withBasePath(bannerUrl) || undefined}
+              alt="Banner"
+              className="w-full h-40 object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                if (target.nextElementSibling) {
+                  (target.nextElementSibling as HTMLElement).style.display = 'flex';
+                }
+              }}
+            />
+          ) : null}
+          <div
+            className="w-full h-40 flex items-center justify-center text-[#b8aea5] text-sm"
+            style={{ display: bannerUrl ? 'none' : 'flex' }}
+          >
+            Kein Banner
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <input type="file" accept="image/*" onChange={handleBannerUpload} className="block text-sm text-[#b8aea5] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#e89a7a]/20 file:text-[#e89a7a] hover:file:bg-[#e89a7a]/30" />
