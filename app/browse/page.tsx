@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/session';
 import { getDbPool } from '@/lib/db';
-import { ensureModerationSchema, ensureCommentsSchema } from '@/lib/migrations';
+import { ensureModerationSchema, ensureCommentsSchema, ensureSubmissionMediaColumns } from '@/lib/migrations';
 import { CATEGORIES } from '@/lib/constants';
 import BrowseClient from './BrowseClient';
 import type { RowDataPacket } from 'mysql2';
